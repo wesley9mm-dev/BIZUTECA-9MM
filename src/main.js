@@ -1,10 +1,9 @@
 'use strict';
 const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,shell}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-// Chromium also needs a writable profile. Keep it beside the portable program,
-// rather than silently writing its profile into the computer's AppData folder.
+const runtime=require('./core/runtime');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
-try { const profile=path.join(portableBase,'perfil');fs.mkdirSync(profile,{recursive:true});app.setPath('userData',profile);app.setPath('sessionData',profile); } catch { /* The data-location dialog below handles a read-only drive. */ }
+const runtimePaths=runtime.configureRuntime(app,portableBase);
 const {Library}=require('./core/library');
 const {search}=require('./core/search');
 const {consult}=require('./core/assistant');
@@ -82,13 +81,13 @@ async function action(op,args){
 }
 app.whenReady().then(async()=>{
  base=process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));if(test)base=test;
- pointer=path.join(base,'bizuteca-local.json');let saved=null;try{saved=JSON.parse(fs.readFileSync(pointer,'utf8'));}catch{}
- dir=test|| (saved?.relative?path.resolve(base,saved.relative):saved?.absolute)||path.join(base,'dados');
+ pointer=path.join(runtime.supportDirectory(base),'config.json');const saved=runtime.locateConfiguration(base);
+ dir=test||runtime.dataDirectory(base,saved);
  if(saved&&!fs.existsSync(path.join(dir,'biblioteca.db'))){const result=await dialog.showMessageBox({type:'warning',buttons:['Localizar biblioteca','Encerrar'],defaultId:0,cancelId:1,message:'A pasta de dados não foi encontrada.',detail:'Conecte o pendrive ou localize a pasta original. Nenhuma biblioteca vazia será criada.'});if(result.response!==0){app.quit();return;}const picked=await dialog.showOpenDialog({title:'Localizar pasta que contém biblioteca.db',properties:['openDirectory']});if(picked.canceled||!fs.existsSync(path.join(picked.filePaths[0],'biblioteca.db'))){app.quit();return;}dir=picked.filePaths[0];}
- try{storage.assertDirectory(base);}catch{const picked=await dialog.showOpenDialog({title:'Escolher uma pasta gravável para configuração e dados',properties:['openDirectory','createDirectory']});if(picked.canceled){app.quit();return;}base=picked.filePaths[0];pointer=path.join(base,'bizuteca-local.json');dir=base;}
+ try{storage.assertDirectory(base);}catch{const picked=await dialog.showOpenDialog({title:'Escolher uma pasta gravável para configuração e dados',properties:['openDirectory','createDirectory']});if(picked.canceled){app.quit();return;}base=picked.filePaths[0];fs.mkdirSync(runtime.supportDirectory(base),{recursive:true});pointer=path.join(runtime.supportDirectory(base),'config.json');dir=runtime.dataDirectory(base,null);}
  try{const opened=openLibrary(dir);lib=opened.lib;lockPath=opened.lock;remember(dir);storage.seedTec(lib,require('./data/tec-folders.json'));}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
- win=new BrowserWindow({width:1550,height:940,minWidth:1040,minHeight:680,backgroundColor:'#08170f',title:'BIZUTECA 9MM',webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false}});win.setMenuBarVisibility(false);
+ win=new BrowserWindow({width:1550,height:940,minWidth:1040,minHeight:680,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
  ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|devtools:)/.test(details.url)}));
@@ -96,3 +95,5 @@ app.whenReady().then(async()=>{
  await win.loadFile(html);
 }).catch(e=>{dialog.showErrorBox('BIZUTECA 9MM',String(e.stack||e));app.quit();});
 app.on('window-all-closed',()=>app.quit());app.on('will-quit',()=>{try{lib?.db.exec('PRAGMA wal_checkpoint(TRUNCATE)');lib?.close();}catch{}unlock(lockPath);});
+
+app.on('quit',()=>runtime.cleanupSession(runtimePaths.sessionDirectory));

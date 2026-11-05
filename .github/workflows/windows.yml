@@ -41,4 +41,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = "preliminar-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "BIZUTECA 9MM - versão preliminar" --notes "Executável portátil para Windows x64 gerado após os testes do núcleo. A validação de abertura e interface ainda está pendente. Use uma biblioteca de teste antes de guardar material importante."
+          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "BIZUTECA 9MM 1.0.1 - versão preliminar" --notes "Versão 1.0.1 com logo oficial e cache temporário fora da pasta do programa, gerada após 20 testes automatizados. A validação de abertura e interface ainda está pendente. Use uma biblioteca de teste antes de guardar material importante."

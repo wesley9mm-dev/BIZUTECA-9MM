@@ -4,3 +4,6 @@ dados/
 *.db*
 bizuteca-local.json
 test-results/
+
+BIZUTECA-Suporte/
+perfil/

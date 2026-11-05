@@ -40,8 +40,14 @@ O resultado fica em `dist/BIZUTECA-9MM-Portatil.exe`. O executável e as bibliot
 
 ## Estado da validação
 
-Os 15 testes do núcleo passaram em 04/11/2026, incluindo organização, notas, lixeira, versões, pesquisa, pacotes de backup, estrutura do TEC e temas. O teste de interface em `test/e2e.cjs` ainda apresentou falha ao iniciar o Electron no ambiente local; portanto, a abertura e o funcionamento visual do executável ainda precisam de validação. O fluxo do GitHub executa os testes do núcleo antes de gerar a versão preliminar.
+Os 20 testes automatizados passaram em 04/11/2026, incluindo organização, notas, lixeira, versões, pesquisa, pacotes de backup, estrutura do TEC, temas, separação do cache e compatibilidade da configuração antiga. O teste de interface em `test/e2e.cjs` ainda apresentou falha ao iniciar o Electron no ambiente local; portanto, a abertura e o funcionamento visual do executável ainda precisam de validação. O fluxo do GitHub executa os testes do núcleo antes de gerar a versão preliminar.
 
 ## Dados pessoais
 
 Bibliotecas de estudo, anexos pessoais, bancos de dados e backups de uso não fazem parte deste repositório. A pasta de dados é escolhida no aplicativo.
+
+## Atualização 1.0.1: logo e arquivos internos
+
+A logo oficial aparece no cabeçalho e no ícone do Windows. A versão portátil usa uma única pasta `BIZUTECA-Suporte` para configurações; uma biblioteca nova fica em `BIZUTECA-Suporte/dados` até você escolher outro local. Caches de sessão ficam na pasta temporária do Windows, com limpeza ao encerrar quando os arquivos já estão liberados pelo sistema.
+
+Bibliotecas existentes continuam no local anterior. A versão reconhece o arquivo antigo `bizuteca-local.json` e grava a configuração nova em `BIZUTECA-Suporte/config.json`, mantendo a referência correta à biblioteca. A pasta antiga `perfil` e o arquivo antigo de configuração não são apagados automaticamente. Seus resumos e backups não são tratados como cache.

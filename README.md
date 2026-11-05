@@ -4,6 +4,10 @@ Anote. Organize. Revise. Domine.
 
 Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por matérias e consulta offline ao material salvo.
 
+[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.0.1-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/preliminar-41948016045-1/BIZUTECA-9MM-Portatil.exe)
+
+**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.0.1**
+
 ## Recursos do código atual
 
 - Pastas e subpastas: estrutura inicial do TEC com 16 matérias e 2.165 pastas.
@@ -14,7 +18,11 @@ Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por
 
 ## Baixar o programa
 
-As compilações de Windows ficam em [Releases](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases). Baixe `BIZUTECA-9MM-Portatil.exe`. A geração depende da conclusão do fluxo de compilação em [Actions](https://github.com/wesley9mm-dev/BIZUTECA-9MM/actions).
+Clique no botão **BAIXAR PARA WINDOWS** acima ou use o [download direto do executável](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/preliminar-41948016045-1/BIZUTECA-9MM-Portatil.exe). Depois, abra `BIZUTECA-9MM-Portatil.exe`.
+
+Para compartilhar, envie esta página: **https://github.com/wesley9mm-dev/BIZUTECA-9MM**. O download contém o programa; seus resumos e dados pessoais não são incluídos.
+
+Outras versões ficam em [Releases](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases).
 
 As versões são marcadas como preliminares enquanto a validação visual e a abertura do executável não forem concluídas. Antes de usar com material importante, confirme o salvamento e a reabertura usando uma biblioteca de teste. Feche o programa antes de ejetar o pendrive e mantenha um backup em outro dispositivo.
 

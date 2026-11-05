@@ -1,0 +1,20 @@
+{
+  "name": "bizuteca-9mm",
+  "productName": "BIZUTECA 9MM",
+  "version": "1.0.0",
+  "description": "Caderno portátil de resumos, anotações e bizus com consulta offline ao seu material",
+  "author": "Wesley",
+  "license": "UNLICENSED",
+  "main": "src/main.js",
+  "scripts": {"start": "electron .", "test": "node --test test/*.test.js", "dist": "electron-builder --win portable --x64", "pack": "electron-builder --win --dir --x64"},
+  "devDependencies": {"electron": "45.1.0", "electron-builder": "26.18.0"},
+  "build": {
+    "appId": "br.wesley.bizuteca9mm",
+    "productName": "BIZUTECA 9MM",
+    "asar": true,
+    "files": ["src/**/*", "package.json"],
+    "directories": {"output": "dist"},
+    "win": {"target": "portable", "signAndEditExecutable": false},
+    "portable": {"artifactName": "BIZUTECA-9MM-Portatil.exe", "requestExecutionLevel": "user"}
+  }
+}

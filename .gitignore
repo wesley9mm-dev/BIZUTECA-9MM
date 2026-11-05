@@ -1,0 +1,6 @@
+node_modules/
+dist/
+dados/
+*.db*
+bizuteca-local.json
+test-results/

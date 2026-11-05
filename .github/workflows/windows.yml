@@ -1,0 +1,44 @@
+name: Compilar BIZUTECA para Windows
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  portable:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Instalar dependências
+        run: npm install
+      - name: Testar núcleo
+        run: npm test
+      - name: Gerar executável portátil
+        run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Guardar executável da compilação
+        uses: actions/upload-artifact@v4
+        with:
+          name: BIZUTECA-9MM-Windows-Portatil
+          path: dist/BIZUTECA-9MM-Portatil.exe
+          if-no-files-found: error
+      - name: Publicar versão preliminar
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "preliminar-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "BIZUTECA 9MM - versão preliminar" --notes "Executável portátil para Windows x64 gerado após os testes do núcleo. A validação de abertura e interface ainda está pendente. Use uma biblioteca de teste antes de guardar material importante."

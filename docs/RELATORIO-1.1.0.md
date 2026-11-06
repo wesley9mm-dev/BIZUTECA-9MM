@@ -13,9 +13,13 @@ A atualização partiu da revisão `32976b0e21bf0ff137f4231956e25337df77aca9`. O
 
 ## Testes locais
 
-27 testes automatizados de núcleo passaram. Os testes de interface executados no Windows com uma cópia isolada do runtime local passaram pela abertura, seletor de pastas, histórico, editor, área de transferência nativa, exportação de imagem, calendário, importação legada, restauração e busca em janela compacta. Os dados usados eram sintéticos. A compilação distribuída no GitHub tem uma etapa adicional para abrir o executável portátil final.
+27 testes automatizados de núcleo passaram. Os testes de interface executados no Windows com uma cópia isolada do runtime local passaram pela abertura, seletor de pastas, histórico, editor, área de transferência nativa, exportação de imagem, calendário, importação legada, restauração e busca em janela compacta. Os dados usados eram sintéticos. Os testes locais adicionais confirmaram a persistência após reabrir, a rejeição de um pacote danificado sem trocar a biblioteca ativa e a presença de uma nota antiga na cópia prévia à migração.
 
-A inclusão e exclusão de linhas e colunas foi implementada para tabelas simples. O teste de retenção usou pastas locais, sem pendrive físico. O guia de atualização está no [manual](MANUAL.md).
+A inclusão e exclusão de linhas e colunas foi implementada para tabelas simples. Os 36 temas foram aplicados na interface local de teste, com a nota de exemplo preservada. Os testes de retenção usaram pastas locais. A operação em pendrive físico e a colagem em aplicativos externos específicos ficaram fora da validação. O guia de atualização está no [manual](MANUAL.md).
+
+## Compilação Windows
+
+O GitHub Actions passou nos 27 testes, executou os cenários de interface na aplicação empacotada e abriu o arquivo portátil final em uma biblioteca vazia. As capturas de teste e o checksum SHA-256 acompanham a compilação. [Execução no GitHub](https://github.com/wesley9mm-dev/BIZUTECA-9MM/actions/runs/42159833267).
 
 ## Referências técnicas
 

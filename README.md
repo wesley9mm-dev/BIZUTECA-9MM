@@ -4,9 +4,9 @@ Anote. Organize. Revise. Domine.
 
 Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por matérias e consulta offline ao material salvo.
 
-[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.0.1-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/preliminar-41948016045-1/BIZUTECA-9MM-Portatil.exe)
+[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.1.0-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/BIZUTECA-9MM-Portatil.exe)
 
-**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.0.1**
+**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.1.0**
 
 ## Recursos
 
@@ -19,13 +19,13 @@ Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por
 
 ## Baixar o programa
 
-Clique no botão **BAIXAR PARA WINDOWS** acima ou use o [download direto do executável](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/preliminar-41948016045-1/BIZUTECA-9MM-Portatil.exe). Depois, abra `BIZUTECA-9MM-Portatil.exe`.
+Clique no botão **BAIXAR PARA WINDOWS** acima ou use o [download direto do executável](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/BIZUTECA-9MM-Portatil.exe). Depois, abra `BIZUTECA-9MM-Portatil.exe`.
 
 Para compartilhar, envie esta página: **https://github.com/wesley9mm-dev/BIZUTECA-9MM**. O download contém o programa; seus resumos e dados pessoais não são incluídos.
 
 Outras versões ficam em [Releases](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases).
 
-As versões são marcadas como preliminares enquanto a validação visual e a abertura do executável não forem concluídas. Antes de usar com material importante, confirme o salvamento e a reabertura usando uma biblioteca de teste. Feche o programa antes de ejetar o pendrive e mantenha um backup em outro dispositivo.
+Confira o [checksum SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/SHA256.txt) e siga o [manual de atualização](docs/MANUAL.md) para preservar a pasta de dados.
 
 ## Código-fonte
 

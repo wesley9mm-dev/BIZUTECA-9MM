@@ -1,0 +1,24 @@
+'use strict';
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const os=require('node:os');
+const path=require('node:path');
+const music=require('../src/core/music');
+test('importa MP3s locais e serve trechos para o início aleatório',async t=>{
+  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'biz-music-'));
+  t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+  const source=path.join(directory,'Faixa nº 1.mp3');
+  fs.writeFileSync(source,'0123456789');
+  assert.deepEqual(music.list(directory),[]);
+  assert.deepEqual(await music.add(directory,[source,source]),['Faixa nº 1.mp3']);
+  const url='biz-music://local/'+encodeURIComponent(path.basename(source));
+  const partial=await music.response(directory,new Request(url,{headers:{Range:'bytes=3-5'}}));
+  assert.equal(partial.status,206);
+  assert.equal(partial.headers.get('Content-Range'),'bytes 3-5/10');
+  assert.equal(await partial.text(),'345');
+  const invalid=await music.response(directory,new Request(url,{headers:{Range:'bytes=10-'}}));
+  assert.equal(invalid.status,416);
+  const traversal=await music.response(directory,new Request('biz-music://local/..%5cFaixa.mp3'));
+  assert.equal(traversal.status,404);
+});

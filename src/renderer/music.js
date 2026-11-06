@@ -3,12 +3,37 @@ window.BizMusic=(()=>{
   const get=id=>document.getElementById('music-'+id);
   const audio=get('audio'),play=get('play'),next=get('next'),volume=get('volume');
   const autoplay=get('autoplay'),random=get('random'),title=get('track');
+  let collection={tracks:[],personal:[]},personalOnly=false;
   let tracks=[],queue=[],current='',wanted=false,starting=false;
 
   function update(){
     play.disabled=!tracks.length;
     next.disabled=tracks.length<2;
     play.textContent=wanted?'Pausar':'Play';
+  }
+  function selectCollection(){
+    tracks=personalOnly?collection.personal:collection.tracks;
+    queue=[];
+    get('all').setAttribute('aria-pressed',String(!personalOnly));
+    get('personal').setAttribute('aria-pressed',String(personalOnly));
+    get('library').hidden=!personalOnly;
+    get('list').hidden=!collection.personal.length;
+    get('list').replaceChildren(...collection.personal.map(name=>{
+      const item=document.createElement('li');
+      item.textContent=name.replace(/\.mp3$/i,'');
+      return item;
+    }));
+    if(!current)title.textContent=tracks.length?tracks.length+' faixa(s) disponível(is)':'Nenhuma música nesta coleção';
+    update();
+  }
+  function changeCollection(value){
+    if(value===personalOnly)return;
+    const continuePlaying=wanted;
+    personalOnly=value;
+    stop();
+    selectCollection();
+    if(continuePlaying)start();
+    saveOptions();
   }
   function nextTrack(){
     if(!queue.length){
@@ -54,19 +79,19 @@ window.BizMusic=(()=>{
     get('volume-value').value=volume.value+'%';
   }
   async function saveOptions(){
-    try{await window.biz.call('saveMusicOptions',{volume:Number(volume.value),autoplay:autoplay.checked,randomStart:random.checked});}
+    try{await window.biz.call('saveMusicOptions',{volume:Number(volume.value),autoplay:autoplay.checked,randomStart:random.checked,personalOnly});}
     catch{title.textContent='Não foi possível salvar as opções de música.';}
   }
   async function load(){
     const result=await window.biz.call('listMusic');
     stop();
-    tracks=result.tracks;
+    collection=result;
+    personalOnly=result.options.personalOnly===true;
     volume.value=result.options.volume??20;
     autoplay.checked=result.options.autoplay===true;
     random.checked=result.options.randomStart!==false;
-    title.textContent=tracks.length?tracks.length+' faixa(s) disponível(is)':'Nenhuma música adicionada';
     adjustVolume();
-    update();
+    selectCollection();
     if(autoplay.checked)start();
   }
   audio.addEventListener('loadedmetadata',()=>{
@@ -91,16 +116,16 @@ window.BizMusic=(()=>{
   next.onclick=()=>start(wanted);
   volume.oninput=adjustVolume;
   volume.onchange=autoplay.onchange=random.onchange=saveOptions;
+  get('all').onclick=()=>changeCollection(false);
+  get('personal').onclick=()=>changeCollection(true);
   get('add').onclick=async()=>{
     const button=get('add');
     button.disabled=true;
     try{
       const added=await window.biz.call('addMusic');
       if(!added)return;
-      tracks=added;
-      queue=[];
-      if(!current)start(autoplay.checked);
-      update();
+      collection=added;
+      selectCollection();
     }catch{title.textContent='Não foi possível copiar os MP3s para a pasta da biblioteca.';}
     finally{button.disabled=false;}
   };

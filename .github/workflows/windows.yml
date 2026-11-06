@@ -78,5 +78,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Importação de TXT direto na pasta e reprodução automática de música opcional."
+          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Ajuste de transparência ampliado e aba Minhas músicas com reprodução aleatória."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

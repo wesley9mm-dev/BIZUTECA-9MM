@@ -106,3 +106,9 @@ body[data-universe="true"][data-translucent="true"] :is(.topbar,.workspace) butt
 .music-volume input{min-width:0;flex:1;padding:0;accent-color:var(--accent)}
 .music-volume output{min-width:4ch;text-align:right}
 .music-panel input[type=checkbox]{accent-color:var(--accent)}
+
+.music-sources{display:flex;gap:6px}
+.music-sources button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.music-library{display:grid;gap:8px}
+.music-library[hidden]{display:none}
+.music-library ul{margin:0;padding-left:19px;max-height:105px;overflow:auto;overflow-wrap:anywhere}

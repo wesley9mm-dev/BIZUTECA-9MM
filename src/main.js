@@ -199,17 +199,17 @@ async function action(op,args){
  if(allowed.has(op)){if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
  case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length};
- case 'listMusic':return {tracks:music.list(dir,bundledMusic),options:setting('musicOptions')||{}};
+ case 'listMusic':return {tracks:music.list(dir,bundledMusic),personal:music.list(dir),options:setting('musicOptions')||{}};
  case 'addMusic':{
    const result=await dialog.showOpenDialog(win,{title:'Adicionar músicas locais',properties:['openFile','multiSelections'],filters:[{name:'Músicas MP3',extensions:['mp3']}]});
    if(result.canceled)return null;
    await music.add(dir,result.filePaths);
-   return music.list(dir,bundledMusic);
+   return {tracks:music.list(dir,bundledMusic),personal:music.list(dir)};
  }
  case 'saveMusicOptions':{
    const value=args[0]||{};
    const volume=Number.isFinite(value.volume)?Math.max(0,Math.min(100,Math.round(value.volume))):20;
-   return setting('musicOptions',{volume,autoplay:value.autoplay===true,randomStart:value.randomStart!==false});
+   return setting('musicOptions',{volume,autoplay:value.autoplay===true,randomStart:value.randomStart!==false,personalOnly:value.personalOnly===true});
  }
  case 'savePreferences':return setting('preferences',args[0]);
  case 'saveThemes':return setting('customThemes',args[0]);

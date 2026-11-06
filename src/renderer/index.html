@@ -10,12 +10,19 @@
 <aside id="consult-panel" class="consult-panel" aria-label="Encontrar no meu caderno"><div class="panel-heading"><h2>Encontrar no meu caderno</h2><button id="close-consult" class="icon-button" aria-label="Recolher consulta"><span class="ico close"></span></button></div><p class="muted">Localize material no seu caderno</p><label class="sr-only" for="question">Enunciado ou tema</label><textarea id="question" placeholder="Cole o enunciado ou escreva um assunto…" rows="6"></textarea><label class="sr-only" for="consult-folder">Onde pesquisar</label><select id="consult-folder"><option value="">Toda a biblioteca</option></select><button id="consult" class="primary wide"><span class="ico search"></span> Encontrar material</button><div class="result-heading"><h3>Material relacionado</h3><button id="clear-consult" class="text-button">Limpar</button></div><div id="consult-results"><div class="empty compact"><span class="ico consult"></span><p>Seus resumos aparecem aqui quando você faz uma consulta.</p><small>A pesquisa funciona offline, por palavras e sinônimos.</small></div></div></aside>
 </div>
 <footer class="statusbar"><button id="data-status" class="status-location" title="Ver local de salvamento"><span class="save-dot"></span><span id="save-status" role="status">Abrindo biblioteca…</span></button><span class="footer-divider"></span><span class="offline"><span class="ico offline"></span> Offline</span><span id="word-count"></span><span class="footer-spacer"></span><details id="music-player" class="music-player"><summary>Música</summary><section class="music-panel" aria-label="Reprodutor de música">
+<div class="music-sources" role="group" aria-label="Coleção de músicas">
+<button id="music-all" class="outline small" aria-pressed="true">Todas</button>
+<button id="music-personal" class="outline small" aria-pressed="false">Minhas músicas</button>
+</div>
 <p id="music-track" role="status">Nenhuma música adicionada</p>
 <div class="music-actions"><button id="music-play" class="primary small" disabled>Play</button><button id="music-next" class="outline small" disabled>Próxima</button></div>
 <label class="music-volume">Volume <input id="music-volume" type="range" min="0" max="100" value="20"><output id="music-volume-value" for="music-volume">20%</output></label>
 <label><input id="music-autoplay" type="checkbox"> Tocar música ao abrir</label>
 <label><input id="music-random" type="checkbox" checked> Começar em um ponto aleatório</label>
+<div id="music-library" class="music-library" hidden>
+<ul id="music-list" aria-label="MP3s adicionados"></ul>
 <button id="music-add" class="outline small">Adicionar MP3s</button>
+</div>
 <audio id="music-audio" preload="none"></audio>
 </section></details><button id="backup" class="outline small"><span class="ico database"></span> Backup</button></footer>
 <dialog id="dialog" aria-labelledby="dialog-title"><div class="dialog-top"><h2 id="dialog-title"></h2><button id="dialog-close" class="icon-button" aria-label="Fechar janela"><span class="ico close"></span></button></div><div id="dialog-body"></div><div id="dialog-actions" class="dialog-actions"></div></dialog>

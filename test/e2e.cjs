@@ -64,6 +64,19 @@ async function step(name,run) {
     await step('Reprodutor abre em silêncio e permite tocar, pausar e ajustar o volume',async()=>{
       await page.locator('#music-player summary').click();
       await page.locator('#music-play:not([disabled])').waitFor();
+      await page.locator('#music-personal').click();
+      assert.equal(await page.locator('#music-list li').count(),2);
+      const personalTrack=path.join(data,'Minha faixa.mp3');
+      fs.writeFileSync(personalTrack,silence);
+      await application.evaluate(({dialog},file)=>{
+        const original=dialog.showOpenDialog;
+        dialog.showOpenDialog=async()=>{
+          dialog.showOpenDialog=original;
+          return {canceled:false,filePaths:[file]};
+        };
+      },personalTrack);
+      await page.locator('#music-add').click();
+      await page.locator('#music-list').getByText('Minha faixa',{exact:true}).waitFor();
       assert.equal(await page.locator('#music-autoplay').isChecked(),false);
       assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.paused&&!audio.getAttribute('src')),true);
       await page.locator('#music-play').click();
@@ -71,7 +84,7 @@ async function step(name,run) {
         const audio=document.querySelector('#music-audio');
         return !audio.paused&&audio.currentTime>0;
       });
-      assert.equal((await call('listMusic')).tracks.length,2);
+      assert.equal((await call('listMusic')).tracks.length,3);
       await page.locator('#music-play').click();
       assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.paused),true);
       await page.locator('#music-volume').fill('35');
@@ -113,7 +126,7 @@ async function step(name,run) {
       assert.deepEqual(await page.evaluate(()=>{
         const style=document.documentElement.style;
         return [style.getPropertyValue('--wallpaper-veil'),style.getPropertyValue('--interface-fill'),document.body.dataset.translucent];
-      }),['65%','80%','true']);
+      }),['65%','60%','true']);
       await page.locator('#cancel-preview').click();
       assert.equal(await page.evaluate(()=>document.body.dataset.translucent),'false');
       await page.locator('[data-theme-preview="universe-goku-e-bills-no-horizonte-azul"]').click();

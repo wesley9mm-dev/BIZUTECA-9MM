@@ -33,7 +33,7 @@ async function launch() {
   assert.ok(page,'Janela principal não carregou');
   page.on('pageerror',error=>pageErrors.push(error.message));
   page.on('console',message=>{if(message.type()==='error')console.error('Renderer:',message.text());});
-  await page.locator('#main h1').waitFor();
+  await page.locator('#main > :first-child').waitFor();
   await page.waitForFunction(()=>document.querySelector('#save-status').textContent.startsWith('Salvo'));
 }
 const call = (op,...args) => page.evaluate(({op,args})=>window.biz.call(op,...args),{op,args});
@@ -185,6 +185,7 @@ async function step(name,run) {
     application=null;
     page=null;
     await launch();
+    await page.locator('#home').click();
     await page.locator('#next-event').getByText('Prova revisada',{exact:true}).waitFor();
     assert.equal((await call('listEvents')).length,1);
     assert.equal((await call('listNotes')).length,1);

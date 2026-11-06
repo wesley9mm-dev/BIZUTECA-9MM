@@ -129,8 +129,10 @@ function enhanceEditor(editor) {
   ];
   editor.insertAdjacentHTML('beforebegin','<div class="editor-extras"><details class="editor-more"><summary>Mais ferramentas</summary>'+
     '<div>'+tools.map(([id,label])=>'<button type="button" data-extra="'+id+'">'+label+'</button>').join('')+'</div></details>'+
+    '<button id="note-focus" class="outline small" type="button" aria-pressed="false">Modo Foco</button>'+
     '<button id="note-reading" class="outline small" type="button" aria-pressed="false">Modo de leitura</button>'+
     '<label class="note-find"><span class="sr-only">Buscar nesta anotação</span><input id="note-find" type="search" placeholder="Buscar nesta anotação"></label>'+
+    '<button id="note-find-prev" type="button" class="outline small" aria-label="Ocorrência anterior">↑</button><button id="note-find-next" type="button" class="outline small" aria-label="Próxima ocorrência">↓</button><span id="note-find-count" role="status"></span>'+
     '<details id="note-outline"><summary>Sumário</summary><div id="note-outline-links"></div></details></div>');
   const actions={
     strike:()=>format('strikeThrough'),left:()=>format('justifyLeft'),center:()=>format('justifyCenter'),
@@ -152,6 +154,7 @@ function enhanceEditor(editor) {
       if(editor.isContentEditable)await (actions[button.dataset.extra]||(()=>changeTable(button.dataset.extra)))();
     });
   }
+  $('#note-focus').onclick=event=>{const active=$('#workspace').classList.toggle('focus-writing');event.currentTarget.setAttribute('aria-pressed',String(active));event.currentTarget.textContent=active?'Sair do Modo Foco':'Modo Foco';};
   $('#note-reading').onclick=event=>{
     const read=editor.isContentEditable;
     editor.contentEditable=String(!read);
@@ -159,13 +162,25 @@ function enhanceEditor(editor) {
     event.currentTarget.textContent=read?'Voltar a editar':'Modo de leitura';
     $('.editor-toolbar').hidden=read;$('.editor-more').hidden=read;
   };
+  let query=null, matchIndex=-1;
+  function findNote(direction){
+    const value=$('#note-find').value.trim();
+    if(query!==value){query=value;matchIndex=-1;clearNoteHighlights(editor);if(value)highlightEditor(value.split(/\s+/),false);}
+    const matches=Array.from(editor.querySelectorAll('mark.found-text'));
+    if(!matches.length){$('#note-find-count').textContent=value?'Nenhuma ocorrência':'';return;}
+    matches[matchIndex]?.classList.remove('active-match');
+    matchIndex=matchIndex<0?(direction<0?matches.length-1:0):(matchIndex+direction+matches.length)%matches.length;
+    matches[matchIndex].classList.add('active-match');
+    matches[matchIndex].scrollIntoView({block:'center'});
+    $('#note-find-count').textContent=(matchIndex+1)+' de '+matches.length;
+  }
+  $('#note-find-prev').onclick=()=>findNote(-1);
+  $('#note-find-next').onclick=()=>findNote(1);
   $('#note-find').onkeydown=event=>{
-    if(event.key==='Enter'){
-      event.preventDefault();clearNoteHighlights(editor);
-      if(event.target.value.trim())highlightEditor(event.target.value.trim().split(/\s+/));
-    }
+    if(event.key==='Enter'){event.preventDefault();findNote(event.shiftKey?-1:1);}
+    if(event.key==='Escape'){event.target.value='';findNote(1);editor.focus();}
   };
-  $('#note-find').onsearch=event=>{if(!event.target.value)clearNoteHighlights(editor);};
+  $('#note-find').oninput=()=>{query=null;clearNoteHighlights(editor);$('#note-find-count').textContent='';};
   $('#note-outline').ontoggle=()=>{
     if(!$('#note-outline').open)return;
     const headers=Array.from(editor.querySelectorAll('h1,h2,h3,h4'));

@@ -66,6 +66,17 @@ async function step(name,run) {
       const first=notes.find(note=>note.folderId===beginner.id&&note.title.startsWith('00.'));
       await page.locator('[data-note-id="'+first.id+'"]').click();
       await page.locator('#editor').getByText('BizuLanguage',{exact:true}).waitFor();
+      assert.equal(await page.locator('#tree .tree-row[tabindex="0"]').count(),1);
+      await page.locator('[data-note-id="'+first.id+'"]').press('F2');
+      await page.getByRole('dialog',{name:'Opções da anotação'}).waitFor();
+      await page.keyboard.press('Escape');
+      await page.locator('#note-focus').click();
+      await page.locator('#workspace.focus-writing').waitFor();
+      await page.locator('#note-focus').click();
+      await page.locator('#workspace.focus-writing').waitFor({state:'detached'});
+      await page.locator('#note-find').fill('BizuLanguage');
+      await page.locator('#note-find').press('Enter');
+      assert.match(await page.locator('#note-find-count').textContent(),/^1 de /);
       await page.locator('#home').click();
       assert.equal((await call('init')).version,require('../package.json').version);
       await page.locator('#next-event').getByText('Nenhum compromisso futuro.').waitFor();

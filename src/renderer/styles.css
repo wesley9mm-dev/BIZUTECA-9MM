@@ -52,3 +52,8 @@ body[data-style=terminal],body[data-style=pixel]{--font:'Consolas';--heading:'Co
 .editor-toolbar[hidden],.editor-extras [hidden]{display:none}
 @media(max-width:1200px){.calendar-layout{grid-template-columns:1fr}.topbar .brand small{display:none}}
 @media(max-width:980px){.workspace .consult-panel{max-width:28vw;min-width:0}.topbar #toggle-consult{font-size:12px}.global-search kbd{display:none}}
+
+/* Writing focus preserves the sidebar preferences. */
+.workspace.focus-writing .library,.workspace.focus-writing .consult-panel,.workspace.focus-writing #resize-library{display:none}
+mark.found-text.active-match{outline:2px solid var(--accent);outline-offset:2px}
+#note-find-count{font-size:.875rem;color:var(--muted)}

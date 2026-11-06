@@ -102,7 +102,7 @@ function wireFolderPickers(dialog) {
       const options=[{id:'',path:'Nível principal'},...found.slice(0,80)];
       results.innerHTML=options.map(folder=>'<button type="button" data-pick-id="'+folder.id+'" aria-pressed="'+
         (String(folder.id)===value.value)+'">'+esc(folder.path)+'</button>').join('')+
-        (found.length>80?'<p class="help">Refine a pesquisa para ver outros resultados.</p>':'');
+        (found.length>80?'<p class="help">Mostrando até 80 pastas. Refine pelo nome ou pelo caminho.</p>':'');
     }
     filter.addEventListener('input',draw);
     filter.addEventListener('keydown',event=>{
@@ -160,7 +160,7 @@ async function calendar(day=BizDates.key(new Date())) {
   for(let i=1;i<=end;i++){
     const value=BizDates.key(new Date(year,month,i,12));
     cells.push('<button type="button" data-day="'+value+'" class="calendar-day'+(value===today?' today':'')+
-      (datesWithEvents.has(value)?' has-events':'')+'" aria-pressed="'+(value===calendarDay)+'" aria-label="'+value+
+      (datesWithEvents.has(value)?' has-events':'')+'" aria-pressed="'+(value===calendarDay)+'" aria-label="'+esc(new Date(year,month,i,12).toLocaleDateString('pt-BR',{dateStyle:'full'}))+(value===today?', hoje':'')+
       (datesWithEvents.has(value)?', com eventos':'')+'">'+i+'</button>');
   }
   const daily=events.filter(event=>event.day===calendarDay);

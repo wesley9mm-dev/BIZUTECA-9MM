@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-function importTextFiles(lib, files) {
+function importTextFiles(lib, files, folderId = null) {
   return lib._tx(() => {
     for (const file of files) {
       const ext = path.extname(file).toLowerCase();
@@ -27,7 +27,7 @@ function importTextFiles(lib, files) {
         const entities = {'&':'&amp;', '<':'&lt;', '>':'&gt;'};
         html = '<p>' + html.replace(/[&<>]/g, char => entities[char]).replace(/\r\n?|\n/g, '<br>') + '</p>';
       }
-      lib.createNote({title:path.parse(file).name, contentHtml:html});
+      lib.createNote({title:path.parse(file).name, contentHtml:html, folderId});
     }
     return files.length;
   });

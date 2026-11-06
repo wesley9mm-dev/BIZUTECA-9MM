@@ -4,7 +4,7 @@
 
 ## Começar
 
-Baixe o executável Windows de 64 bits na página de versões do repositório e abra **BIZUTECA-9MM-Portatil.exe**. A abertura fecha sozinha quando o caderno está pronto.
+Baixe o executável Windows de 64 bits na página de versões do repositório e abra **BIZUTECA 9MM.exe** (no GitHub, o download aparece como **BIZUTECA.9MM.exe**). A abertura fecha sozinha quando o caderno está pronto.
 
 Uma biblioteca nova já inclui a coleção BizuLanguage. Clique em **Pasta**, escreva um nome e selecione um destino. **Nível principal** cria uma matéria. Pesquise pelo nome ou pelo caminho para criar uma subpasta. Em **Dados e configurações**, use **Acrescentar modelo TEC** se quiser a estrutura pronta.
 

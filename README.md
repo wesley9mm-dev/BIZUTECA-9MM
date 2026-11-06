@@ -4,11 +4,13 @@ Anote. Organize. Revise. Domine.
 
 Caderno de estudos portátil para Windows 64 bits. Organize anotações por matéria, monte resumos e consulte seu material offline.
 
-[Baixar o Bizuteca 9MM para Windows](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases)
+[Baixar o Bizuteca 9MM para Windows](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.7-rc.42302210209.1/BIZUTECA.9MM.exe)
 
 ## Como usar
 
-Baixe **BIZUTECA 9MM.exe** e abra o programa. Para atualizar, feche o Bizuteca e troque o executável na mesma pasta. Guarde a pasta `BIZUTECA-Suporte` e a pasta da biblioteca. [Manual](docs/MANUAL.md)
+Baixe o executável e abra o programa. O GitHub usa pontos no nome do arquivo baixado. Você pode renomeá-lo para **BIZUTECA 9MM.exe**. Para atualizar, feche o Bizuteca e troque o executável na mesma pasta. Guarde a pasta `BIZUTECA-Suporte` e a pasta da biblioteca. [Manual](docs/MANUAL.md)
+
+[Versões anteriores](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases)
 
 ## Atualizações
 

@@ -6,9 +6,15 @@
 
 Baixe o executável Windows de 64 bits na página de versões do repositório e abra **BIZUTECA-9MM-Portatil.exe**. A abertura fecha sozinha quando o caderno está pronto.
 
-Uma biblioteca nova começa vazia. Clique em **Pasta**, escreva um nome e selecione um destino. **Nível principal** cria uma matéria. Pesquise pelo nome ou pelo caminho para criar uma subpasta. Em **Dados e configurações**, use **Acrescentar modelo TEC** se quiser a estrutura pronta.
+Uma biblioteca nova já inclui a coleção BizuLanguage. Clique em **Pasta**, escreva um nome e selecione um destino. **Nível principal** cria uma matéria. Pesquise pelo nome ou pelo caminho para criar uma subpasta. Em **Dados e configurações**, use **Acrescentar modelo TEC** se quiser a estrutura pronta.
 
 Arraste a borda da biblioteca para ajustar a largura. Clique duas vezes na borda para retornar ao padrão. Os trechos do caminho acima da nota abrem as respectivas pastas. Use **Voltar** e **Avançar**, ou **Alt + ←** e **Alt + →**.
+
+## Estudar idiomas com o BizuLanguage
+
+Na biblioteca, abra **Inglês**, **Espanhol**, **Francês** ou **Italiano**. Em cada idioma, as pastas **Iniciante**, **Intermediário**, **Avançado** e **Aumentar vocabulário** agrupam as aulas por assunto. Comece pelo roteiro na pasta Iniciante.
+
+As 113 anotações podem ser lidas offline. Elas incluem explicações em português, exemplos, atividades e gabaritos. Os roteiros indicam fontes externas para aprofundar o estudo. Na biblioteca que você já usa, entre em **Dados e configurações → Acrescentar BizuLanguage**. O programa cria um backup e acrescenta as aulas à biblioteca atual.
 
 ## Escrever e localizar material
 

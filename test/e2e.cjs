@@ -6,6 +6,8 @@ const path = require('node:path');
 const {_electron:electron} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
 const dates = require('../src/core/dates');
 const {decodePackage,assertDirectory} = require('../src/core/storage');
+const {lessonCount} = require('../src/core/bizulanguage');
+const {Library} = require('../src/core/library');
 const runtime = require('../src/core/runtime');
 
 const root = path.resolve(__dirname,'..');
@@ -51,8 +53,20 @@ async function step(name,run) {
 (async()=>{
   try {
     await launch();
-    await step('Abertura e biblioteca vazia',async()=>{
-      assert.equal((await call('listFolders')).length,0);
+    await step('Abertura com a coleção BizuLanguage',async()=>{
+      const folders=await call('listFolders');
+      assert.deepEqual(folders.filter(folder=>folder.parentId===null).map(folder=>folder.name).sort(),
+        ['Espanhol','Francês','Inglês','Italiano']);
+      const notes=await call('listNotes');
+      assert.equal(notes.length,lessonCount);
+      const english=folders.find(folder=>folder.name==='Inglês');
+      const beginner=folders.find(folder=>folder.parentId===english.id&&folder.name==='Iniciante');
+      await page.locator('[data-folder-id="'+english.id+'"]').click();
+      await page.locator('[data-folder-id="'+beginner.id+'"]').click();
+      const first=notes.find(note=>note.folderId===beginner.id&&note.title.startsWith('00.'));
+      await page.locator('[data-note-id="'+first.id+'"]').click();
+      await page.locator('#editor').getByText('BizuLanguage',{exact:true}).waitFor();
+      await page.locator('#home').click();
       assert.equal((await call('init')).version,require('../package.json').version);
       await page.locator('#next-event').getByText('Nenhum compromisso futuro.').waitFor();
       await page.screenshot({path:path.join(output,'home.png')});
@@ -73,7 +87,7 @@ async function step(name,run) {
       await page.locator('#folder-note').click();
       await page.locator('#note-title').fill('Revisão de emendas');
       await page.locator('#editor').fill('Estudo sobre revisão constitucional.');
-      noteId=(await call('listNotes'))[0].id;
+      noteId=(await call('listNotes')).find(note=>note.folderId===folderId).id;
       await page.locator('[data-crumb="'+parent+'"]').click();
       await page.getByRole('heading',{name:'Direito Constitucional'}).waitFor();
       await button('Voltar').click();
@@ -159,7 +173,7 @@ async function step(name,run) {
         dialog.showOpenDialog=async()=>({canceled:false,filePaths:[name]});
       },oldExtension);
       const merge=await call('importLibrary','merge');
-      assert.equal(merge.duplicates,1);assert.equal(merge.eventsDuplicates,1);
+      assert.equal(merge.duplicates,lessonCount+1);assert.equal(merge.eventsDuplicates,1);
       const savedDirectory=(await call('init')).directory;
       await call('createNote',{title:'Somente na biblioteca anterior'});
       await application.evaluate(({dialog})=>{dialog.showMessageBox=async()=>({response:1});});
@@ -168,7 +182,7 @@ async function step(name,run) {
       assert.notEqual(restored.directory,savedDirectory);
       assert.ok(fs.existsSync(path.join(savedDirectory,'biblioteca.db')));
       assert.equal((await call('listEvents'))[0].title,'Prova revisada');
-      assert.equal((await call('listNotes')).length,1);
+      assert.equal((await call('listNotes')).length,lessonCount+1);
       assert.equal((await call('getNote',noteId)).folderId,folderId);
     });
     await step('Janela compacta e busca offline',async()=>{
@@ -189,7 +203,7 @@ async function step(name,run) {
     await page.locator('#home').click();
     await page.locator('#next-event').getByText('Prova revisada',{exact:true}).waitFor();
     assert.equal((await call('listEvents')).length,1);
-    assert.equal((await call('listNotes')).length,1);
+    assert.equal((await call('listNotes')).length,lessonCount+1);
     console.log('PASS Evento e nota persistem após fechar e reabrir');
     const existing=(await call('init')).directory;
     await application.close();
@@ -201,9 +215,26 @@ async function step(name,run) {
     fs.writeFileSync(pointer,JSON.stringify({absolute:existing}));
     await launch(blocked);
     assert.equal((await call('init')).directory,existing);
-    assert.equal((await call('listNotes')).length,1);
+    assert.equal((await call('listNotes')).length,lessonCount+1);
     assert.equal((await call('listEvents')).length,1);
     console.log('PASS Pasta escolhida reaproveitada sem pedir localização ao abrir');
+    await application.close();
+    application=null;
+    page=null;
+    const previous=fs.mkdtempSync(path.join(os.tmpdir(),'bizuteca-e2e-antigo-'));
+    const previousLibrary=new Library(path.join(previous,'biblioteca.db'));
+    const personal=previousLibrary.createNote({title:'Anotação antiga',contentHtml:'<p>Meu texto</p>'});
+    previousLibrary.close();
+    await launch(previous);
+    assert.equal((await call('listNotes')).length,1);
+    await page.locator('[data-view=settings]').click();
+    await page.locator('#apply-bizulanguage').click();
+    await button('Confirmar').click();
+    await page.getByText(lessonCount+' aulas BizuLanguage adicionadas.',{exact:true}).waitFor();
+    assert.equal((await call('listNotes')).length,lessonCount+1);
+    assert.equal((await call('getNote',personal)).contentText,'Meu texto');
+    assert.equal(await call('applyBizuLanguage'),0);
+    console.log('PASS Coleção opcional acrescentada uma vez à biblioteca existente');
   } catch(error) {
     console.error(error);
     if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'falha.png')}).catch(()=>{});

@@ -51,7 +51,8 @@ jobs:
           if (!(Test-Path -LiteralPath $marker)) { throw 'O executável portátil não confirmou a abertura.' }
           $result = Get-Content -LiteralPath $marker -Raw | ConvertFrom-Json
           $package = Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json
-          if ($result.version -ne $package.version -or $result.notes -ne 0) { throw 'Abertura do portátil inconsistente.' }
+          $lessons = node -p "require('./src/core/bizulanguage').lessonCount"
+          if ($LASTEXITCODE -ne 0 -or $result.version -ne $package.version -or $result.notes -ne [int]$lessons) { throw 'Abertura do portátil inconsistente.' }
           Wait-Process -Id $process.Id -Timeout 10 -ErrorAction SilentlyContinue
           $hash = (Get-FileHash -LiteralPath 'dist/BIZUTECA-9MM-Portatil.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  BIZUTECA-9MM-Portatil.exe" | Set-Content -LiteralPath 'dist/SHA256.txt' -Encoding ascii
@@ -77,5 +78,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Versão portátil com abertura oficial, calendário, editor aprimorado e pacotes .b9mm. A compilação passou pelos testes de núcleo, interface Windows e abertura do executável final. Consulte o manual para atualizar mantendo a pasta de dados."
+          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Versão portátil com BizuLanguage, coleção offline de inglês, espanhol, francês e italiano. A compilação passou pelos testes de núcleo, interface Windows e abertura do executável final. Consulte o manual para atualizar mantendo a pasta de dados."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

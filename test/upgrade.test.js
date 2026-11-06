@@ -119,3 +119,56 @@ test('large notebook indexes thousands of folders and notes',t=>{
   assert.equal(db.noteCount(),2400);
   assert.equal(require('../src/core/search').search(db,'"Revisão 2399"').results[0].title,'Revisão 2399');
 });
+
+test('BizuLanguage installs once with four complete study paths and preserves existing notes', t => {
+  const course = require('../src/core/bizulanguage');
+  const {dir,db} = fixture(t);
+  const parent = db.createFolder({name:'INGLÊS'});
+  const personal = db.createNote({folderId:parent,title:'Anotação pessoal',contentHtml:'<p>Meu conteúdo</p>'});
+  assert.equal(course.install(db),113);
+  assert.equal(course.lessonCount,113);
+  assert.equal(course.install(db),0);
+  const folders = db.listFolders();
+  assert.deepEqual(folders.filter(f=>f.parentId===null).map(f=>f.name.toLowerCase()).sort(),
+    ['espanhol','francês','inglês','italiano']);
+  for (const root of folders.filter(f=>f.parentId===null)) {
+    const levels=folders.filter(f=>f.parentId===root.id);
+    assert.deepEqual(levels.map(f=>f.name),['Iniciante','Intermediário','Avançado','Aumentar vocabulário']);
+    assert.ok(levels.every(f=>db.listNotes({folderId:f.id}).length>=5));
+  }
+  const lessons = db.listNotes({tag:'BizuLanguage'});
+  assert.equal(lessons.length,113);
+  for (const {id} of lessons) {
+    const note = db.getNote(id);
+    assert.match(note.contentHtml, /Explicação.*Exemplos.*Pratique.*Gabarito.*<p><strong>BizuLanguage<\/strong><\/p>$/);
+    assert.equal(note.contentText.trim().endsWith('BizuLanguage'),true);
+  }
+  assert.equal(db.getNote(personal).contentText,'Meu conteúdo');
+  storage.extendSchema(db);
+  const pack=storage.decodePackage(storage.encodePackage(db,dir));
+  const file=path.join(dir,'copia.db');
+  fs.writeFileSync(file,pack.database);
+  storage.validateDatabase(file,pack.images);
+  const restored=new Library(file);
+  try {
+    assert.equal(course.installed(restored),true);
+    assert.equal(restored.listNotes({tag:'BizuLanguage'}).length,113);
+    assert.equal(restored.getNote(personal).contentText,'Meu conteúdo');
+  } finally {restored.close();}
+});
+
+test('BizuLanguage rolls back an interrupted installation and permits a retry', t => {
+  const course = require('../src/core/bizulanguage');
+  const {db} = fixture(t);
+  const original = db.createNote;
+  db.createNote = function(note) {
+    if (this.noteCount() === 3) throw Error('interrupção simulada');
+    return original.call(this,note);
+  };
+  assert.throws(()=>course.install(db), /interrupção simulada/);
+  assert.equal(course.installed(db),false);
+  assert.equal(db.noteCount(),0);
+  assert.equal(db.listFolders().length,0);
+  db.createNote=original;
+  assert.equal(course.install(db),course.lessonCount);
+});

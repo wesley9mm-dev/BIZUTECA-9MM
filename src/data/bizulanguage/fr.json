@@ -1,0 +1,293 @@
+{
+  "name": "Francês",
+  "lessons": {
+    "I": [
+      {
+        "title": "00. Comece aqui — roteiro de estudo",
+        "rule": "As aulas de francês partem de explicações em português e progridem para textos no idioma. Iniciante se orienta por A1–A2, Intermediário por B1–B2 e Avançado trabalha temas e competências selecionados de C1–C2. As faixas são referências para organizar o estudo. Use as atividades externas para ampliar a prática de escuta e fala.",
+        "examples": [
+          "Primeira sessão — leia a regra e explique-a em voz alta com suas próprias palavras.",
+          "Segunda sessão — cubra as traduções, tente reconstruir os exemplos e resolva o exercício antes de ver o gabarito.",
+          "Revisão — retome os erros em dois dias e depois em uma semana. Abra Aumentar vocabulário em paralelo e escreva frases com palavras que você usaria de verdade."
+        ],
+        "practice": "Faça uma aula e registre duas frases suas. Depois de uma semana, escreva as duas de memória e compare.",
+        "answer": "Use o gabarito da aula para revisar o ponto estudado. Confira também sentido, ordem das palavras e concordância nas suas frases.",
+        "links": [
+          [
+            "TV5MONDE — Gramática",
+            "https://apprendre.tv5monde.com/fr/aides/grammaire"
+          ],
+          [
+            "TV5MONDE — Exercícios A1 a B2",
+            "https://apprendre.tv5monde.com/fr/collection-all"
+          ],
+          [
+            "Conselho da Europa — descritores do QECR",
+            "https://www.coe.int/en/web/common-european-framework-reference-languages/cefr-descriptors"
+          ]
+        ]
+      },
+      {
+        "title": "01. Apresentação, tratamento e sons",
+        "examples": [
+          "Bonjour, je m’appelle Léa. — Olá, chamo-me Léa.",
+          "J’ai vingt-six ans et j’habite à Lyon. — Tenho 26 anos e moro em Lyon.",
+          "Comment allez-vous ? — Como vai?"
+        ],
+        "rule": "Use je m’appelle para dizer o nome, je suis para identidade e j’ai para idade. Tu é familiar; vous trata uma pessoa com cortesia ou várias pessoas. Muitas consoantes finais ficam mudas, mas há exceções e ligações entre palavras; use gravações de referência para treinar.",
+        "practice": "Apresente-se, informe a cidade e cumprimente alguém formalmente.",
+        "answer": "Exemplo: Bonjour, je m’appelle Nina et j’habite à Recife. Comment allez-vous ?"
+      },
+      {
+        "title": "02. Artigos, gênero e concordância",
+        "examples": [
+          "L’adresse est correcte. — O endereço está correto.",
+          "Une petite salle. — Uma sala pequena.",
+          "Des livres nouveaux. — Livros novos."
+        ],
+        "rule": "Le/la/les são definidos; un/une/des, indefinidos. Le e la viram l’ antes de vogal ou h mudo. Aprenda gênero com o artigo. Adjetivos variam conforme o nome: petit, petite, petits, petites. Alguns, como nouveau, têm formas irregulares.",
+        "practice": "Passe ao plural: une petite fenêtre. Use o artigo definido com école e téléphone.",
+        "answer": "de petites fenêtres (des geralmente vira de antes do adjetivo). l’école; le téléphone."
+      },
+      {
+        "title": "03. Presente com être, avoir, aller e verbos em -er",
+        "examples": [
+          "Nous sommes prêts. — Estamos prontos.",
+          "Vous avez une question ? — Você tem uma pergunta?",
+          "Ils parlent français au travail. — Eles falam francês no trabalho."
+        ],
+        "rule": "As formas je suis, j’ai e je vais são úteis para começar. Em parler: je parle, tu parles, il parle, nous parlons, vous parlez, ils parlent. Na escrita, mantenha as terminações mesmo quando várias soam iguais.",
+        "practice": "Complete: Je ___ (être) ici. Nous ___ (parler) souvent. Elle ___ (aller) à la gare.",
+        "answer": "suis; parlons; va."
+      },
+      {
+        "title": "04. Negação, perguntas e quantidade",
+        "examples": [
+          "Je n’ai pas de ticket. — Não tenho bilhete.",
+          "Est-ce que vous travaillez ici ? — Você trabalha aqui?",
+          "Où habitez-vous ? — Onde você mora?"
+        ],
+        "rule": "A negação padrão ne… pas envolve o verbo conjugado; ne vira n’ antes de vogal. Na fala informal, ne é frequentemente omitido. Perguntas podem usar entonação, est-ce que ou inversão. De maneira geral, artigos indefinidos e partitivos viram de/d’ depois de uma negação.",
+        "practice": "Negue J’ai une voiture. Pergunte com est-ce que se a pessoa estuda francês.",
+        "answer": "Je n’ai pas de voiture. Est-ce que vous étudiez le français ?"
+      },
+      {
+        "title": "05. Partitivos, refeições e preposições",
+        "examples": [
+          "Je bois du café le matin. — Bebo café de manhã.",
+          "Nous prenons une tasse de thé. — Tomamos uma xícara de chá.",
+          "Je vais au marché. — Vou ao mercado."
+        ],
+        "rule": "Use du, de la, de l’ para quantidade indefinida de um incontável. Depois de une tasse ou beaucoup, ligue com de. À + le = au e à + les = aux; de + le = du e de + les = des.",
+        "practice": "Complete: Je voudrais ___ eau. Un verre ___ lait. Nous allons ___ cinéma.",
+        "answer": "de l’; de; au."
+      },
+      {
+        "title": "06. Passé composé e futuro próximo",
+        "examples": [
+          "J’ai terminé le travail. — Terminei o trabalho.",
+          "Elles sont parties à midi. — Elas saíram ao meio-dia.",
+          "Nous allons préparer le dîner. — Vamos preparar o jantar."
+        ],
+        "rule": "O passé composé usa avoir ou être + particípio. Muitos verbos usam avoir; aller e vários outros usam être, assim como os pronominais. Com être, a concordância do particípio vale para aller e outros não pronominais. O futuro próximo é aller no presente + infinitivo.",
+        "practice": "Complete: Hier, elle ___ (arriver) tôt. Demain, je ___ (aller) lire.",
+        "answer": "est arrivée; vais."
+      },
+      {
+        "title": "07. Leitura guiada — biblioteca e cartão",
+        "examples": [
+          "La bibliothèque est ouverte du mardi au samedi, de dix heures à dix-huit heures. Pour obtenir une carte, il faut présenter une pièce d’identité. Le prêt est gratuit.",
+          "Pièce d’identité = documento de identidade; prêt = empréstimo; gratuit = gratuito."
+        ],
+        "rule": "Leia primeiro os horários. Depois encontre as condições com il faut, expressão impessoal que indica necessidade.",
+        "practice": "A biblioteca abre na segunda? O que precisa para obter o cartão? Quanto custa o empréstimo?",
+        "answer": "Não. Um documento de identidade. É gratuito."
+      }
+    ],
+    "M": [
+      {
+        "title": "01. Imparfait, passé composé e plus-que-parfait",
+        "examples": [
+          "Je lisais quand le téléphone a sonné. — Eu lia quando o telefone tocou.",
+          "Il faisait froid, mais nous sommes sortis. — Fazia frio, mas saímos.",
+          "Quand je suis arrivé, le train était déjà parti. — Quando cheguei, o trem já tinha partido."
+        ],
+        "rule": "Use imparfait para descrição e duração no passado. O passé composé marca acontecimentos delimitados e faz a narrativa avançar. O plus-que-parfait usa auxiliar no imperfeito + particípio para uma ação anterior a outro momento passado.",
+        "practice": "Complete: Il ___ (pleuvoir) quand le bus ___ (arriver). À midi, elle ___ déjà ___ (terminer).",
+        "answer": "pleuvait; est arrivé; avait déjà terminé."
+      },
+      {
+        "title": "02. Objetos e pronomes y e en",
+        "examples": [
+          "Je lis le message. Je le lis. — Leio a mensagem. Eu a leio.",
+          "Je vais au marché. J’y vais. — Vou ao mercado. Vou lá.",
+          "Tu veux du thé ? Oui, j’en veux. — Quer chá? Sim, quero."
+        ],
+        "rule": "Le/la/les substituem objetos diretos; lui/leur, certos indiretos de pessoa com à. Y retoma lugar ou certos complementos com à. En retoma complementos com de ou quantidade. Essas substituições dependem da regência do verbo.",
+        "practice": "Substitua les résultats em Je vérifie les résultats; à la gare em Nous allons à la gare; de café em Je prends deux tasses de café.",
+        "answer": "Je les vérifie. Nous y allons. J’en prends deux tasses."
+      },
+      {
+        "title": "03. Futur simple, conditionnel e condição",
+        "examples": [
+          "Si tu viens demain, nous préparerons le repas. — Se você vier amanhã, vamos preparar a refeição.",
+          "Si j’avais plus de temps, je lirais davantage. — Se eu tivesse mais tempo, leria mais.",
+          "Pourriez-vous confirmer l’heure ? — Poderia confirmar o horário?"
+        ],
+        "rule": "O futuro simples usa terminações -ai, -as, -a, -ons, -ez, -ont; être e avoir usam ser- e aur-. O condicional usa o radical do futuro e terminações do imparfait. Na condição plausível, use si + presente; na hipótese distante, si + imparfait.",
+        "practice": "Complete: Si nous avons le temps, nous ___ (venir). Si elle pouvait, elle ___ (aider).",
+        "answer": "viendrons; aiderait."
+      },
+      {
+        "title": "04. Relativos qui, que, où e dont",
+        "examples": [
+          "Le bus qui arrive est le nôtre. — O ônibus que chega é o nosso.",
+          "Le film que tu regardes est court. — O filme que você está vendo é curto.",
+          "Voici le projet dont je parle. — Aqui está o projeto de que falo."
+        ],
+        "rule": "Qui é sujeito; que é objeto direto; où pode introduzir lugar ou momento; dont retoma um complemento com de. Escolha a forma pela função dentro da oração relativa.",
+        "practice": "Complete: La ville ___ j’habite. Le livre ___ tu as acheté. Le sujet ___ nous discutons.",
+        "answer": "où; que; dont."
+      },
+      {
+        "title": "05. Subjonctif présent",
+        "examples": [
+          "Il faut que nous partions maintenant. — É preciso que saiamos agora.",
+          "Je veux que tu sois à l’heure. — Quero que você chegue no horário.",
+          "Bien qu’il soit tard, le café est ouvert. — Embora seja tarde, o café está aberto."
+        ],
+        "rule": "Depois de il faut que, vouloir que e bien que, use normalmente o subjuntivo. Quando a construção permite e o sujeito é o mesmo, o infinitivo é mais simples: je veux partir. Aprenda formas irregulares como soit, ait, fasse, puisse.",
+        "practice": "Complete: Il faut que vous ___ (faire) un choix. Je souhaite qu’elle ___ (pouvoir) venir.",
+        "answer": "fassiez; puisse."
+      },
+      {
+        "title": "06. Leitura e escrita — mudança de horário",
+        "examples": [
+          "En raison de travaux, la réunion de mardi aura lieu en ligne. Le lien sera envoyé lundi matin. Merci de prévenir le secrétariat si vous ne pouvez pas participer.",
+          "Travaux = obras; aura lieu = acontecerá; prévenir = avisar."
+        ],
+        "rule": "Identifique primeiro a razão e depois a ação solicitada. Em mensagens, merci de + infinitivo pode solicitar uma ação com concisão.",
+        "practice": "Por que a reunião mudou? Quando sai o link? O que fazer se você não puder participar?",
+        "answer": "Por causa de obras. Segunda de manhã. Avisar a secretaria."
+      }
+    ],
+    "A": [
+      {
+        "title": "01. Hipóteses passadas e futuro no passado",
+        "examples": [
+          "Si j’avais su, je serais venu plus tôt. — Se eu soubesse, teria vindo mais cedo.",
+          "Elle a dit qu’elle reviendrait le lendemain. — Ela disse que voltaria no dia seguinte.",
+          "Selon le témoin, le train aurait quitté la gare avant midi. — Segundo a testemunha, o trem teria saído antes do meio-dia."
+        ],
+        "rule": "Use si + plus-que-parfait, conditionnel passé para hipóteses passadas não realizadas. O conditionnel pode representar futuro visto do passado; em notícia, também pode marcar informação não confirmada.",
+        "practice": "Transforme em hipótese: Nous avons raté le train parce que nous sommes partis tard.",
+        "answer": "Si nous étions partis plus tôt, nous n’aurions pas raté le train."
+      },
+      {
+        "title": "02. Gérondif e particípio presente",
+        "examples": [
+          "Elle écoute le podcast en marchant. — Ela ouve o podcast enquanto caminha.",
+          "En vérifiant les chiffres, vous éviterez cette erreur. — Ao conferir os números, você evitará esse erro.",
+          "Les voyageurs ayant réservé recevront un message. — Os passageiros que reservaram receberão uma mensagem."
+        ],
+        "rule": "O gérondif (en + particípio presente) indica modo, simultaneidade ou condição e costuma ter o mesmo sujeito da oração principal. O particípio presente também pode caracterizar um nome em registro escrito. Distinga o particípio invariável do adjetivo verbal que concorda.",
+        "practice": "Reescreva com en: Il a appris de nouveaux mots pendant qu’il lisait.",
+        "answer": "Il a appris de nouveaux mots en lisant."
+      },
+      {
+        "title": "03. Concordância do particípio passado",
+        "examples": [
+          "Les lettres que j’ai écrites sont ici. — As cartas que escrevi estão aqui.",
+          "Elles sont arrivées tôt. — Elas chegaram cedo.",
+          "Elles se sont parlé. — Elas conversaram entre si. Parler à quelqu’un: se é indireto."
+        ],
+        "rule": "Com avoir, o particípio concorda em geral com o objeto direto quando este vem antes; sem objeto direto anterior, fica invariável. Com être nos não pronominais, concorda com o sujeito. Nos pronominais, examine a função de se e a posição do objeto direto.",
+        "practice": "Escolha: La robe qu’elle a (acheté/achetée). Elles se sont (téléphoné/téléphonées).",
+        "answer": "achetée; téléphoné."
+      },
+      {
+        "title": "04. Concessão, foco e registro argumentativo",
+        "examples": [
+          "Bien que le coût soit élevé, le projet reste réalisable. — Embora o custo seja alto, o projeto continua viável.",
+          "Même si le coût est élevé, nous poursuivrons l’étude. — Mesmo que o custo seja alto, continuaremos o estudo.",
+          "Ce qui compte, c’est la qualité des données. — O que importa é a qualidade dos dados."
+        ],
+        "rule": "Bien que pede subjuntivo. Même si aceita indicativo na construção usual. Certes… toutefois permite reconhecer um ponto e limitar sua consequência. Ce qui… c’est destaca a informação principal.",
+        "practice": "Reescreva Malgré le retard, le projet avance usando bien que.",
+        "answer": "Bien que le projet ait pris du retard, il avance."
+      },
+      {
+        "title": "05. Síntese — evidência, ressalva e paráfrase",
+        "examples": [
+          "Source fictive A : Les consultations du site ont augmenté après sa refonte. Source fictive B : Une campagne a commencé à la même date.",
+          "Synthèse : Les visites ont progressé, mais la concomitance de la refonte et de la campagne empêche d’isoler l’effet de chacune."
+        ],
+        "rule": "Numa synthèse, agrupe as ideias de textos diferentes por tema. Reformule com neutralidade e preserve a distinção entre resultado e interpretação. Toutefois e en revanche introduzem ressalvas ou contrapontos.",
+        "practice": "Em português, explique o que se pode concluir e o que permanece incerto.",
+        "answer": "O número de consultas aumentou. Não se consegue atribuir o aumento exclusivamente à reformulação ou à campanha."
+      }
+    ],
+    "V": [
+      {
+        "title": "01. Rotina, casa e refeições",
+        "examples": [
+          "se réveiller = acordar · se lever = levantar-se · se coucher = deitar-se · faire le ménage = fazer a limpeza",
+          "une prise = uma tomada · un placard = um armário · une étagère = uma prateleira · un frigo = uma geladeira",
+          "un repas = uma refeição · le petit déjeuner = o café da manhã · une entrée = uma entrada · l’addition = a conta",
+          "L’addition, s’il vous plaît. — A conta, por favor."
+        ],
+        "rule": "Aprenda as expressões em blocos. Em grande parte da França, déjeuner é almoço; petit déjeuner é café da manhã. Os nomes das refeições variam no espaço francófono.",
+        "practice": "Traduza “levanto cedo” e “tomada”.",
+        "answer": "Je me lève tôt. Une prise."
+      },
+      {
+        "title": "02. Viagem, cidade e transporte",
+        "examples": [
+          "la gare = estação ferroviária · un quai = plataforma · un aller simple = só ida · un aller-retour = ida e volta",
+          "un arrêt = parada · un carrefour = cruzamento · un trottoir = calçada · un rond-point = rotatória",
+          "un billet = bilhete · une correspondance = conexão · un retard = atraso · un bagage = bagagem ou volume",
+          "Sur quel quai part le train ? — De qual plataforma sai o trem?"
+        ],
+        "rule": "Estude gêneros com os nomes. Quai pode indicar plataforma, cais ou margem urbanizada, conforme a situação.",
+        "practice": "Peça uma passagem de ida e volta. Pergunte onde é a estação.",
+        "answer": "Un aller-retour, s’il vous plaît. Où est la gare ?"
+      },
+      {
+        "title": "03. Estudos, trabalho e tecnologia",
+        "examples": [
+          "un cours = aula/curso · un devoir = tarefa escolar · une bourse = bolsa · une note = nota",
+          "un entretien = entrevista · un délai = prazo · une réunion = reunião · un compte rendu = ata ou relatório",
+          "un fichier = arquivo · un lien = link · un mot de passe = senha · une pièce jointe = anexo",
+          "Vous trouverez le fichier en pièce jointe. — Você encontrará o arquivo em anexo."
+        ],
+        "rule": "Une formation pode indicar capacitação. Un stage é estágio em contextos de trabalho ou um curso prático concentrado, conforme o caso.",
+        "practice": "Traduza “uma entrevista de emprego” e “senha”.",
+        "answer": "un entretien d’embauche; un mot de passe."
+      },
+      {
+        "title": "04. Falsos amigos para brasileiros",
+        "examples": [
+          "actuellement = atualmente · éventuellement = possivelmente · finalement = por fim · pourtant = contudo",
+          "une librairie = livraria · une bibliothèque = biblioteca · un rendez-vous = encontro/compromisso · un bureau = escritório ou mesa",
+          "une location = aluguel · louer = alugar ou elogiar conforme o sentido · attendre = esperar · atteindre = atingir",
+          "J’attends le bus devant la librairie. — Espero o ônibus em frente à livraria."
+        ],
+        "rule": "Assister à é comparecer ou assistir a; regarder indica olhar ou assistir a um vídeo. Rester significa ficar ou permanecer; se reposer é descansar.",
+        "practice": "Traduza “Estou aguardando uma resposta” e “uma biblioteca”.",
+        "answer": "J’attends une réponse. Une bibliothèque."
+      },
+      {
+        "title": "05. Colocações e vocabulário de argumento",
+        "examples": [
+          "prendre une décision = tomar uma decisão · poser une question = fazer uma pergunta · tirer une conclusion = tirar uma conclusão · mener une enquête = conduzir uma investigação",
+          "mettre en œuvre = implementar · soulever un problème = levantar um problema · tenir compte de = levar em conta · parvenir à un accord = chegar a um acordo",
+          "une donnée = dado · un indice = indício · une preuve = prova · une réserve = ressalva",
+          "Les données laissent penser que la demande augmente. — Os dados sugerem que a demanda aumenta."
+        ],
+        "rule": "Aprenda o verbo típico de cada expressão. Remettre en question é questionar algo aceito; prendre en compte é considerar um fator.",
+        "practice": "Traduza “fazer uma pergunta” e “levar em conta os dados”.",
+        "answer": "poser une question; tenir compte des données."
+      }
+    ]
+  }
+}

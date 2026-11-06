@@ -1,0 +1,305 @@
+{
+  "name": "Espanhol",
+  "lessons": {
+    "I": [
+      {
+        "title": "00. Comece aqui — roteiro de estudo",
+        "rule": "As aulas de espanhol partem de explicações em português e progridem para textos no idioma. Iniciante se orienta por A1–A2, Intermediário por B1–B2 e Avançado trabalha temas e competências selecionados de C1–C2. As faixas são referências para organizar o estudo. Use as atividades externas para ampliar a prática de escuta e fala.",
+        "examples": [
+          "Primeira sessão — leia a regra e explique-a em voz alta com suas próprias palavras.",
+          "Segunda sessão — cubra as traduções, tente reconstruir os exemplos e resolva o exercício antes de ver o gabarito.",
+          "Revisão — retome os erros em dois dias e depois em uma semana. Abra Aumentar vocabulário em paralelo e escreva frases com palavras que você usaria de verdade."
+        ],
+        "practice": "Faça uma aula e registre duas frases suas. Depois de uma semana, escreva as duas de memória e compare.",
+        "answer": "Use o gabarito da aula para revisar o ponto estudado. Confira também sentido, ordem das palavras e concordância nas suas frases.",
+        "links": [
+          [
+            "Instituto Cervantes — Índice do plano curricular",
+            "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/indice.htm"
+          ],
+          [
+            "Instituto Cervantes — Níveis de referência",
+            "https://cervantes.org/es/sobre-nosotros/publicaciones/plan-curricular-instituto-cervantes-niveles-referencia-espanol"
+          ],
+          [
+            "Conselho da Europa — descritores do QECR",
+            "https://www.coe.int/en/web/common-european-framework-reference-languages/cefr-descriptors"
+          ]
+        ]
+      },
+      {
+        "title": "01. Apresentações, tratamento e pronúncia",
+        "examples": [
+          "Hola, me llamo Lara y soy de Brasil. — Olá, chamo-me Lara e sou do Brasil.",
+          "¿Cómo se llama usted? — Como o senhor ou a senhora se chama?",
+          "Tengo veinticinco años. — Tenho 25 anos."
+        ],
+        "rule": "Use me llamo para dizer o nome, soy para origem e tengo para idade. Tú é informal em muitas regiões; usted usa a terceira pessoa e expressa distância ou cortesia. Em várias regiões usa-se vos. Ustedes é o plural habitual na América; vosotros é informal em grande parte da Espanha.",
+        "practice": "Apresente-se, informe a idade e pergunte o nome de alguém usando usted. Observe o ¿ no início da pergunta.",
+        "answer": "Exemplo: Me llamo Leo, tengo treinta años. ¿Cómo se llama usted?"
+      },
+      {
+        "title": "02. Artigos, gênero e concordância",
+        "examples": [
+          "Una mesa redonda. — Uma mesa redonda.",
+          "Dos estudiantes inteligentes. — Dois estudantes inteligentes.",
+          "El problema principal. — O problema principal."
+        ],
+        "rule": "El/la e los/las são definidos; un/una e unos/unas são indefinidos. Adjetivos em -o frequentemente variam em -a. Muitos adjetivos em -e mantêm o gênero, mas variam no plural. Aprenda substantivos com o artigo: la mano, el problema.",
+        "practice": "Passe ao plural: la casa blanca; el libro interesante.",
+        "answer": "las casas blancas; los libros interesantes."
+      },
+      {
+        "title": "03. Ser, estar, hay e tener",
+        "examples": [
+          "La reunión es en la sala dos. — A reunião é na sala dois.",
+          "Las llaves están en la mesa. — As chaves estão na mesa.",
+          "Hay dos parques cerca. — Há dois parques perto.",
+          "Tengo hambre. — Estou com fome."
+        ],
+        "rule": "Use ser para identidade, origem, classificação e localização de eventos. Use estar para localizar pessoas ou objetos e apresentar estados. Hay introduz existência e não varia em número no presente. Tener aparece com idade e em expressões como tener hambre.",
+        "practice": "Complete: ___ un banco cerca; Mis amigos ___ en el café; La fiesta ___ en casa de Juan.",
+        "answer": "Hay; están; es."
+      },
+      {
+        "title": "04. Presente regular, irregulares e reflexivos",
+        "examples": [
+          "Trabajo de lunes a viernes. — Trabalho de segunda a sexta.",
+          "¿A qué hora duermes normalmente? — A que horas você normalmente dorme?",
+          "Nos levantamos temprano. — Levantamo-nos cedo."
+        ],
+        "rule": "No presente de hablar, as formas são hablo, hablas, habla, hablamos, habláis, hablan. Comer e vivir têm terminações próprias. Alguns verbos mudam a raiz em formas tônicas, como quiero ou duermo. Com reflexivos, use me, te, se, nos, os, se.",
+        "practice": "Complete com a forma adequada: Ella ___ (querer) estudiar. Nosotros ___ (vivir) aquí. Yo ___ (levantarse) a las siete.",
+        "answer": "quiere; vivimos; me levanto."
+      },
+      {
+        "title": "05. Gustar, interesses e preferências",
+        "examples": [
+          "Me gusta cocinar. — Gosto de cozinhar.",
+          "A Elena le gustan los libros de historia. — Elena gosta dos livros de história.",
+          "No nos interesa esa película. — Esse filme não nos interessa."
+        ],
+        "rule": "Em gustar, o verbo concorda com aquilo de que se gosta. Gusta com nome singular ou infinitivo; gustan com nome plural. Me, te, le, nos, os e les marcam quem sente. A mí ou a ella pode enfatizar ou esclarecer.",
+        "practice": "Traduza “Gosto de livros” e “Gostamos de caminhar”.",
+        "answer": "Me gustan los libros. Nos gusta caminar."
+      },
+      {
+        "title": "06. Futuro próximo, obrigação e pedidos",
+        "examples": [
+          "Voy a visitar a mi hermano. — Vou visitar meu irmão.",
+          "Tenemos que salir a las seis. — Temos de sair às seis.",
+          "¿Podría repetirlo, por favor? — Poderia repetir, por favor?"
+        ],
+        "rule": "Ir a + infinitivo expressa planos. Tener que + infinitivo indica obrigação pessoal; hay que é impessoal. Para um pedido cordial, use ¿Podría…? ou ¿Me puede…?, conforme o tratamento.",
+        "practice": "Diga que vai estudar amanhã e que é preciso levar água.",
+        "answer": "Voy a estudiar mañana. Hay que llevar agua."
+      },
+      {
+        "title": "07. Passado concluído e introdução ao imperfeito",
+        "examples": [
+          "Ayer compré el billete. — Ontem comprei a passagem.",
+          "Antes vivíamos cerca del mercado. — Antes morávamos perto do mercado.",
+          "Hacía frío cuando salimos. — Fazia frio quando saímos."
+        ],
+        "rule": "O pretérito indefinido narra eventos concluídos: hablé, comí, viví. O imperfeito descreve pano de fundo ou hábito: hablaba, comía, vivía. Muitos verbos são irregulares no indefinido: fui, hice, tuve.",
+        "practice": "Complete: Antes yo ___ (vivir) aquí. El sábado ___ (ir, yo) al mercado.",
+        "answer": "vivía; fui."
+      },
+      {
+        "title": "08. Leitura guiada — bilhete de horário",
+        "examples": [
+          "La oficina abre de ocho a dos, de lunes a viernes. Este jueves abrirá a las diez. Se puede enviar el formulario por correo electrónico hasta el viernes.",
+          "Oficina = escritório; abrirá = abrirá; formulario = formulário; hasta = até."
+        ],
+        "rule": "Procure as palavras de tempo e as ações permitidas. Uma instrução em impessoal com se pode corresponder a “é possível” ou a uma regra do local.",
+        "practice": "Qual a exceção desta semana? Até quando pode ser enviado o formulário? Por qual meio?",
+        "answer": "Na quinta abre às dez. Até sexta. Por e-mail."
+      }
+    ],
+    "M": [
+      {
+        "title": "01. Indefinido, imperfeito e perfeito composto",
+        "examples": [
+          "Mientras esperaba, sonó mi teléfono. — Enquanto eu esperava, meu telefone tocou.",
+          "Ayer envié el documento. — Ontem enviei o documento.",
+          "Esta semana he leído dos artículos. — Nesta semana li dois artigos."
+        ],
+        "rule": "Escolha o imperfeito para descrição, hábito ou ação em andamento; o indefinido faz a narrativa avançar. O perfeito composto (he + particípio) pode ligar o passado ao presente. O contraste entre composto e simples varia por região; aprenda a reconhecer ambos.",
+        "practice": "Complete: Cuando ___ (ser, yo) niño, ___ (ir) a esa plaza todos los días. Ayer ___ (ver, yo) a Julia.",
+        "answer": "era; iba; vi."
+      },
+      {
+        "title": "02. Objetos diretos, indiretos e se lo",
+        "examples": [
+          "Vi a Clara. La vi. — Vi Clara. Eu a vi.",
+          "Le mandé el informe a Sara. Se lo mandé. — Mandei o relatório para Sara. Mandei-o a ela.",
+          "Dímelo mañana. — Diga-me isso amanhã."
+        ],
+        "rule": "Lo/la/los/las substituem objetos diretos; le/les geralmente indicam indiretos. Quando le/les aparece antes de lo/la/los/las, vira se. Com verbo conjugado, os clíticos normalmente vêm antes; no imperativo afirmativo, juntam-se ao verbo.",
+        "practice": "Substitua os dois complementos: Le entregué las llaves a Ana. Faça o imperativo afirmativo informal de “dê-me o livro”, com pronomes.",
+        "answer": "Se las entregué. Dámelo."
+      },
+      {
+        "title": "03. Por e para",
+        "examples": [
+          "Estudio para mejorar mi escritura. — Estudo para melhorar minha escrita.",
+          "Caminamos por el centro. — Caminhamos pelo centro.",
+          "La tarea es para el viernes. — A tarefa é para sexta."
+        ],
+        "rule": "Para indica finalidade, destinatário, destino ou prazo. Por pode indicar causa, trajeto, troca, meio ou agente da passiva. Algumas construções são fixas, como por la mañana e para siempre.",
+        "practice": "Complete: Gracias ___ venir. Este mensaje es ___ ti. Pasamos ___ el parque.",
+        "answer": "por; para; por."
+      },
+      {
+        "title": "04. Subjuntivo presente e mudança de sujeito",
+        "examples": [
+          "Quiero aprender más. — Quero aprender mais.",
+          "Quiero que aprendas más. — Quero que você aprenda mais.",
+          "Es importante que lleguemos a tiempo. — É importante que cheguemos no horário."
+        ],
+        "rule": "Use subjuntivo em várias subordinadas de desejo, avaliação, dúvida e finalidade. Com o mesmo sujeito, o infinitivo frequentemente basta. Com sujeito diferente, é comum querer que + subjuntivo e para que + subjuntivo.",
+        "practice": "Complete: Espero que ella ___ (venir). Te escribo para que ___ (saber, tú) la fecha.",
+        "answer": "venga; sepas."
+      },
+      {
+        "title": "05. Futuro, condição e cortesia",
+        "examples": [
+          "Si tienes tiempo, te llamaré esta tarde. — Se tiver tempo, ligarei esta tarde.",
+          "¿Podrías enviarme el archivo? — Você poderia me enviar o arquivo?",
+          "Haré lo posible. — Farei o possível."
+        ],
+        "rule": "O futuro sintético usa o infinitivo mais terminações como -é, -ás e -á. Alguns radicais são irregulares: tendr-, podr-, har-. Na condição plausível, use si + presente, seguido de futuro ou imperativo. O condicional é útil para pedidos e hipóteses.",
+        "practice": "Complete: Si ___ (llover), nos quedaremos en casa. Faça um pedido cordial para abrir a janela.",
+        "answer": "llueve. ¿Podría abrir la ventana, por favor?"
+      },
+      {
+        "title": "06. Leitura guiada — serviços no bairro",
+        "examples": [
+          "El centro cultural amplió el horario de los talleres para facilitar la asistencia. Sin embargo, algunos vecinos siguen sin poder llegar a tiempo porque el último autobús pasa temprano. Mientras tanto, el centro ofrecerá una sesión en línea cada mes.",
+          "Talleres = oficinas; asistencia = comparecimento; siguen sin poder = continuam sem conseguir."
+        ],
+        "rule": "Identifique causa, mudança e ressalva. Sin embargo marca contraste; mientras tanto liga fatos que ocorrem em paralelo.",
+        "practice": "Qual mudança foi feita? Qual obstáculo persiste? Qual alternativa foi anunciada?",
+        "answer": "Horário das oficinas ampliado; último ônibus passa cedo; sessão online mensal."
+      }
+    ],
+    "A": [
+      {
+        "title": "01. Imperfeito do subjuntivo e condicionais",
+        "examples": [
+          "Si tuviera más tiempo, escribiría cada día. — Se tivesse mais tempo, escreveria todos os dias.",
+          "Si hubiéramos salido antes, habríamos llegado a tiempo. — Se tivéssemos saído antes, teríamos chegado no horário.",
+          "Me pidió que revisara el texto. — Pediu-me que revisasse o texto."
+        ],
+        "rule": "Depois de si numa hipótese distante, use imperfeito do subjuntivo e, na consequência, condicional. Para um passado contrário aos fatos, é comum si + pluscuamperfecto de subjuntivo e condicional composto na consequência. As formas em -ra e -se são possíveis no imperfeito.",
+        "practice": "Complete: Si ___ (saber, yo) la respuesta, te la diría. Si me hubieras avisado, yo ___ (venir).",
+        "answer": "supiera ou supiese; habría venido."
+      },
+      {
+        "title": "02. Concessão e escolha entre modos",
+        "examples": [
+          "Aunque llueve, salimos ahora. — Embora esteja chovendo, saímos agora.",
+          "Aunque llueva mañana, iremos. — Ainda que chova amanhã, iremos.",
+          "Por mucho que insistan, mantendremos el plazo. — Por mais que insistam, manteremos o prazo."
+        ],
+        "rule": "Com aunque, o indicativo pode apresentar fato assumido como relevante. O subjuntivo pode apresentar possibilidade, informação em segundo plano ou uma objeção que não altera a conclusão. O efeito depende do contexto.",
+        "practice": "Complete supondo que a chuva de amanhã é incerta: Aunque ___, saldremos. Dê uma objeção real com aunque + indicativo.",
+        "answer": "llueva. Exemplo: Aunque el local es pequeño, tiene buena ventilación."
+      },
+      {
+        "title": "03. Impessoal com se e passiva reflexa",
+        "examples": [
+          "Se venden dos bicicletas. — Vendem-se duas bicicletas.",
+          "Se entrevistó a tres candidatos. — Entrevistaram três candidatos.",
+          "Aquí se vive bien. — Vive-se bem aqui."
+        ],
+        "rule": "Na passiva reflexa, o verbo concorda com o sujeito paciente: se vende una casa / se venden dos casas. Na impessoal com se, não há sujeito e o verbo fica no singular. Um objeto humano com a favorece a leitura impessoal.",
+        "practice": "Complete: Se ___ (alquilar) dos oficinas. Se ___ (buscar) a las personas que asistieron.",
+        "answer": "alquilan; busca."
+      },
+      {
+        "title": "04. Relativas e preposições em registro formal",
+        "examples": [
+          "El asunto del que hablamos sigue pendiente. — O assunto de que falamos continua pendente.",
+          "El proyecto en el cual participó recibió apoyo. — O projeto em que participou recebeu apoio.",
+          "Una autora cuyas novelas admiro. — Uma autora cujos romances admiro."
+        ],
+        "rule": "Quando o verbo ou nome exige preposição, ela acompanha o relativo. El cual e suas variantes são úteis em contextos formais ou para resolver ambiguidade. Cuyo concorda com o nome possuído, não com o possuidor.",
+        "practice": "Una usando cuyo: Conocí a una autora. Sus artículos explican el tema. Complete: La persona ___ la que hablé.",
+        "answer": "Conocí a una autora cuyos artículos explican el tema. con."
+      },
+      {
+        "title": "05. Leitura crítica e síntese",
+        "examples": [
+          "Desde que se modificó el horario, aumentaron las visitas de tarde. Al mismo tiempo, abrió una estación de metro cerca del edificio. Los registros indican un cambio en el número de visitas, pero no permiten atribuirlo a una sola medida.",
+          "Atribuir a = atribuir a; al mismo tiempo = ao mesmo tempo; registros = registros."
+        ],
+        "rule": "Distinga coincidência de causa e observe a força de verbos como demostrar, sugerir e apuntar. Em uma síntese, apresente o resultado e a ressalva sem transformar hipótese em certeza.",
+        "practice": "O que os dados mostram? O que não mostram? Resuma em uma frase em espanhol.",
+        "answer": "Aumento das visitas à tarde; não isolam a causa. Las visitas de tarde aumentaron, aunque los datos no permiten distinguir el efecto de cada cambio."
+      }
+    ],
+    "V": [
+      {
+        "title": "01. Casa, rotina e refeições",
+        "examples": [
+          "despertarse = acordar · acostarse = deitar-se · hacer la cama = arrumar a cama · poner la mesa = pôr a mesa",
+          "nevera/refrigerador = geladeira · lavadora = máquina de lavar · enchufe = tomada · estante = prateleira",
+          "desayuno = café da manhã · merienda = lanche · cena = jantar · propina = gorjeta",
+          "¿Pongo la mesa ahora? — Ponho a mesa agora?"
+        ],
+        "rule": "Pratique expressões completas. Almorzar e comer podem nomear a refeição do meio do dia conforme a região. Desayunar e cenar indicam tomar café da manhã e jantar.",
+        "practice": "Traduza “arrumar a cama” e “deito cedo”.",
+        "answer": "hacer la cama; Me acuesto temprano."
+      },
+      {
+        "title": "02. Cidade, transporte e viagem",
+        "examples": [
+          "andén = plataforma · parada = ponto/parada · billete de ida = passagem de ida · equipaje = bagagem",
+          "acera/vereda = calçada · cruce = cruzamento · semáforo = semáforo · manzana/cuadra = quarteirão",
+          "alojamiento = hospedagem · retraso = atraso · cambiar de tren = trocar de trem · reservar = reservar",
+          "¿En qué andén sale el tren? — De qual plataforma sai o trem?"
+        ],
+        "rule": "Aprenda variantes regionais junto ao contexto. Billete, boleto e pasaje podem nomear passagens; a escolha varia entre regiões.",
+        "practice": "Peça uma passagem de ida e pergunte onde fica o ponto.",
+        "answer": "Un billete de ida, por favor. ¿Dónde está la parada?"
+      },
+      {
+        "title": "03. Estudos, trabalho e vida digital",
+        "examples": [
+          "apuntes = anotações · asignatura = disciplina · beca = bolsa · matrícula = matrícula",
+          "turno = turno · nómina = folha de pagamento ou contracheque, conforme o contexto · reunión = reunião · solicitar = solicitar",
+          "archivo adjunto = arquivo anexo · contraseña = senha · enlace = link · copia de seguridad = backup",
+          "Adjunto el archivo solicitado. — Anexo o arquivo solicitado."
+        ],
+        "rule": "Em muitos países, ordenador, computadora e computador nomeiam o computador. A expressão adjuntar un archivo é útil em e-mails. Plazo e fecha límite indicam prazo ou data-limite.",
+        "practice": "Traduza “fazer um backup” e “enviar o link”.",
+        "answer": "hacer una copia de seguridad; enviar el enlace."
+      },
+      {
+        "title": "04. Falsos amigos para brasileiros",
+        "examples": [
+          "embarazada = grávida · avergonzada = envergonhada · apellido = sobrenome · apodo = apelido",
+          "éxito = sucesso · suceso = acontecimento · exquisito = delicioso/refinado · raro = estranho/raro",
+          "oficina = escritório · taller = oficina de trabalho ou atividade prática · rato = um tempo · ratón = rato/camundongo ou mouse",
+          "La presentación fue un éxito. — A apresentação foi um sucesso."
+        ],
+        "rule": "Fique atento ao contexto. Embarazada significa grávida; avergonzada é envergonhada. Apellido significa sobrenome; apodo é apelido.",
+        "practice": "Preencha “meu sobrenome é Reis” e “espere um pouco”.",
+        "answer": "Mi apellido es Reis. Espera un rato."
+      },
+      {
+        "title": "05. Colocações, argumentos e conectores",
+        "examples": [
+          "tomar una decisión = tomar uma decisão · cumplir un plazo = cumprir um prazo · plantear una duda = levantar uma dúvida · sacar una conclusión = tirar uma conclusão",
+          "tener en cuenta = levar em conta · poner en duda = questionar · aportar pruebas = apresentar provas · llegar a un acuerdo = chegar a um acordo",
+          "aun así = ainda assim · en cambio = por outro lado · de hecho = de fato · por lo tanto = portanto",
+          "Hay indicios; aun así, hacen falta más datos. — Há indícios. Ainda assim, são necessários mais dados."
+        ],
+        "rule": "Aprenda combinações naturais. A pesar de pede nome ou infinitivo, ou de que seguido de oração. Por lo tanto indica consequência. Sin embargo introduz contraste.",
+        "practice": "Traduza “levar em conta o prazo” e “chegar a um acordo”.",
+        "answer": "tener en cuenta el plazo; llegar a un acuerdo."
+      }
+    ]
+  }
+}

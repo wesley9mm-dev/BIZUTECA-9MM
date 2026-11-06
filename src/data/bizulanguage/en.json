@@ -1,0 +1,473 @@
+{
+  "name": "Inglês",
+  "lessons": {
+    "I": [
+      {
+        "title": "00. Comece aqui — roteiro de estudo",
+        "rule": "As aulas de inglês partem de explicações em português e progridem para textos no idioma. Iniciante se orienta por A1–A2, Intermediário por B1–B2 e Avançado trabalha temas e competências selecionados de C1–C2. As faixas são referências para organizar o estudo. Use as atividades externas para ampliar a prática de escuta e fala.",
+        "examples": [
+          "Primeira sessão — leia a regra e explique-a em voz alta com suas próprias palavras.",
+          "Segunda sessão — cubra as traduções, tente reconstruir os exemplos e resolva o exercício antes de ver o gabarito.",
+          "Revisão — retome os erros em dois dias e depois em uma semana. Abra Aumentar vocabulário em paralelo e escreva frases com palavras que você usaria de verdade."
+        ],
+        "practice": "Faça uma aula e registre duas frases suas. Depois de uma semana, escreva as duas de memória e compare.",
+        "answer": "Use o gabarito da aula para revisar o ponto estudado. Confira também sentido, ordem das palavras e concordância nas suas frases.",
+        "links": [
+          [
+            "British Council — Gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "British Council — Vocabulário",
+            "https://learnenglish.britishcouncil.org/free-resources/vocabulary"
+          ],
+          [
+            "British Council — Níveis de inglês",
+            "https://learnenglish.britishcouncil.org/level/understand-your-english-level"
+          ],
+          [
+            "Conselho da Europa — descritores do QECR",
+            "https://www.coe.int/en/web/common-european-framework-reference-languages/cefr-descriptors"
+          ]
+        ]
+      },
+      {
+        "title": "01. Apresentações, pronomes e verbo be",
+        "examples": [
+          "I’m Lucas, and I’m from Fortaleza. — Sou Lucas e sou de Fortaleza.",
+          "She isn’t at home. — Ela não está em casa.",
+          "Are they your classmates? Yes, they are. — Eles são seus colegas? Sim."
+        ],
+        "rule": "Use I am, you/we/they are e he/she/it is. Para negar, ponha not depois do verbo. Em perguntas, coloque am/is/are antes do sujeito. Nas respostas curtas afirmativas, mantenha a forma completa: Yes, I am.",
+        "practice": "Complete: I ___ ready; ___ Mia at work?; We ___ not late.",
+        "answer": "am; Is; are."
+      },
+      {
+        "title": "02. Artigos, plurais e demonstrativos",
+        "examples": [
+          "I saw a dog. The dog had a blue collar. — Vi um cachorro. O cachorro tinha uma coleira azul.",
+          "This child has two teeth. — Esta criança tem dois dentes.",
+          "Those boxes are empty. — Aquelas caixas estão vazias."
+        ],
+        "rule": "Use a/an para um exemplar indefinido de um substantivo contável no singular. A escolha segue o som: a university, an hour. The remete a algo identificável. No plural, this vira these e that vira those. Alguns plurais são irregulares.",
+        "practice": "Escolha a/an em ___ honest person e ___ uniform. Passe this woman ao plural.",
+        "answer": "an honest person; a uniform; these women."
+      },
+      {
+        "title": "03. Possessivos e relações",
+        "examples": [
+          "This is my seat. The other one is yours. — Este é meu lugar. O outro é seu.",
+          "Nina’s brother works here. — O irmão de Nina trabalha aqui.",
+          "The teachers’ room is upstairs. — A sala dos professores fica no andar de cima."
+        ],
+        "rule": "My, your, his, her, its, our e their vêm antes de um nome. Mine, yours, his, hers, ours e theirs substituem o grupo nominal. Para um possuidor singular, use ’s; no plural regular terminado em s, acrescente apenas o apóstrofo. Its indica posse e it’s significa it is ou it has.",
+        "practice": "Reescreva: This is her jacket → This jacket is ___. Depois escreva “a mochila de Dan”.",
+        "answer": "hers; Dan’s backpack."
+      },
+      {
+        "title": "04. Presente simples e rotina",
+        "examples": [
+          "He usually studies after dinner. — Ele costuma estudar depois do jantar.",
+          "Does Ana take the bus? — Ana pega ônibus?",
+          "They don’t work on Sundays. — Eles não trabalham aos domingos."
+        ],
+        "rule": "Use o presente simples para hábitos e fatos. Com he, she ou it, normalmente acrescente -s ou -es. Use do/does nas perguntas e don’t/doesn’t nas negativas. Depois de does, o verbo principal volta à forma básica. Advérbios como usually tendem a vir antes do verbo principal e depois de be.",
+        "practice": "Corrija: She don’t walks to school. Transforme Leo reads at night em pergunta.",
+        "answer": "She doesn’t walk to school. Does Leo read at night?"
+      },
+      {
+        "title": "05. Presente contínuo e ações agora",
+        "examples": [
+          "I work from home on Fridays. — Trabalho de casa às sextas.",
+          "I’m working at the library today. — Hoje estou trabalhando na biblioteca.",
+          "I know the address. — Eu sei o endereço."
+        ],
+        "rule": "Use am/is/are + verbo em -ing para ações em curso ou situações temporárias. O presente simples indica o hábito. Verbos de estado como know, own e need costumam usar a forma simples no seu sentido habitual.",
+        "practice": "Escolha: Look! It (rains/is raining). I usually (walk/am walking) to work.",
+        "answer": "is raining; walk."
+      },
+      {
+        "title": "06. There is/are e localização",
+        "examples": [
+          "There’s a pharmacy next to the bank. — Há uma farmácia ao lado do banco.",
+          "Are there any chairs in the room? — Há cadeiras na sala?",
+          "The course starts at nine on Monday. — O curso começa às nove na segunda-feira."
+        ],
+        "rule": "Use there is com singular ou incontável e there are com plural. Para perguntar, inverta: Is there…? Are there…? Use in para interior, on para superfície, under para abaixo e next to para ao lado. Em horários, use at; com dias, on; com meses e anos, in.",
+        "practice": "Complete: There ___ two cafés here. The keys are ___ the table (em cima). The exam is ___ May.",
+        "answer": "are; on; in."
+      },
+      {
+        "title": "07. Contáveis e quantidades",
+        "examples": [
+          "We need some advice. — Precisamos de alguns conselhos.",
+          "How many tickets do you need? — De quantos ingressos você precisa?",
+          "Would you like some water? — Você gostaria de água?"
+        ],
+        "rule": "Use many e a few com contáveis no plural. Use much e a little com incontáveis. A lot of serve para ambos. Some aparece com frequência em afirmativas e ofertas; any é frequente em perguntas neutras e negativas. Information e advice são incontáveis no inglês padrão.",
+        "practice": "Corrija: I need two advices. Complete: How ___ time do we have?",
+        "answer": "I need two pieces of advice. much."
+      },
+      {
+        "title": "08. Can, imperativos e pedidos",
+        "examples": [
+          "Can you drive? — Você sabe dirigir?",
+          "Could you speak a little more slowly, please? — Poderia falar um pouco mais devagar?",
+          "Don’t cross here. — Não atravesse aqui."
+        ],
+        "rule": "Can vem seguido do verbo básico e indica capacidade ou permissão. Could you…? faz um pedido mais cortês. No imperativo, use a forma básica e don’t na negativa. Acrescente please conforme o tom.",
+        "practice": "Faça um pedido educado para repetir a pergunta. Dê uma instrução negativa para não tocar na tela.",
+        "answer": "Could you repeat the question, please? Don’t touch the screen."
+      },
+      {
+        "title": "09. Passado simples",
+        "examples": [
+          "We saw a film yesterday. — Vimos um filme ontem.",
+          "Did you take the train? — Você pegou o trem?",
+          "I didn’t call because I was busy. — Não liguei porque estava ocupado."
+        ],
+        "rule": "Use o passado simples para eventos concluídos em um tempo encerrado. Verbos regulares geralmente terminam em -ed; come → came, take → took e see → saw são irregulares. Após did ou didn’t, use a forma básica. Be usa was/were, com inversão para perguntas.",
+        "practice": "Complete: She ___ (come) early. Did they ___ (see) the message? We ___ (be) tired.",
+        "answer": "came; see; were."
+      },
+      {
+        "title": "10. Planos com going to e decisões com will",
+        "examples": [
+          "I’m going to review the unit tonight. — Vou revisar a unidade esta noite.",
+          "The phone is ringing. I’ll answer it. — O telefone está tocando. Eu atendo.",
+          "I’m meeting Sara at six. — Vou me encontrar com Sara às seis."
+        ],
+        "rule": "Use be going to para uma intenção já formada ou uma previsão baseada em sinais. Will é comum em decisões feitas no momento, ofertas e previsões. Para um compromisso combinado, o presente contínuo também é possível.",
+        "practice": "Faça uma oferta espontânea de ajuda. Diga que planejou visitar sua avó.",
+        "answer": "I’ll help you. I’m going to visit my grandmother."
+      },
+      {
+        "title": "11. Comparativos, superlativos e perguntas",
+        "examples": [
+          "This route is shorter than the other one. — Este caminho é mais curto que o outro.",
+          "That was the most useful lesson. — Aquela foi a aula mais útil.",
+          "Which jacket do you prefer, the green one or the blue one? — Qual jaqueta você prefere, a verde ou a azul?"
+        ],
+        "rule": "Adjetivos curtos normalmente usam -er/-est; os mais longos usam more/most. Good → better → best, bad → worse → worst. Use than na comparação e geralmente the no superlativo. What pergunta conteúdo; which costuma pressupor um conjunto de opções.",
+        "practice": "Complete: This screen is ___ (good) than mine. Use um superlativo com easy.",
+        "answer": "better; the easiest."
+      },
+      {
+        "title": "12. Leitura guiada — um aviso na biblioteca",
+        "examples": [
+          "The library opens at nine from Monday to Saturday. On Wednesday, it closes at four because the staff have a meeting. You can return books in the box by the front door, even when the library is closed.",
+          "Vocabulário: staff = equipe; return = devolver; front door = porta da frente; even when = mesmo quando."
+        ],
+        "rule": "Leia procurando primeiro o lugar, depois o horário e finalmente a exceção. Não traduza palavra por palavra antes de localizar esses dados.",
+        "practice": "Quando a biblioteca fecha na quarta? Por que fecha nesse horário? Como devolver um livro com o local fechado?",
+        "answer": "Às quatro; porque a equipe tem uma reunião; usando a caixa junto à entrada."
+      }
+    ],
+    "M": [
+      {
+        "title": "01. Present perfect e passado simples",
+        "examples": [
+          "I’ve lost my key, so I can’t get in. — Perdi a chave, por isso não consigo entrar.",
+          "I lost a key last week. — Perdi uma chave na semana passada.",
+          "She has worked here since March. — Ela trabalha aqui desde março."
+        ],
+        "rule": "Use have/has + particípio para experiências sem tempo passado fechado, resultados atuais e situações que chegam ao presente. Com yesterday ou in 2022, use normalmente o passado simples. Since indica o ponto inicial e for a duração. A preferência de uso com just/already pode variar entre o inglês britânico e o americano.",
+        "practice": "Complete: We ___ (meet) in 2022. He ___ (live) here for ten years and still lives here.",
+        "answer": "met; has lived."
+      },
+      {
+        "title": "02. Narrativa: past continuous e past perfect",
+        "examples": [
+          "I was reading when the lights went out. — Eu estava lendo quando as luzes apagaram.",
+          "By the time we arrived, the bus had left. — Quando chegamos, o ônibus já tinha saído.",
+          "While I was cooking, Leo was setting the table. — Enquanto eu cozinhava, Leo punha a mesa."
+        ],
+        "rule": "Use was/were + -ing para uma ação em andamento no passado e past simple para um acontecimento pontual. Had + particípio situa uma ação antes de outro ponto passado. Use past perfect quando a anterioridade precisa ficar clara.",
+        "practice": "Complete: When I called, she ___ (already/leave). I ___ (cycle) when it started to rain.",
+        "answer": "had already left; was cycling."
+      },
+      {
+        "title": "03. Modais: obrigação, conselho e dedução",
+        "examples": [
+          "You mustn’t park here. — Você não pode estacionar aqui.",
+          "You don’t have to bring a laptop. — Você não precisa trazer notebook.",
+          "Her office light is on. She might still be there. — A luz está acesa. Talvez ela ainda esteja lá."
+        ],
+        "rule": "Must e have to exprimem obrigação. Mustn’t proíbe; don’t have to significa que algo é dispensável. Should oferece conselho. Must, might e can’t também podem indicar graus de certeza com base em evidência.",
+        "practice": "Use uma forma para “é proibido fotografar” e outra para “não é necessário pagar”.",
+        "answer": "You mustn’t take photos. You don’t have to pay."
+      },
+      {
+        "title": "04. Condicionais zero, primeira e segunda",
+        "examples": [
+          "If you heat ice, it melts. — Se você aquece gelo, ele derrete.",
+          "If the room is free, we’ll meet there. — Se a sala estiver livre, vamos nos reunir lá.",
+          "If I had more time, I’d take another course. — Se eu tivesse mais tempo, faria outro curso."
+        ],
+        "rule": "Para fatos recorrentes, use if + presente, presente. Para um futuro plausível, use if + presente, will + verbo. Para uma hipótese distante no presente ou futuro, use if + passado, would + verbo. If I were é uma forma comum na hipótese.",
+        "practice": "Complete: If it rains tomorrow, we ___ (stay) home. If I were you, I ___ (ask) first.",
+        "answer": "will stay; would ask."
+      },
+      {
+        "title": "05. Voz passiva",
+        "examples": [
+          "The room is cleaned every morning. — A sala é limpa toda manhã.",
+          "The forms were sent yesterday. — Os formulários foram enviados ontem.",
+          "The road will be repaired in June. — A estrada será reparada em junho."
+        ],
+        "rule": "A passiva usa be no tempo adequado e o particípio. Use-a para destacar o que recebe a ação ou quando o agente é desconhecido, óbvio ou pouco relevante. By introduz o agente quando necessário.",
+        "practice": "Passe à passiva: They built the bridge in 1980. Someone has opened the window.",
+        "answer": "The bridge was built in 1980. The window has been opened."
+      },
+      {
+        "title": "06. Orações relativas e pontuação",
+        "examples": [
+          "The note you sent was helpful. — A anotação que você enviou foi útil.",
+          "My bike, which I bought last year, needs a new tyre. — Minha bicicleta, que comprei ano passado, precisa de um pneu novo.",
+          "That’s the writer whose book I borrowed. — É o escritor cujo livro peguei emprestado."
+        ],
+        "rule": "Em relativas restritivas, who, which ou that identificam o referente. O pronome objeto pode ser omitido. Relativas explicativas ficam entre vírgulas, acrescentam informação e não usam that. Whose expressa posse.",
+        "practice": "Una: I met a teacher. The teacher speaks three languages. Depois escreva uma relativa explicativa com my sister.",
+        "answer": "I met a teacher who speaks three languages. Exemplo: My sister, who lives in Recife, is a teacher."
+      },
+      {
+        "title": "07. Discurso indireto e perguntas indiretas",
+        "examples": [
+          "“I’m tired.” → He said he was tired. — Ele disse que estava cansado.",
+          "She asked whether I had a ticket. — Ela perguntou se eu tinha ingresso.",
+          "Could you tell me where the station is? — Poderia me dizer onde fica a estação?"
+        ],
+        "rule": "Ao relatar fala no passado, o tempo pode recuar se o ponto de vista mudou; ajuste pronomes e referências de tempo conforme o contexto. Em perguntas indiretas, use ordem de afirmação. Para pergunta sim/não, use if ou whether.",
+        "practice": "Corrija: Do you know where is the office? Relate “I can help” depois de He said.",
+        "answer": "Do you know where the office is? He said he could help."
+      },
+      {
+        "title": "08. Gerúndio, infinitivo e mudança de sentido",
+        "examples": [
+          "She avoids driving at night. — Ela evita dirigir à noite.",
+          "We decided to leave early. — Decidimos sair cedo.",
+          "He stopped to drink water. — Ele parou para beber água."
+        ],
+        "rule": "Enjoy, avoid e finish são seguidos normalmente de -ing; decide, hope e want, de to + verbo. Depois de uma preposição, use -ing. Stop doing significa parar a atividade; stop to do significa interromper outra atividade para fazer algo.",
+        "practice": "Complete: I enjoy ___ (read). We’re interested in ___ (learn). Diga que você deixou de comprar café fora.",
+        "answer": "reading; learning; I stopped buying coffee at cafés."
+      },
+      {
+        "title": "09. Present perfect continuous e resultados",
+        "examples": [
+          "I’ve been writing since noon. — Estou escrevendo desde o meio-dia.",
+          "I’ve written three pages. — Escrevi três páginas.",
+          "We’ve known each other for years. — Nós nos conhecemos há anos."
+        ],
+        "rule": "Use have/has been + -ing para destacar atividade ou duração recente. Use o present perfect simples quando o resultado concluído ou a quantidade importa. Verbos de estado normalmente favorecem a forma simples.",
+        "practice": "Complete: She ___ (wait) for an hour and is still there. He ___ (finish) two reports today.",
+        "answer": "has been waiting; has finished."
+      },
+      {
+        "title": "10. Texto claro — e-mail, contraste e sequência",
+        "examples": [
+          "I’m writing to confirm our meeting on Friday. — Escrevo para confirmar nossa reunião de sexta.",
+          "Although the room is small, it has enough seats. — Embora a sala seja pequena, tem lugares suficientes.",
+          "The room is small. However, it has enough seats. — A sala é pequena. No entanto, tem lugares suficientes."
+        ],
+        "rule": "Organize o e-mail em saudação, objetivo, detalhes e ação esperada. Although introduz oração; despite pede nome, -ing ou the fact that. However liga ideias com contraste; portanto, a pontuação deve separar adequadamente as orações.",
+        "practice": "Reescreva com despite: Although it was raining, we walked. Escreva um pedido de confirmação cortês.",
+        "answer": "Despite the rain, we walked. Could you please confirm by Thursday?"
+      },
+      {
+        "title": "11. Leitura guiada — reunião híbrida",
+        "examples": [
+          "The team moved its weekly meeting online to save travel time. Attendance improved, yet several new staff members said they found it harder to ask questions. Next month, the team will test a shorter online meeting followed by optional small-group calls.",
+          "Vocabulário: attendance = presença; staff members = integrantes da equipe; followed by = seguido de."
+        ],
+        "rule": "Separe o objetivo anunciado da evidência que limita a conclusão. Preste atenção à função de yet e ao que o texto não confirma.",
+        "practice": "Qual era o objetivo? Qual problema surgiu? A medida nova já funcionou?",
+        "answer": "Economizar tempo de deslocamento; novos integrantes acharam mais difícil fazer perguntas; o teste está previsto para o mês seguinte."
+      }
+    ],
+    "A": [
+      {
+        "title": "01. Condicionais irreais e arrependimento",
+        "examples": [
+          "If you had called, I would have waited. — Se você tivesse ligado, eu teria esperado.",
+          "If I had taken that job, I would live abroad now. — Se eu tivesse aceitado o trabalho, moraria no exterior agora.",
+          "I wish I had checked the figures. — Queria ter conferido os números."
+        ],
+        "rule": "Para uma hipótese irreal no passado, use if + had + particípio, would have + particípio. Uma condicional mista pode combinar causa passada e efeito atual. Wish + passado expressa desejo sobre o presente; wish + past perfect expressa arrependimento sobre o passado.",
+        "practice": "Transforme em hipótese: We missed the train because we left late. Expresse arrependimento por não ter perguntado.",
+        "answer": "If we hadn’t left late, we wouldn’t have missed the train. I wish I had asked."
+      },
+      {
+        "title": "02. Inversão enfática e registro",
+        "examples": [
+          "Rarely do we see such clear results. — Raramente vemos resultados tão claros.",
+          "Only after the audit did they revise the policy. — Só depois da auditoria eles revisaram a política.",
+          "Not until Friday will the results be available. — Os resultados só estarão disponíveis na sexta."
+        ],
+        "rule": "Em registro formal, expressões negativas ou restritivas deslocadas para o início podem exigir auxiliar antes do sujeito. Com not until ou only after, a inversão fica na oração principal. Se o verbo não tem auxiliar, use do/does/did.",
+        "practice": "Reescreva com Never: I had never seen a delay like that. Comece Only then: She understood the problem only then.",
+        "answer": "Never had I seen a delay like that. Only then did she understand the problem."
+      },
+      {
+        "title": "03. Modais perfeitos e avaliação de evidência",
+        "examples": [
+          "The floor is wet. It must have rained overnight. — O chão está molhado. Deve ter chovido de madrugada.",
+          "She might have missed the message. — Talvez ela não tenha visto a mensagem.",
+          "We should have asked for a receipt. — Deveríamos ter pedido recibo."
+        ],
+        "rule": "Modal + have + particípio permite avaliar o passado. Must have aponta inferência forte; might have indica possibilidade; can’t have indica incompatibilidade com a evidência. Should have pode expressar crítica ou expectativa, conforme o contexto.",
+        "practice": "Expresse possibilidade de erro na medição. Expresse que os números não podem ter sido conferidos.",
+        "answer": "There might have been an error in the measurement. The figures can’t have been checked."
+      },
+      {
+        "title": "04. Foco, clivadas e paralelismo",
+        "examples": [
+          "It was the timing that caused the problem. — Foi o momento escolhido que causou o problema.",
+          "What we need is a clearer deadline. — O que precisamos é de um prazo mais claro.",
+          "The plan aims to reduce costs, improve access and simplify reporting. — O plano busca reduzir custos, ampliar o acesso e simplificar relatórios."
+        ],
+        "rule": "It was X that… destaca um elemento. What X did was… destaca uma ação ou informação. Em enumerações, mantenha estruturas paralelas para melhorar o fluxo. Use construções de foco quando houver contraste real ou necessidade de corrigir uma interpretação.",
+        "practice": "Enfatize the second draft em We approved the second draft. Corrija: We value clarity, accuracy and being brief.",
+        "answer": "It was the second draft that we approved. We value clarity, accuracy and brevity."
+      },
+      {
+        "title": "05. Orações participiais e concordância de sujeito",
+        "examples": [
+          "Having checked the totals, Maya signed the report. — Depois de conferir os totais, Maya assinou.",
+          "Written in plain English, the guide is easy to follow. — Escrito em inglês claro, o guia é fácil de seguir.",
+          "Evite: Walking to work, the rain started. Quem andava era uma pessoa, não a chuva."
+        ],
+        "rule": "Uma oração reduzida em -ing costuma compartilhar o sujeito com a principal. Having + particípio destaca anterioridade; um particípio passado pode indicar sentido passivo. Se o sujeito implícito não coincide, reescreva a oração.",
+        "practice": "Reduza: After I read the report, I contacted the author. Corrija a frase sobre a chuva.",
+        "answer": "Having read the report, I contacted the author. As I was walking to work, it started to rain."
+      },
+      {
+        "title": "06. Cautela, concessão e argumentação",
+        "examples": [
+          "The results suggest that shorter meetings may improve participation. — Os resultados sugerem que reuniões mais curtas talvez melhorem a participação.",
+          "Admittedly, the sample was small. Even so, the pattern merits further study. — É verdade que a amostra era pequena. Ainda assim, o padrão merece estudo."
+        ],
+        "rule": "Ajuste a certeza à qualidade da evidência. Suggest e appear to sinalizam uma interpretação; may indica possibilidade; is associated with indica relação sem garantir causa. Reconheça uma objeção com admittedly, although ou even if e indique o que ainda sustenta a tese.",
+        "practice": "Atenue: The policy caused the improvement. Escreva uma concessão sobre o custo de uma proposta.",
+        "answer": "The improvement may be associated with the policy. Exemplo: Although the proposal is costly, it could reduce delays."
+      },
+      {
+        "title": "07. Registro, nominalização e concisão",
+        "examples": [
+          "The committee evaluated the proposal. — O comitê avaliou a proposta.",
+          "The committee’s evaluation took two weeks. — A avaliação do comitê durou duas semanas.",
+          "Please submit the form by Friday. — Envie o formulário até sexta, por favor."
+        ],
+        "rule": "A nominalização pode tornar um processo tema de uma frase, mas o excesso dificulta a leitura e pode esconder quem age. Em instruções, prefira verbos claros e um agente explícito quando ele importa. Em relatório, escolha o grau de formalidade conforme a audiência.",
+        "practice": "Simplifique: An assessment of the risks was carried out by the team.",
+        "answer": "The team assessed the risks."
+      },
+      {
+        "title": "08. Leitura crítica — evidência e inferência",
+        "examples": [
+          "After the town extended library hours, evening visits rose. The change coincided with the opening of a nearby bus stop, however, and the library did not survey visitors about their reasons for coming. The figures justify keeping both changes under review; they do not isolate the effect of either one.",
+          "Coincided with = coincidiu com; under review = em avaliação; isolate the effect = isolar o efeito."
+        ],
+        "rule": "Marque afirmações verificáveis, interpretações e limitações. Uma comparação sem controle de variáveis sustenta uma associação, mas pode admitir explicações concorrentes.",
+        "practice": "Qual dado foi medido? Quais duas explicações são possíveis? Reescreva a conclusão em uma frase com may.",
+        "answer": "As visitas noturnas aumentaram. O horário ampliado e o novo ponto de ônibus podem ter influenciado. The rise may reflect either change or a combination of both."
+      },
+      {
+        "title": "09. Síntese e paráfrase",
+        "examples": [
+          "Fonte A fictícia: A trial cut waiting times in two clinics. Fonte B fictícia: A third clinic reported difficulties training staff.",
+          "Síntese: Initial results suggest shorter waits may be possible, but staff training could limit wider adoption. — Resultados iniciais sugerem que esperas menores são possíveis, mas o treinamento pode limitar a adoção."
+        ],
+        "rule": "Combine informações por tema e preserve condições, números e grau de certeza. Ao parafrasear, reestruture o período, mantenha o sentido e atribua a informação quando houver fonte. Termine com uma implicação apoiada pelas evidências, sem apenas alinhar duas frases.",
+        "practice": "Escreva uma síntese de uma frase que preserve que o resultado foi observado em duas clínicas.",
+        "answer": "In two clinics, the trial reduced waiting times, although difficulties elsewhere suggest that wider adoption may require additional training."
+      }
+    ],
+    "V": [
+      {
+        "title": "01. Pessoas, rotina e tarefas",
+        "examples": [
+          "wake up = acordar · get up = levantar · get dressed = vestir-se · make breakfast = preparar o café da manhã",
+          "leave home = sair de casa · get to work = chegar ao trabalho · take a break = fazer uma pausa · do the laundry = lavar a roupa",
+          "roommate = colega de moradia · neighbour/neighbor = vizinho · relative = parente · household = domicílio ou pessoas da casa",
+          "I do the laundry on Saturdays. — Lavo a roupa aos sábados."
+        ],
+        "rule": "Estude cada expressão como bloco. Cubra a tradução e crie uma frase verdadeira sobre sua semana.",
+        "practice": "Como dizer “fazer uma pausa” e “chegar ao trabalho”?",
+        "answer": "take a break; get to work."
+      },
+      {
+        "title": "02. Viagem, cidade e serviços",
+        "examples": [
+          "round trip = ida e volta · one-way ticket = passagem só de ida · platform = plataforma · timetable = quadro de horários",
+          "fare = tarifa · delay = atraso · luggage = bagagem · crosswalk = faixa de pedestres",
+          "turn left = vire à esquerda · go straight ahead = siga em frente · get off at the next stop = desça no próximo ponto · lost property office = achados e perdidos",
+          "How much is a one-way ticket? — Quanto custa a passagem só de ida?"
+        ],
+        "rule": "Aprenda direções e serviços com uma situação concreta. Note que take a bus, get on the bus e get off the bus descrevem etapas diferentes.",
+        "practice": "Traduza “O ônibus está atrasado” e peça o valor da tarifa.",
+        "answer": "The bus is delayed. How much is the fare?"
+      },
+      {
+        "title": "03. Comida, compras e atendimento",
+        "examples": [
+          "starter = entrada · main course = prato principal · side dish = acompanhamento · takeaway/takeout = comida para levar",
+          "receipt = comprovante · fitting room = provador · out of stock = sem estoque · exchange = troca",
+          "dairy = laticínios · nuts = nozes/oleaginosas, conforme o contexto · ingredients = ingredientes · serving = porção",
+          "Does this contain peanuts? I’m allergic. — Isso contém amendoim? Sou alérgico."
+        ],
+        "rule": "Em restaurante, bill é comum no Reino Unido e check nos EUA. Change pode ser troco; refund é reembolso. Para expressar restrições alimentares, declare a alergia diretamente.",
+        "practice": "Peça o comprovante. Pergunte se pode trocar a camiseta.",
+        "answer": "Could I have a receipt, please? Can I exchange this shirt?"
+      },
+      {
+        "title": "04. Estudos, emprego e tecnologia",
+        "examples": [
+          "deadline = prazo · assignment = tarefa · feedback = retorno/avaliação · draft = rascunho",
+          "job opening = vaga · shift = turno · apply for a job = candidatar-se a um emprego · take notes = fazer anotações",
+          "sign in = entrar na conta · upload a file = enviar um arquivo · attachment = anexo · back up data = fazer cópia de segurança",
+          "I attached the revised draft. — Anexei o rascunho revisado."
+        ],
+        "rule": "Distinga work, atividade ou local de trabalho, de job, emprego contável. Assignment é uma tarefa atribuída; attend class é comparecer à aula.",
+        "practice": "Traduza “Perdi o prazo” e “fazer anotações durante a aula”.",
+        "answer": "I missed the deadline. Take notes during class."
+      },
+      {
+        "title": "05. Phrasal verbs de uso frequente",
+        "examples": [
+          "look up = procurar informação · find out = descobrir · figure out = entender ou resolver · look after = cuidar de",
+          "put off = adiar · carry out = realizar · turn down = recusar ou baixar o volume · bring up = mencionar",
+          "set up = organizar ou configurar · run out of = ficar sem · pick up = buscar ou pegar · come across = encontrar por acaso",
+          "We ran out of paper, so I put off printing the report. — Ficamos sem papel, então adiei a impressão."
+        ],
+        "rule": "Alguns permitem separar o verbo da partícula; com pronome objeto, a separação pode ser obrigatória: turn it off. Outros mantêm o complemento depois do bloco: look after her.",
+        "practice": "Use um pronome com turn off: Turn off the light. Traduza “Cuide deles”.",
+        "answer": "Turn it off. Look after them."
+      },
+      {
+        "title": "06. Combinações naturais e falsos cognatos",
+        "examples": [
+          "make a decision = tomar uma decisão · do research = fazer pesquisa · take a chance = arriscar · pay attention = prestar atenção",
+          "raise a concern = levantar uma preocupação · meet a deadline = cumprir um prazo · draw a conclusion = tirar uma conclusão · reach an agreement = chegar a um acordo",
+          "sensible = sensato · sensitive = sensível · library = biblioteca · bookshop = livraria",
+          "We eventually reached an agreement. — Por fim, chegamos a um acordo."
+        ],
+        "rule": "Aprenda os pares como unidades. Actually significa “na verdade”; currently é “atualmente”. Pretend significa fingir; intend é pretender. Eventually indica “por fim”, após um processo ou demora.",
+        "practice": "Escolha make/do: ___ research; ___ a decision. Traduza “Atualmente estou trabalhando”.",
+        "answer": "do research; make a decision; I’m currently working."
+      },
+      {
+        "title": "07. Vocabulário de argumento e evidência",
+        "examples": [
+          "claim = alegação · evidence = evidência · finding = resultado/achado · sample = amostra",
+          "bias = viés · trade-off = compensação entre vantagens e perdas · caveat = ressalva · outcome = resultado final",
+          "plausible = plausível · tentative = provisório · misleading = enganoso · noteworthy = digno de nota",
+          "The findings are consistent with both explanations. — Os resultados são compatíveis com as duas explicações."
+        ],
+        "rule": "Em textos acadêmicos e jornalísticos, diferencie claim de evidence. Evidence é normalmente incontável. Consistent with indica compatibilidade, não confirmação exclusiva.",
+        "practice": "Como dizer “uma evidência” usando piece? Traduza “uma conclusão provisória”.",
+        "answer": "a piece of evidence; a tentative conclusion."
+      }
+    ]
+  }
+}

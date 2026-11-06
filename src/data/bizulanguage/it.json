@@ -1,0 +1,293 @@
+{
+  "name": "Italiano",
+  "lessons": {
+    "I": [
+      {
+        "title": "00. Comece aqui — roteiro de estudo",
+        "rule": "As aulas de italiano partem de explicações em português e progridem para textos no idioma. Iniciante se orienta por A1–A2, Intermediário por B1–B2 e Avançado trabalha temas e competências selecionados de C1–C2. As faixas são referências para organizar o estudo. Use as atividades externas para ampliar a prática de escuta e fala.",
+        "examples": [
+          "Primeira sessão — leia a regra e explique-a em voz alta com suas próprias palavras.",
+          "Segunda sessão — cubra as traduções, tente reconstruir os exemplos e resolva o exercício antes de ver o gabarito.",
+          "Revisão — retome os erros em dois dias e depois em uma semana. Abra Aumentar vocabulário em paralelo e escreva frases com palavras que você usaria de verdade."
+        ],
+        "practice": "Faça uma aula e registre duas frases suas. Depois de uma semana, escreva as duas de memória e compare.",
+        "answer": "Use o gabarito da aula para revisar o ponto estudado. Confira também sentido, ordem das palavras e concordância nas suas frases.",
+        "links": [
+          [
+            "Università per Stranieri di Siena — Guia CILS",
+            "https://cils.unistrasi.it/public/articoli/361/Linee_guida_cils_pdf.pdf"
+          ],
+          [
+            "Sapienza Università di Roma — Certificação CILS",
+            "https://cla.web.uniroma1.it/it/cils"
+          ],
+          [
+            "Conselho da Europa — descritores do QECR",
+            "https://www.coe.int/en/web/common-european-framework-reference-languages/cefr-descriptors"
+          ]
+        ]
+      },
+      {
+        "title": "01. Apresentação, tratamento e sons",
+        "examples": [
+          "Buongiorno, mi chiamo Nina. — Bom dia, chamo-me Nina.",
+          "Sono brasiliano e ho venticinque anni. — Sou brasileiro e tenho 25 anos.",
+          "Come si chiama, signora? — Como a senhora se chama?"
+        ],
+        "rule": "Use mi chiamo para dizer o nome, sono para identidade e ho para idade. Tu é informal e Lei é o singular de cortesia, com verbo na terceira pessoa. A grafia ch antes de e/i preserva o som de c de casa; gh preserva o som de g de gato. Ouça exemplos para treinar consoantes duplas.",
+        "practice": "Apresente-se e pergunte formalmente como a pessoa está.",
+        "answer": "Exemplo: Buongiorno, mi chiamo Leo. Come sta?"
+      },
+      {
+        "title": "02. Artigos, gênero e plural",
+        "examples": [
+          "il libro → i libri. — o livro → os livros.",
+          "lo studente → gli studenti. — o estudante → os estudantes.",
+          "l’amica → le amiche. — a amiga → as amigas."
+        ],
+        "rule": "Use il com a maioria dos masculinos singulares; lo antes de s + consoante, z e outros grupos específicos; l’ diante de vogal. Os plurais masculinos são i ou gli. No feminino, use la/l’ e le. Muitos nomes em -o viram -i, em -a viram -e e em -e viram -i.",
+        "practice": "Passe ao plural: lo zaino; la stanza; il tavolo.",
+        "answer": "gli zaini; le stanze; i tavoli."
+      },
+      {
+        "title": "03. Presente: essere, avere e verbos regulares",
+        "examples": [
+          "Siamo a casa. — Estamos em casa.",
+          "Hai tempo oggi? — Você tem tempo hoje?",
+          "Parlano italiano al lavoro. — Eles falam italiano no trabalho."
+        ],
+        "rule": "Essere: sono, sei, è, siamo, siete, sono. Avere: ho, hai, ha, abbiamo, avete, hanno. Em parlare: parlo, parli, parla, parliamo, parlate, parlano. O italiano frequentemente omite o pronome sujeito quando o contexto é claro.",
+        "practice": "Complete: Lei ___ (essere) pronta. Noi ___ (avere) fame. Tu ___ (parlare) italiano?",
+        "answer": "è; abbiamo; parli."
+      },
+      {
+        "title": "04. Preposições, localização e quantidades",
+        "examples": [
+          "C’è una farmacia vicino alla stazione. — Há uma farmácia perto da estação.",
+          "Ci sono due autobus alla fermata. — Há dois ônibus no ponto.",
+          "Abito a Roma, in Italia. — Moro em Roma, na Itália."
+        ],
+        "rule": "C’è introduz singular e ci sono, plural. Use a com cidades e in com muitos países. A preposição pode se fundir ao artigo: a + il = al; in + la = nella; di + il = del. Pratique os blocos em vez de traduzir preposição por preposição.",
+        "practice": "Complete: ___ una banca qui? ___ due finestre nella stanza. Vado ___ cinema.",
+        "answer": "C’è; Ci sono; al."
+      },
+      {
+        "title": "05. Piacere, pedidos e rotina",
+        "examples": [
+          "Mi piace leggere. — Gosto de ler.",
+          "Ti piacciono questi libri? — Você gosta destes livros?",
+          "Vorrei un caffè, per favore. — Gostaria de um café, por favor."
+        ],
+        "rule": "Em piacere, a coisa apreciada determina piace ou piacciono. Mi e ti indicam quem gosta. Para pedir com cortesia, use vorrei + nome ou infinitivo. A negação non vem antes do verbo.",
+        "practice": "Diga que você gosta das aulas e peça a conta educadamente.",
+        "answer": "Mi piacciono le lezioni. Vorrei il conto, per favore."
+      },
+      {
+        "title": "06. Passato prossimo e particípios",
+        "examples": [
+          "Ho scritto una lettera. — Escrevi uma carta.",
+          "Siamo arrivati presto. — Chegamos cedo.",
+          "Marta si è alzata alle sette. — Marta se levantou às sete."
+        ],
+        "rule": "Use avere ou essere no presente + particípio. Muitos transitivos usam avere. Andare, arrivare e verbos reflexivos usam essere; nesses casos, o particípio concorda com o sujeito. Aprenda particípios irregulares como fatto, visto e scritto.",
+        "practice": "Complete: Ieri, loro ___ (andare, grupo masculino) al mare. Io ___ (fare) la spesa.",
+        "answer": "sono andati; ho fatto."
+      },
+      {
+        "title": "07. Leitura guiada — horário e bilhete",
+        "examples": [
+          "Il museo apre alle nove e chiude alle diciotto, tutti i giorni tranne il lunedì. Il biglietto si può comprare online o all’ingresso. Ricordi di conservare il biglietto fino all’uscita.",
+          "Ingresso = entrada; uscita = saída; conservare = guardar."
+        ],
+        "rule": "Procure dias, horários e instruções. A expressão tranne il indica exceção. Ricordi combina com a forma de cortesia na instrução.",
+        "practice": "Em que dia fecha? Onde comprar? Até quando guardar o bilhete?",
+        "answer": "Segunda-feira. Online ou na entrada. Até a saída."
+      }
+    ],
+    "M": [
+      {
+        "title": "01. Imperfetto, passato prossimo e trapassato",
+        "examples": [
+          "Da piccolo leggevo ogni sera. — Quando criança, eu lia toda noite.",
+          "Dormivo quando hai chiamato. — Eu dormia quando você ligou.",
+          "Quando siamo arrivati, lo spettacolo era già iniziato. — Quando chegamos, o espetáculo já tinha começado."
+        ],
+        "rule": "O imperfetto indica hábito, descrição ou ação em andamento; o passato prossimo delimita eventos. O trapassato prossimo usa auxiliar no imperfeito + particípio para situar um fato antes de outro ponto passado.",
+        "practice": "Complete: Mentre noi ___ (studiare), Luca ___ (telefonare).",
+        "answer": "studiavamo; ha telefonato."
+      },
+      {
+        "title": "02. Pronomes diretos, indiretos, ci e ne",
+        "examples": [
+          "Compro il pane. Lo compro. — Compro o pão. Eu o compro.",
+          "Vado a Milano. Ci vado domani. — Vou a Milão. Vou lá amanhã.",
+          "Vuoi dei biscotti? Ne prendo due. — Quer biscoitos? Pego dois."
+        ],
+        "rule": "Lo/la/li/le substituem objetos diretos. Gli/le podem significar “a ele/a ela”. Ci retoma lugar ou certos complementos regidos; ne retoma quantidade ou complementos com di. Em combinações, mi vira me, como em me lo.",
+        "practice": "Substitua il libro em Leggo il libro. Substitua di quel problema em Parliamo di quel problema.",
+        "answer": "Lo leggo. Ne parliamo."
+      },
+      {
+        "title": "03. Futuro, condicional e registro",
+        "examples": [
+          "Domani saremo a Bologna. — Amanhã estaremos em Bolonha.",
+          "Potrebbe ripetere, per favore? — Poderia repetir, por favor?",
+          "Che ore sono? Saranno le nove. — Que horas são? Devem ser nove horas."
+        ],
+        "rule": "O futuro tem terminações como -ò, -ai e -à. Alguns radicais são irregulares: sar-, avr-, andr-. O condicional, com formas como -ei e -esti, permite pedidos corteses e hipóteses. O futuro pode exprimir conjectura sobre o presente.",
+        "practice": "Complete: Domani io ___ (andare) in centro. Faça um pedido formal de ajuda.",
+        "answer": "andrò. Potrebbe aiutarmi, per favore?"
+      },
+      {
+        "title": "04. Congiuntivo presente e finalidade",
+        "examples": [
+          "Credo che Marco sia a casa. — Acho que Marco está em casa.",
+          "È necessario che tu abbia un documento. — É necessário que você tenha um documento.",
+          "Ti scrivo perché tu possa organizzarti. — Escrevo para que você possa se organizar."
+        ],
+        "rule": "Em subordinadas introduzidas por che, o congiuntivo aparece frequentemente após opinião, dúvida, desejo ou necessidade. Perché com sentido de finalidade normalmente pede congiuntivo. Com o mesmo sujeito, muitas construções favorecem o infinitivo.",
+        "practice": "Complete: È possibile che loro ___ (essere) in ritardo. Spero che tu ___ (avere) tempo.",
+        "answer": "siano; abbia."
+      },
+      {
+        "title": "05. Orações relativas e preposições",
+        "examples": [
+          "Il libro che leggo è interessante. — O livro que estou lendo é interessante.",
+          "La persona a cui ho scritto mi ha risposto. — A pessoa a quem escrevi me respondeu.",
+          "Questo è il tema di cui parlavamo. — Este é o tema de que falávamos."
+        ],
+        "rule": "Che pode ser sujeito ou objeto direto. Cui acompanha preposição, como a cui, di cui, con cui. Il quale e variantes tornam explícitos gênero e número, úteis em registro formal ou em caso de ambiguidade.",
+        "practice": "Complete: Il collega con ___ lavoro. La città ___ abbiamo visitato.",
+        "answer": "cui; che."
+      },
+      {
+        "title": "06. Leitura e escrita — mudança de local",
+        "examples": [
+          "A causa dei lavori, l’incontro di venerdì si terrà nella sala al secondo piano. L’orario resta invariato. Si prega di arrivare dieci minuti prima.",
+          "Lavori = obras; resta invariato = permanece igual; secondo piano = segundo andar."
+        ],
+        "rule": "Identifique o que mudou e qual instrução permanece. A construção si terrà equivale a “será realizado”. Si prega di é comum em avisos formais.",
+        "practice": "Por que mudou o local? Qual o novo local? Mudou o horário?",
+        "answer": "Por causa de obras. Sala no segundo andar. Não."
+      }
+    ],
+    "A": [
+      {
+        "title": "01. Periodo ipotetico e passado irreal",
+        "examples": [
+          "Se piove, resto a casa. — Se chover, fico em casa.",
+          "Se avessi tempo, leggerei di più. — Se tivesse tempo, leria mais.",
+          "Se fossimo partiti prima, saremmo arrivati in orario. — Se tivéssemos saído antes, teríamos chegado no horário."
+        ],
+        "rule": "Na hipótese plausível, use se + indicativo. Na hipótese distante no presente, use congiuntivo imperfetto + condizionale presente. Para um passado irreal, use congiuntivo trapassato + condizionale passato. O efeito pode ser atual, dependendo do sentido.",
+        "practice": "Complete: Se io ___ (sapere) la risposta, te la direi. Se mi avessi chiamato, ___ (venire, eu masculino).",
+        "answer": "sapessi; sarei venuto."
+      },
+      {
+        "title": "02. Si impessoal e si passivante",
+        "examples": [
+          "Qui si lavora bene. — Aqui se trabalha bem.",
+          "Si vendono due appartamenti. — Vendem-se dois apartamentos.",
+          "Come si dice in italiano? — Como se diz em italiano?"
+        ],
+        "rule": "Com si impessoal, a pessoa que pratica a ação é genérica. Com si passivante e verbo transitivo, o verbo concorda com o sujeito paciente. Compare si lavora, si vende un biglietto e si vendono i biglietti.",
+        "practice": "Complete: In questo negozio si ___ (vendere) libri usati. Qui si ___ (dormire) bene.",
+        "answer": "vendono; dorme."
+      },
+      {
+        "title": "03. Congiuntivo imperfetto e concordância temporal",
+        "examples": [
+          "Pensavo che fosse a casa. — Pensava que ele estivesse em casa.",
+          "Volevo che venissi con noi. — Queria que você viesse conosco.",
+          "Credevo che avesse già inviato la lettera. — Achava que ela já tivesse enviado a carta."
+        ],
+        "rule": "Em muitas subordinadas de opinião, desejo e dúvida ligadas a um verbo no passado, o congiuntivo imperfetto indica simultaneidade ou posterioridade. O congiuntivo trapassato marca anterioridade quando a construção pede subjuntivo.",
+        "practice": "Complete: Speravo che tu ___ (potere) venire. Credevo che lui ___ già ___ (finire).",
+        "answer": "potessi; avesse già finito."
+      },
+      {
+        "title": "04. Conectores e argumentação formal",
+        "examples": [
+          "Benché il costo sia elevato, il progetto è fattibile. — Embora o custo seja alto, o projeto é viável.",
+          "Possiamo procedere, purché arrivino i documenti. — Podemos prosseguir, desde que os documentos cheguem.",
+          "I dati sono limitati; pertanto serve un altro studio. — Os dados são limitados. Portanto, é necessário outro estudo."
+        ],
+        "rule": "Benché e sebbene normalmente pedem congiuntivo. Anche se introduz concessão e com frequência usa indicativo. Tuttavia contrapõe, pertanto conclui e purché impõe condição com subjuntivo.",
+        "practice": "Reescreva com sebbene: Il costo è alto, ma il progetto è utile.",
+        "answer": "Sebbene il costo sia alto, il progetto è utile."
+      },
+      {
+        "title": "05. Leitura crítica e síntese",
+        "examples": [
+          "Dopo l’estensione dell’orario, le visite serali sono aumentate. Nello stesso periodo è stata aperta una fermata vicina. I dati sono compatibili con entrambe le spiegazioni e non consentono di distinguere il contributo di ciascun intervento.",
+          "Nello stesso periodo = no mesmo período; ciascun = cada; contributo = contribuição."
+        ],
+        "rule": "Compare o que o texto afirma com o que permite inferir. Sem uma comparação adequada, efeitos observados ao mesmo tempo podem ter mais de uma causa.",
+        "practice": "O que aumentou? Quais duas explicações são possíveis? Resuma em italiano com tuttavia.",
+        "answer": "As visitas noturnas. Horário estendido e abertura de uma parada próxima. Le visite serali sono aumentate; tuttavia, non è possibile attribuire il cambiamento a un solo intervento."
+      }
+    ],
+    "V": [
+      {
+        "title": "01. Casa, rotina e refeições",
+        "examples": [
+          "svegliarsi = acordar · alzarsi = levantar-se · fare il letto = arrumar a cama · apparecchiare = pôr a mesa",
+          "il frigorifero = geladeira · la lavatrice = máquina de lavar · la presa = tomada · lo scaffale = estante/prateleira",
+          "la colazione = café da manhã · la merenda = lanche · il contorno = acompanhamento · il conto = conta",
+          "Faccio la spesa il sabato. — Faço compras aos sábados."
+        ],
+        "rule": "Aprenda o artigo junto ao nome. Colazione é café da manhã, pranzo é almoço e cena é jantar. Fare la spesa é fazer compras, especialmente de alimentos.",
+        "practice": "Traduza “pôr a mesa” e “peço a conta”.",
+        "answer": "apparecchiare; Chiedo il conto."
+      },
+      {
+        "title": "02. Cidade, viagem e serviços",
+        "examples": [
+          "la fermata = ponto · il binario = via/plataforma indicada no embarque · il ritardo = atraso · il bagaglio = bagagem",
+          "il marciapiede = calçada · l’incrocio = cruzamento · la rotonda = rotatória · il quartiere = bairro",
+          "un biglietto di sola andata = passagem só de ida · andata e ritorno = ida e volta · prenotare = reservar · cambiare treno = trocar de trem",
+          "Da quale binario parte il treno? — De qual via/plataforma parte o trem?"
+        ],
+        "rule": "Distinga biglietto, bilhete, de binario, via de embarque ferroviária. Para pedir direções, use Dov’è…? e Scusi para abordar alguém com cortesia.",
+        "practice": "Peça uma passagem de ida e volta. Pergunte onde fica o ponto.",
+        "answer": "Un biglietto di andata e ritorno, per favore. Dov’è la fermata?"
+      },
+      {
+        "title": "03. Estudos, trabalho e tecnologia",
+        "examples": [
+          "la lezione = aula · gli appunti = anotações · il compito = tarefa · la borsa di studio = bolsa de estudo",
+          "il colloquio = entrevista · la riunione = reunião · il turno = turno · il curriculum = currículo",
+          "l’allegato = anexo · il collegamento = link/conexão · la password = senha · una copia di sicurezza = cópia de segurança",
+          "Ti invio il documento in allegato. — Envio o documento em anexo."
+        ],
+        "rule": "Compito indica tarefa. La consegna pode indicar entrega; la scadenza indica prazo final. Lavoro é trabalho e posto di lavoro pode significar vaga, emprego ou local de trabalho, conforme o contexto.",
+        "practice": "Traduza “entrevista de emprego” e “prazo final”.",
+        "answer": "colloquio di lavoro; scadenza."
+      },
+      {
+        "title": "04. Falsos amigos para brasileiros",
+        "examples": [
+          "burro = manteiga · caldo = quente · una camera = quarto ou câmara · un ufficio = escritório/repartição",
+          "una firma = assinatura · una ditta = empresa · un regalo = presente · una libreria = livraria ou estante de livros",
+          "una biblioteca = biblioteca · uscire = sair · salire = subir · aspettare = esperar",
+          "Aspetto davanti alla libreria. — Espero em frente à livraria."
+        ],
+        "rule": "O uso varia pelo contexto. Burro em italiano é manteiga; asino é o animal. Caldo significa quente e il caldo pode indicar o calor.",
+        "practice": "Como dizer “sair” e “uma assinatura”?",
+        "answer": "uscire; una firma."
+      },
+      {
+        "title": "05. Colocações, conectores e evidências",
+        "examples": [
+          "prendere una decisione = tomar uma decisão · fare una domanda = fazer uma pergunta · trarre una conclusione = tirar uma conclusão · rispettare una scadenza = cumprir um prazo",
+          "tenere conto di = levar em conta · mettere in discussione = questionar · svolgere una ricerca = conduzir uma pesquisa · giungere a un accordo = chegar a um acordo",
+          "un dato = dado · un indizio = indício · una prova = prova · un’ipotesi = hipótese",
+          "I risultati sembrano confermare l’ipotesi. — Os resultados parecem confirmar a hipótese."
+        ],
+        "rule": "Use collocazioni para escrever com naturalidade. Tuttavia introduz contraste; inoltre acrescenta; di conseguenza indica consequência.",
+        "practice": "Traduza “levar em conta os resultados” e “fazer uma pergunta”.",
+        "answer": "tenere conto dei risultati; fare una domanda."
+      }
+    ]
+  }
+}

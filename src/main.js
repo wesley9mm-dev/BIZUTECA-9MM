@@ -10,6 +10,7 @@ const {search}=require('./core/search');
 const {consult}=require('./core/assistant');
 const storage=require('./core/storage');
 const events=require('./core/events');
+const bizulanguage=require('./core/bizulanguage');
 const backups=require('./core/backups');
 const {DatabaseSync}=require('node:sqlite');
 const {makeHtmlExport}=require('./core/export');
@@ -27,7 +28,8 @@ function openLibrary(target) {
   const file = path.join(target,'biblioteca.db');
   let next;
   try {
-    if (fs.existsSync(file)) {
+    const existing = fs.existsSync(file);
+    if (existing) {
       const old = new DatabaseSync(file,{readOnly:true});
       try {
         const needsMigration = !old.prepare("SELECT value FROM meta WHERE key='biz_events_schema'").get();
@@ -38,7 +40,10 @@ function openLibrary(target) {
       } finally { old.close(); }
     }
     next = new Library(file);
-    next._tx(() => storage.extendSchema(next));
+    next._tx(() => {
+      storage.extendSchema(next);
+      if (!existing) bizulanguage.install(next);
+    });
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
 }
@@ -199,6 +204,11 @@ async function action(op,args){
  case 'listEvents':return events.listEvents(lib.db);
  case 'saveEvent':return events.saveEvent(lib.db,args[0]);
  case 'deleteEvent':return events.deleteEvent(lib.db,args[0]);
+ case 'applyBizuLanguage':{
+   if (bizulanguage.installed(lib)) return 0;
+   autoBackup();
+   return bizulanguage.install(lib);
+ }
  case 'applyTecModel':{
    autoBackup();
    return storage.seedTec(lib,require('./data/tec-folders.json'));
@@ -261,7 +271,7 @@ app.whenReady().then(async()=>{
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
- ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
+ ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|devtools:)/.test(details.url)}));

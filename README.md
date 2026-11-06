@@ -25,6 +25,16 @@ Para atualizar, faça um backup, feche o Bizuteca e substitua o executável na m
 
 [Histórico completo de publicações](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases)
 
+## Atualização do código 1.3.0
+
+- Home com **pastas-mãe**, em ordem alfabética, abrindo suas subpastas ao clicar.
+- BizuLanguage ampliado para **177 anotações em texto**, com 64 novas aulas, bizus, pegadinhas, exercícios resolvidos e resumos.
+- Inglês: 56; espanhol: 41; francês: 40; italiano: 40.
+- Atualização aditiva da coleção: preserva aulas anteriores, inclusive as editadas, movidas, arquivadas ou excluídas.
+- Conteúdo de leitura e escrita disponível offline; referências externas são opcionais.
+
+[Catálogo das aulas e fontes de consulta](docs/BIZULANGUAGE.md) · [Como atualizar sua coleção](docs/MANUAL.md)
+
 ## O que mudou na versão 1.2.0
 
 **BizuLanguage** é uma coleção offline com 40 anotações de inglês, 25 de espanhol, 24 de francês e 24 de italiano. Cada idioma tem quatro trilhas, **Iniciante**, **Intermediário**, **Avançado** e **Aumentar vocabulário**. As anotações trazem explicações em português, exemplos, exercícios e gabaritos.

@@ -16,14 +16,14 @@ async function addBackupControls() {
     '<div class="button-row"><button id="pick-backup-directory" class="outline small">Escolher outra pasta ou unidade</button>'+
     '<button id="clear-backup-directory" class="outline small">Remover destino adicional</button></div></section>'+
     '<section class="settings-section"><h2>BizuLanguage</h2><p>Coleção offline de inglês, espanhol, francês e italiano, com explicações, exemplos e exercícios.</p>'+
-    '<button id="apply-bizulanguage" class="outline">Acrescentar BizuLanguage</button></section>'+
+    '<button id="apply-bizulanguage" class="outline">Acrescentar / atualizar BizuLanguage</button></section>'+
     '<section class="settings-section"><h2>Modelo de biblioteca TEC</h2><p>Adicione a estrutura de matérias e assuntos quando quiser.</p>'+
     '<button id="apply-tec" class="outline">Acrescentar modelo TEC</button></section>');
   $('#automatic-backup').onchange=event=>run(()=>api('toggleAutomaticBackup',event.target.checked));
   $('#pick-backup-directory').onclick=()=>run(async()=>{if(await api('backupDirectory'))await settings();});
   $('#clear-backup-directory').onclick=()=>run(async()=>{await api('backupDirectory','clear');await settings();});
   $('#apply-bizulanguage').onclick=()=>run(async()=>{
-    if(!await confirmAction('Acrescentar BizuLanguage?','As aulas serão adicionadas à biblioteca atual. Suas anotações serão preservadas.'))return;
+    if(!await confirmAction('Acrescentar / atualizar BizuLanguage?','As novas aulas em texto serão acrescentadas. Aulas anteriores e anotações editadas serão preservadas; um backup será criado antes.'))return;
     const count=await api('applyBizuLanguage');
     if(count)await refresh();
     toast(count?count+' aulas BizuLanguage adicionadas.':'A coleção BizuLanguage já está disponível nesta biblioteca.');

@@ -299,7 +299,7 @@ app.whenReady().then(async()=>{
  ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage','importText'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
- win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|devtools:)/.test(details.url)}));
+ win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));
  win.on('close',e=>{if(!closing){e.preventDefault();win.webContents.send('prepare-close');}});ipcMain.on('ready-close',event=>{if(event.sender===win.webContents){closing=true;win.close();}});
  const display = (event,success) => {
    if (event && (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)) return;

@@ -4,9 +4,9 @@ Anote. Organize. Revise. Domine.
 
 Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por matérias e consulta offline ao material salvo.
 
-[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.3.4-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.4-rc.42292949383.1/BIZUTECA-9MM-Portatil.exe)
+[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.3.5-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.5-rc.42296817540.1/BIZUTECA-9MM-Portatil.exe)
 
-**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.3.4**
+**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.3.5**
 
 ## Downloads para Windows
 
@@ -14,7 +14,8 @@ Todas as versões publicadas são **preliminares**, portáteis e para Windows de
 
 | Versão | Novidades | Download direto | Detalhes |
 | --- | --- | --- | --- |
-| **1.3.4** · Mais recente | 38 Universos Visuais offline, com nomes e enquadramentos próprios. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.4-rc.42292949383.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.4-rc.42292949383.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.4-rc.42292949383.1) |
+| **1.3.5** · Mais recente | Controles de visibilidade da imagem e transparência da interface por Universo Visual. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.5-rc.42296817540.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.5-rc.42296817540.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.5-rc.42296817540.1) |
+| **1.3.4** | 38 Universos Visuais offline, com nomes e enquadramentos próprios. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.4-rc.42292949383.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.4-rc.42292949383.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.4-rc.42292949383.1) |
 | **1.3.3** | Universos Visuais com imagens locais integradas à Home e ao editor. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.3-rc.42287250885.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.3-rc.42287250885.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.3-rc.42287250885.1) |
 | **1.3.2** | Navegação por teclado, Modo Foco, busca na nota e escolha de pasta na importação. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.2-rc.42278495377.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.2-rc.42278495377.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.2-rc.42278495377.1) |
 | **1.3.1** | Importação de texto em lote com reversão em caso de erro e validação de anexos para Windows. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.1-rc.42274422046.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.1-rc.42274422046.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.1-rc.42274422046.1) |

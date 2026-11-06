@@ -32,6 +32,7 @@ async function launch() {
   }
   assert.ok(page,'Janela principal não carregou');
   page.on('pageerror',error=>pageErrors.push(error.message));
+  page.on('console',message=>{if(message.type()==='error')console.error('Renderer:',message.text());});
   await page.locator('#main h1').waitFor();
   await page.waitForFunction(()=>document.querySelector('#save-status').textContent.startsWith('Salvo'));
 }
@@ -103,7 +104,13 @@ async function step(name,run) {
       await image.click({button:'right'});
       await button('Copiar imagem').click();
       await page.getByText('Imagem copiada.',{exact:true}).waitFor();
-      assert.ok(await application.evaluate(({clipboard})=>!clipboard.readImage().isEmpty()));
+      assert.ok(await application.evaluate(async ({clipboard,ClipboardItem})=>{
+        if (!ClipboardItem) return !clipboard.readImage().isEmpty();
+        for (const item of await clipboard.read()) {
+          if (item.types.includes('image/png') && (await item.getType('image/png')).size > 0) return true;
+        }
+        return false;
+      }));
       const exported=path.join(data,'imagem-exportada.png');
       await application.evaluate(({dialog},name)=>{
         dialog.showSaveDialog=async()=>({canceled:false,filePath:name});
@@ -174,6 +181,14 @@ async function step(name,run) {
     await page.locator('#home').click();
     await page.locator('#next-event').getByText('Prova revisada',{exact:true}).waitFor();
     console.log('PASS Evento restaurado aparece na Home');
+    await application.close();
+    application=null;
+    page=null;
+    await launch();
+    await page.locator('#next-event').getByText('Prova revisada',{exact:true}).waitFor();
+    assert.equal((await call('listEvents')).length,1);
+    assert.equal((await call('listNotes')).length,1);
+    console.log('PASS Evento e nota persistem após fechar e reabrir');
   } catch(error) {
     console.error(error);
     if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'falha.png')}).catch(()=>{});

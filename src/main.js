@@ -1,5 +1,5 @@
 'use strict';
-const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,shell,nativeImage,screen}=require('electron');
+const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,ClipboardItem,shell,nativeImage,screen}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const runtime=require('./core/runtime');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
@@ -158,7 +158,12 @@ async function useImage(kind, src) {
   if (kind === 'copy') {
     const image = nativeImage.createFromBuffer(bytes);
     if (image.isEmpty()) throw Error('O Windows não conseguiu decodificar esta imagem.');
-    clipboard.writeImage(image);
+    if (ClipboardItem) {
+      const png = new Blob([image.toPNG()], {type:'image/png'});
+      await clipboard.write([new ClipboardItem({'image/png':png})]);
+    } else {
+      clipboard.writeImage(image);
+    }
     return true;
   }
   const {canceled,filePath} = await dialog.showSaveDialog(win,{
@@ -177,7 +182,7 @@ async function action(op,args){
  case 'saveThemes':return setting('customThemes',args[0]);
  case 'search':return search(lib,String(args[0]||'').slice(0,12000),args[1]||{});
  case 'consult':return consult(lib,args[0]||{});
- case 'copy':clipboard.writeText(String(args[0]||''));return true;
+ case 'copy':await clipboard.writeText(String(args[0]||''));return true;
  case 'exportLibrary':return exportPackage();
  case 'backup':return autoBackup({additional:setting('backupDirectory')});
  case 'backupSettings':return {automatic:setting('automaticBackup')!==false,additional:setting('backupDirectory')};

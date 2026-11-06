@@ -151,10 +151,17 @@ async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Numb
 }
 async function attach(noteId){if(!lib.getNote(Number(noteId)))throw Error('Anotação não encontrada.');const result=await dialog.showOpenDialog(win,{title:'Anexar PDF, imagem ou texto',properties:['openFile','multiSelections'],filters:[{name:'Materiais de estudo',extensions:['pdf','png','jpg','jpeg','webp','gif','txt']}]});if(result.canceled)return null;const assets=path.join(dir,'anexos');fs.mkdirSync(assets,{recursive:true});let count=0;
  for(const file of result.filePaths){if(fs.statSync(file).size>50*1024*1024)throw Error('Cada anexo pode ter até 50 MB.');const ext=path.extname(file).slice(1).toLowerCase();if(!/^(pdf|png|jpg|jpeg|gif|webp|txt)$/.test(ext))throw Error('Tipo de anexo não permitido.');const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(assets,name),fs.readFileSync(file));lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(Number(noteId),path.basename(file),name,ext);count++;}return count;}
-async function importText(){
+async function importText(folderId=null){
   const result=await dialog.showOpenDialog(win,{title:'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:['txt','md','html','htm']}]});
   if(result.canceled)return null;
-  return importTextFiles(lib,result.filePaths);
+  const folder=folderId==null?null:lib.listFolders().find(item=>item.id===folderId);
+  if(folderId!=null&&!folder)throw Error('A pasta de destino não está disponível.');
+  const answer=await dialog.showMessageBox(win,{type:'question',title:'Confirmar importação',
+    message:'Importar '+result.filePaths.length+' arquivo(s)?',
+    detail:'Destino: '+(folder?lib.folderPath(folder.id):'Sem pasta'),
+    buttons:['Cancelar','Importar'],defaultId:1,cancelId:0});
+  if(answer.response!==1)return null;
+  return importTextFiles(lib,result.filePaths,folderId);
 }
 function imageData(src) {
   if (typeof src !== 'string' || src.length > 28000000) throw Error('Imagem inválida ou muito grande.');
@@ -236,7 +243,7 @@ async function action(op,args){
  case 'changeData':return changeData(args[0]);
  case 'openData':return shell.openPath(dir);
  case 'exportMaterial':return exportMaterial(...args);
- case 'importText':return importText();
+ case 'importText':return importText(args[0]);
  case 'attach':return attach(args[0]);
  case 'files':return lib.db.prepare('SELECT id,note_id AS noteId,name,file,mime FROM biz_files WHERE note_id=?').all(Number(args[0]));
  case 'openFile':{const f=lib.db.prepare('SELECT * FROM biz_files WHERE id=?').get(Number(args[0]));if(!f||!storage.safeName(f.file))throw Error('Anexo não encontrado.');return shell.openPath(path.join(dir,'anexos',f.file));}

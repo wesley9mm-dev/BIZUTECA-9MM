@@ -78,5 +78,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Versão portátil com 38 Universos Visuais integrados à interface e com a coleção BizuLanguage. A compilação passou pelos testes de núcleo, interface Windows e abertura do executável final. Consulte o manual para atualizar mantendo a pasta de dados."
+          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Versão portátil com controles de visibilidade da imagem e transparência da interface nos Universos Visuais. A compilação passou pelos testes de núcleo, interface Windows e abertura do executável final. Consulte o manual para atualizar mantendo a pasta de dados."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

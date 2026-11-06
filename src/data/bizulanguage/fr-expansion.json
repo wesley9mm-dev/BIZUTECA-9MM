@@ -1,0 +1,489 @@
+{
+  "name": "Francês",
+  "lessons": {
+    "I": [
+      {
+        "title": "00.1. Do zero — frase, sujeito e estudo por texto",
+        "objective": "Pré-A1: reconhecer pronomes e montar frases básicas.",
+        "rule": "Uma frase básica apresenta sujeito, verbo e complemento: Je parle français. Em francês, o pronome sujeito normalmente precisa aparecer mesmo quando o português o omite. Je significa eu; tu, você em tratamento próximo; il/elle, ele/ela; nous, nós; vous, vocês ou tratamento respeitoso; ils/elles, eles/elas. On é muito usado com sentido de nós no cotidiano, mas o verbo fica na terceira pessoa do singular. Este caderno funciona por leitura e escrita: estude um exemplo, altere uma informação e tente responder antes de consultar o gabarito. As referências externas são opcionais.",
+        "examples": [
+          "Je parle français. — Eu falo francês.",
+          "Nous habitons au Brésil. — Moramos no Brasil.",
+          "On étudie ensemble. — A gente estuda junto."
+        ],
+        "bizu": "Escreva QUEM + VERBO + COMPLEMENTO; não copie a omissão de sujeito do português.",
+        "trap": "On não pede o verbo na forma de nous: on parle, mas nous parlons.",
+        "practice": "1. Escreva “Eu falo francês”. 2. Escolha: on étudie/étudions. 3. Qual pronome serve para plural e tratamento respeitoso?",
+        "answer": "1. Je parle français. 2. On étudie. 3. Vous. O contexto indica uma ou várias pessoas.",
+        "summary": "O sujeito geralmente fica explícito na frase francesa.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ],
+          [
+            "RFI — textos e recursos complementares",
+            "https://francaisfacile.rfi.fr/fr/"
+          ],
+          [
+            "DELF/DALF — exemplos de avaliação",
+            "https://delf-dalf.ambafrance-ca.org/fr/exemples-de-sujets"
+          ],
+          [
+            "OpenLearn — cursos gratuitos de línguas",
+            "https://www.open.edu/openlearn/languages/free-courses"
+          ]
+        ]
+      },
+      {
+        "title": "01.1. Escrita — elisão, acentos e consoantes finais",
+        "objective": "Pré-A1–A1: reconhecer formas escritas frequentes.",
+        "rule": "A escrita francesa tem combinações que não se leem letra por letra. Muitas consoantes finais não são pronunciadas, mas não transforme isso em regra universal. A elisão substitui uma vogal por apóstrofo diante de vogal ou h mudo: je aime torna-se j’aime; le ami torna-se l’ami. Certas palavras com h impedem elisão, como le héros. Acentos distinguem formas: a é verbo avoir; à é preposição; ou significa ou; où significa onde. Um caderno escrito pode ensinar grafia e padrões, mas não avaliar a qualidade da pronúncia.",
+        "examples": [
+          "J’aime le français. — Gosto de francês.",
+          "Il a un livre. — Ele tem um livro.",
+          "Il va à Paris. — Ele vai a Paris."
+        ],
+        "bizu": "A é verbo; À relaciona termos. OU oferece alternativa; OÙ pergunta ou indica lugar.",
+        "trap": "Não retire acentos por considerá-los enfeites: ou e où têm funções diferentes.",
+        "practice": "1. Corrija: Je aime. 2. Complete: Il ___ une voiture. 3. Complete: ___ habites-tu? (ou/où).",
+        "answer": "1. J’aime. 2. A. 3. Où habites-tu? — Onde você mora? O acento faz parte da palavra interrogativa.",
+        "summary": "Elisão e acentos pertencem à escrita correta.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "02.1. Idade, números, datas e horas",
+        "objective": "A1: informar idade e organizar datas e horas.",
+        "rule": "Idade usa avoir: J’ai vingt ans. Uma hora é Il est une heure; duas horas, Il est deux heures. Para um compromisso, use à: à neuf heures. Dias e meses normalmente começam com minúscula: lundi, janvier, novembre. Datas usam le: le 6 novembre; o primeiro dia é le premier novembre. Alguns números variam regionalmente: na França, soixante-dix é 70 e quatre-vingt-dix é 90. Escrever algarismos é adequado em agendas; para aprender, associe-os à forma por extenso e ao contexto. Não use être para traduzir a idade.",
+        "examples": [
+          "J’ai trente ans. — Tenho trinta anos.",
+          "Le cours commence à neuf heures. — A aula começa às nove.",
+          "Nous sommes le 6 novembre. — Estamos em 6 de novembro."
+        ],
+        "bizu": "IDADE → AVOIR; HORA ATUAL → IL EST; HORÁRIO DA AÇÃO → À.",
+        "trap": "Je suis vingt ans não é a construção para idade.",
+        "practice": "1. Complete: J’___ vingt ans. 2. Complete: Il est deux ___. 3. Traduza “A aula começa às oito”.",
+        "answer": "1. Ai. 2. Heures. 3. Le cours commence à huit heures. Note a preposição à.",
+        "summary": "Avoir informa idade; à introduz horário de compromisso.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "03.1. Possessivos — o gênero do objeto possuído",
+        "objective": "A1–A2: expressar posse sem transferir a concordância do português.",
+        "rule": "Mon, ma e mes correspondem a meu/minha/meus/minhas; ton, ta, tes a teu/tua; son, sa, ses a seu/sua de terceira pessoa. A escolha considera o gênero e o número do nome possuído, não o gênero do possuidor. Assim, son livre pode ser o livro dele ou dela. Diante de nome feminino iniciado por vogal ou h mudo, usa-se mon/ton/son: mon amie. Notre/votre/leur acompanham singular; nos/vos/leurs, plural. Para descobrir de quem é o objeto, pode ser necessário consultar o contexto ou escrever de + nome.",
+        "examples": [
+          "Son livre est ici. — O livro dele/dela está aqui.",
+          "Mon amie habite à Lyon. — Minha amiga mora em Lyon.",
+          "Leurs enfants étudient. — Os filhos deles/delas estudam."
+        ],
+        "bizu": "O possessivo concorda com a COISA/PESSOA POSSUÍDA.",
+        "trap": "Sa não significa obrigatoriamente “dela”; sa maison pode ser a casa dele.",
+        "practice": "1. Complete: ___ mère (minha). 2. Complete: ___ amie (minha). 3. Son livre revela o gênero do proprietário?",
+        "answer": "1. Ma mère. 2. Mon amie. 3. Não. Son corresponde ao nome masculino livre, não ao proprietário.",
+        "summary": "Observe o nome seguinte ao escolher o possessivo.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "04.1. Perguntas — entonação escrita, est-ce que e inversão",
+        "objective": "A1–A2: formular perguntas por escrito.",
+        "rule": "Uma pergunta pode manter a ordem afirmativa com interrogação no registro cotidiano: Tu habites ici? Est-ce que introduz uma pergunta sem inverter sujeito e verbo: Est-ce que tu habites ici? A inversão é outra possibilidade: Habites-tu ici? Com palavras interrogativas, use où para lugar, quand para tempo, pourquoi para motivo e comment para modo. Quel concorda com o nome: quelle ville, quels livres. Ao escrever para um iniciante, est-ce que é um padrão útil. A escolha de registro depende de situação e relação entre interlocutores.",
+        "examples": [
+          "Où habites-tu? — Onde você mora?",
+          "Est-ce que vous avez une réservation? — Vocês/O senhor tem uma reserva?",
+          "Quelle heure est-il? — Que horas são?"
+        ],
+        "bizu": "Escolha primeiro a informação procurada: lugar, tempo, motivo ou modo.",
+        "trap": "Pourquoi pergunta o motivo; parce que introduz uma resposta causal.",
+        "practice": "1. Pergunte “Você trabalha aqui?” com est-ce que. 2. Qual palavra pergunta “quando”? 3. Complete: ___ ville? (quel/quelle).",
+        "answer": "1. Est-ce que tu travailles ici? 2. Quand. 3. Quelle ville? Ville é feminino.",
+        "summary": "A estrutura da pergunta varia; a informação procurada orienta a palavra interrogativa.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "07.1. Diálogo escrito — café e pedido educado",
+        "objective": "A1–A2: compreender um diálogo de compra.",
+        "rule": "Leia: “A: Bonjour, je voudrais un café et un verre d’eau, s’il vous plaît. B: Sur place ou à emporter? A: Sur place. Combien ça coûte? B: Trois euros.” Je voudrais significa gostaria e suaviza o pedido. Sur place é para consumir no local; à emporter, para levar. Un verre d’eau é um copo de água; un verre pode ser o recipiente. Ao ler, identifique pedido, alternativa e preço. As expressões funcionam como blocos; não é preciso dominar toda a conjugação para reconhecer o atendimento.",
+        "examples": [
+          "Je voudrais un café. — Gostaria de um café.",
+          "Sur place ou à emporter? — Para consumir aqui ou levar?",
+          "L’addition, s’il vous plaît. — A conta, por favor."
+        ],
+        "bizu": "Reaproveite Je voudrais + produto + s’il vous plaît para montar pedidos corteses.",
+        "trap": "Addition nesse atendimento significa conta, não uma operação matemática.",
+        "practice": "1. O cliente vai levar o pedido? 2. Quanto custa? 3. Escreva um pedido de chá com cortesia.",
+        "answer": "1. Não; sur place indica consumo no local. 2. Trois euros. 3. Je voudrais un thé, s’il vous plaît. Outras fórmulas corteses são possíveis.",
+        "summary": "Aprenda blocos de atendimento e identifique a escolha do cliente.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      }
+    ],
+    "M": [
+      {
+        "title": "02.1. Negação — jamais, rien, personne e plus",
+        "objective": "B1: usar negação específica e compreender mudança de estado.",
+        "rule": "Além de ne... pas, há ne... jamais, nunca; ne... rien, nada; ne... personne, ninguém; ne... plus, não mais. Em tempos simples, as duas partes cercam o verbo: Je ne comprends rien. Com sujeito negativo, personne ou rien pode aparecer antes: Personne ne vient. Na fala cotidiana, ne frequentemente é omitido, mas neste caderno pratique a forma escrita completa. Não some pas automaticamente às outras palavras negativas. Diferencie plus afirmativo, mais, de ne... plus, não mais, pelo contexto da frase.",
+        "examples": [
+          "Je ne travaille plus ici. — Não trabalho mais aqui.",
+          "Elle ne dit rien. — Ela não diz nada.",
+          "Personne ne répond. — Ninguém responde."
+        ],
+        "bizu": "Escolha o sentido negativo e monte o par correspondente; pas não entra em todos eles.",
+        "trap": "Je ne vois pas personne não é a negativa neutra pretendida para “não vejo ninguém”; use Je ne vois personne.",
+        "practice": "1. Traduza “Eu nunca trabalho domingo”. 2. Negue a existência de resposta: “Ninguém responde”. 3. O que significa Je ne fume plus?",
+        "answer": "1. Je ne travaille jamais le dimanche. 2. Personne ne répond. 3. Não fumo mais; pressupõe mudança em relação a antes.",
+        "summary": "Negativas diferentes negam frequência, quantidade, pessoa ou continuidade.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "03.1. Duração — depuis, pendant e il y a",
+        "objective": "B1–B2: situar acontecimentos sem confundir duração e início.",
+        "rule": "Depuis introduz um início ou duração que se estende até o ponto de referência: J’habite ici depuis deux ans descreve moradia ainda vigente. Pendant apresenta duração delimitada: J’ai travaillé là pendant deux ans. Il y a + duração situa um acontecimento no passado: Je suis arrivé il y a deux ans. Para futuro contado a partir de agora, use dans: dans deux jours. Não escolha apenas pela tradução de “há”: identifique se a frase descreve continuidade ou localização temporal de um evento.",
+        "examples": [
+          "J’étudie depuis une heure. — Estudo há uma hora, e continuo.",
+          "J’ai étudié pendant une heure. — Estudei durante uma hora.",
+          "Je reviendrai dans deux jours. — Voltarei em dois dias."
+        ],
+        "bizu": "DEPUIS continua; PENDANT mede duração; IL Y A localiza no passado; DANS aponta futuro.",
+        "trap": "Il y a deux ans não significa “durante dois anos”.",
+        "practice": "1. Complete: Je vis ici ___ 2020. 2. Complete: Il est parti ___ deux jours. 3. Complete: Le cours commence ___ dix minutes.",
+        "answer": "1. Depuis. 2. Il y a. 3. Dans. Os três exemplos respondem a perguntas temporais diferentes.",
+        "summary": "Identifique continuidade, duração ou distância no tempo.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "07. Leitura guiada — alterar um compromisso",
+        "objective": "B1–B2: interpretar e escrever correspondência cotidiana.",
+        "rule": "Texto: “Bonjour Madame, je vous écris au sujet de notre rendez-vous de jeudi. Mon train a été annulé et je ne pourrai pas arriver à temps. Serait-il possible de reporter notre entretien à vendredi matin? Je reste disponible à partir de neuf heures. Merci de votre compréhension. Cordialement, Karim.” A mensagem informa um impedimento e propõe outro horário. Serait-il possible suaviza a solicitação. Reporter significa adiar/reagendar nesse contexto, não produzir uma reportagem. A confirmação da mudança não aparece: há apenas um pedido.",
+        "examples": [
+          "Au sujet de = a respeito de.",
+          "À partir de neuf heures = a partir das nove.",
+          "Je ne pourrai pas arriver à temps = não poderei chegar a tempo."
+        ],
+        "bizu": "Separe HORÁRIO ORIGINAL, MOTIVO e PROPOSTA.",
+        "trap": "A disponibilidade a partir das nove não confirma que o encontro foi marcado para nove.",
+        "practice": "1. Qual era o dia original? 2. Por que Karim pede mudança? 3. Escreva uma resposta aceitando sexta às dez.",
+        "answer": "1. Quinta-feira. 2. O trem foi cancelado e ele não chegará a tempo. 3. Modelo: Bonjour, vendredi à dix heures me convient. Cordialement. Outras respostas claras são válidas.",
+        "summary": "Um pedido de alteração não equivale a uma alteração confirmada.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      }
+    ],
+    "A": [
+      {
+        "title": "06. Mise en relief — c’est... qui e c’est... que",
+        "objective": "C1: destacar informações com correção.",
+        "rule": "Para destacar um elemento, use uma estrutura de foco. C’est Ana qui organise la réunion destaca o sujeito; c’est la réunion que nous organisons destaca o objeto. Qui funciona como sujeito da relativa; que retoma objeto direto nesses exemplos. A concordância pode seguir a pessoa destacada: C’est moi qui ai répondu, e não qui a répondu. A construção permite contrastar informações e corrigir uma interpretação. Evite usá-la em toda frase, porque a ênfase deixa de ser informativa quando tudo é destacado.",
+        "examples": [
+          "C’est Léa qui a téléphoné. — Foi Léa quem telefonou.",
+          "C’est ce livre que je cherche. — É este livro que procuro.",
+          "C’est nous qui avons décidé. — Fomos nós que decidimos."
+        ],
+        "bizu": "QUI faz a ação; QUE recebe a ação, nas estruturas aqui comparadas.",
+        "trap": "C’est moi qui a... ignora a concordância com moi; escreva qui ai.",
+        "practice": "1. Complete: C’est moi qui ___ écrit (ai/a). 2. Complete: C’est le livre ___ je lis. 3. Destaque Paul em Paul travaille ici.",
+        "answer": "1. Ai. 2. Que. 3. C’est Paul qui travaille ici. O destaque recai sobre a identidade de quem trabalha.",
+        "summary": "A ênfase deve conservar a função e a concordância.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "07. Discurso relatado — pessoa e referência temporal",
+        "objective": "C1: relatar falas mantendo o sentido.",
+        "rule": "Depois de um introdutor no passado, tempos frequentemente recuam: presente pode virar imparfait e futuro pode virar conditionnel. Il a dit: «Je viendrai» pode ser relatado como Il a dit qu’il viendrait. Referências como demain mudam para le lendemain quando o ponto temporal muda. Não aplique a transformação mecanicamente: uma informação ainda válida pode conservar o presente, e um local ainda compartilhado pode conservar ici. Perguntas de sim/não usam si no relato: Il demande si tu viens. Preserve a identidade de cada pessoa.",
+        "examples": [
+          "Elle a dit: «Je suis fatiguée». → Elle a dit qu’elle était fatiguée.",
+          "Il a annoncé qu’il reviendrait le lendemain. — Anunciou que voltaria no dia seguinte.",
+          "Elle demande où nous habitons. — Pergunta onde moramos."
+        ],
+        "bizu": "Relate a ideia considerando QUEM fala, QUANDO relata e ONDE está.",
+        "trap": "Demain não vira sempre le lendemain: depende da data do relato.",
+        "practice": "1. Relate: Elle a dit: «Je partirai demain», de outro dia. 2. O que si introduz em Il demande si tu viens? 3. Toda afirmação deve mudar de tempo?",
+        "answer": "1. Elle a dit qu’elle partirait le lendemain. 2. Uma pergunta de sim/não. 3. Não; a validade da informação e o contexto podem justificar a manutenção do tempo.",
+        "summary": "O discurso relatado reorganiza o ponto de vista.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "08. Síntese e argumentação — tese e limite",
+        "objective": "C1–C2: produzir resumos e argumentos cautelosos.",
+        "rule": "Texto-modelo: “Une bibliothèque ouverte le soir faciliterait l’accès des salariés. Toutefois, cette mesure suppose des moyens humains supplémentaires. Il convient donc d’évaluer les besoins avant de fixer les horaires.” Faciliterait apresenta efeito projetado; toutefois introduz ressalva; donc liga conclusão ao raciocínio. Uma síntese fiel deve conservar benefício e condição. Não transforme sugestão em certeza nem acrescente estatísticas. Para escrever, apresente uma tese específica, explique o motivo e reconheça a limitação relevante. Palavras sofisticadas não compensam uma ligação lógica fraca.",
+        "examples": [
+          "Les salariés = os trabalhadores assalariados.",
+          "Toutefois = contudo.",
+          "Il convient d’évaluer = convém avaliar."
+        ],
+        "bizu": "Resuma a PROPOSTA junto de sua CONDIÇÃO.",
+        "trap": "“Bibliotecas noturnas resolvem o acesso” é mais forte que o texto e ignora recursos humanos.",
+        "practice": "1. Quem seria beneficiado? 2. Que recurso adicional é mencionado? 3. Resuma em duas frases em francês.",
+        "answer": "1. Os trabalhadores assalariados. 2. Pessoal adicional. 3. Modelo: L’ouverture le soir pourrait faciliter l’accès des salariés. Il faut cependant évaluer les besoins et les moyens humains. A fidelidade importa mais que copiar palavras.",
+        "summary": "Uma síntese não deve fortalecer indevidamente a tese.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      }
+    ],
+    "V": [
+      {
+        "title": "06. Compras, roupa e pagamento",
+        "objective": "A1–B1: comprar e pedir informações comerciais.",
+        "rule": "Prix é preço; réduction é desconto; monnaie pode ser troco ou moeda; espèces é dinheiro em espécie; carte bancaire é cartão bancário. Taille refere-se a tamanho de roupa; pointure, a número de calçado. Essayer é experimentar/tentar; acheter, comprar; cher, caro; bon marché, barato. Para perguntar o preço, use Combien ça coûte? Ao comparar produtos, registre tamanho, cor e valor. Aprenda os verbos com seus objetos: essayer une veste e payer par carte. Não presuma que uma palavra familiar tenha o mesmo sentido em todos os contextos.",
+        "examples": [
+          "Je paie par carte. — Pago com cartão.",
+          "Avez-vous une taille plus petite? — Tem um tamanho menor?",
+          "Puis-je essayer cette veste? — Posso experimentar esta jaqueta?"
+        ],
+        "bizu": "TAILLE veste; POINTURE calça o pé.",
+        "trap": "Monnaie num pagamento pode ser troco, não apenas moeda como unidade monetária.",
+        "practice": "1. Traduza “em dinheiro”. 2. Pergunte o preço. 3. Qual palavra se refere ao número de sapato?",
+        "answer": "1. En espèces. 2. Combien ça coûte? 3. Pointure. Uma pergunta possível é Quelle est votre pointure?",
+        "summary": "Aprenda compra por tamanho, produto e forma de pagamento.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "07. Corpo e necessidades — avoir mal e avoir besoin",
+        "objective": "A2–B1: relatar necessidades e reconhecer contrações.",
+        "rule": "Avoir mal à expressa dor: j’ai mal à la tête; j’ai mal au dos; j’ai mal aux pieds. Au resulta de à + le e aux de à + les. Avoir besoin de significa precisar de. Rendez-vous pode ser consulta ou encontro agendado; ordonnance é receita médica; pharmacie, farmácia. Essas expressões comunicam necessidades e não substituem avaliação clínica. Para pedir atendimento por escrito, descreva a situação sem inventar um diagnóstico. Algumas sensações usam avoir, não être: avoir faim, soif, froid ou chaud.",
+        "examples": [
+          "J’ai mal à la gorge. — Estou com dor de garganta.",
+          "J’ai besoin d’un rendez-vous. — Preciso de uma consulta.",
+          "J’ai soif. — Estou com sede."
+        ],
+        "bizu": "AVOIR MAL À + parte do corpo; AVOIR BESOIN DE + necessidade.",
+        "trap": "Je suis froid pode descrever frieza; para sentir frio, use J’ai froid.",
+        "practice": "1. Complete: J’ai mal ___ dos. 2. Traduza “Estou com fome”. 3. O que é une ordonnance na farmácia?",
+        "answer": "1. Au. 2. J’ai faim. 3. Uma receita médica. O contexto determina esse uso.",
+        "summary": "Sensações frequentes usam avoir.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "08. Emoções e falsos amigos",
+        "objective": "A2–B2: expressar sentimentos e evitar falsos amigos.",
+        "rule": "Heureux/heureuse é feliz; inquiet/inquiète, preocupado; déçu/déçue, decepcionado; soulagé/soulagée, aliviado; fier/fière, orgulhoso. A concordância acompanha o referente. Avoir envie de + infinitivo indica vontade; manquer tem uma construção especial: Tu me manques significa sinto sua falta, literalmente você faz falta para mim. Actuellement significa atualmente; éventuellement pode significar possivelmente/conforme o caso, e não automaticamente eventualmente no sentido de esporadicamente. Aprenda expressões em frases para evitar a transferência de estrutura do português.",
+        "examples": [
+          "Je suis soulagée. — Estou aliviada.",
+          "J’ai envie de me reposer. — Estou com vontade de descansar.",
+          "Ma famille me manque. — Sinto falta da minha família."
+        ],
+        "bizu": "Em MANQUER, quem faz falta pode ocupar o lugar de sujeito.",
+        "trap": "Tu me manques não significa “você sente minha falta”; significa “sinto sua falta”.",
+        "practice": "1. Traduza “Estou decepcionado”, dito por homem. 2. Traduza Tu me manques. 3. O que significa actuellement?",
+        "answer": "1. Je suis déçu. 2. Sinto sua falta. 3. Atualmente. Não confunda com o inglês actually.",
+        "summary": "Observe concordância e quem sente falta de quem.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      },
+      {
+        "title": "09. Conectores, evidência e linguagem de estudo",
+        "objective": "B2–C2: ler e escrever textos de estudo com cautela.",
+        "rule": "En outre acrescenta; pourtant contrasta; donc apresenta consequência; en revanche contrapõe aspectos; c’est-à-dire reformula; puisque apresenta uma causa tomada como conhecida no contexto. Données são dados; preuve, prova; indice, indício; source, fonte; conclusion, conclusão. Suggérer é mais cauteloso que démontrer. Ao resumir, preserve quelques, certains e tous: alguns não equivalem a todos. Em escrita formal, escolha o conector pela relação entre ideias e não apenas para variar palavras. Uma conclusão precisa ser sustentada pelas frases anteriores.",
+        "examples": [
+          "Les données suggèrent une amélioration. — Os dados sugerem uma melhora.",
+          "Certains élèves ont progressé. — Alguns alunos progrediram.",
+          "Il a étudié; pourtant, il hésite. — Ele estudou; mesmo assim, hesita."
+        ],
+        "bizu": "Primeiro defina ADIÇÃO, CONTRASTE, CAUSA ou CONCLUSÃO; depois escolha o conector.",
+        "trap": "Démontrer torna a afirmação mais forte que suggérer. Não troque os verbos sem evidência.",
+        "practice": "1. Qual reformula: donc ou c’est-à-dire? 2. Traduza “Alguns alunos progrediram”. 3. Pode-se trocar certains por tous sem alterar o sentido?",
+        "answer": "1. C’est-à-dire. 2. Certains élèves ont progressé. 3. Não. Tous generaliza a afirmação.",
+        "summary": "Conectores e quantificadores controlam a precisão do argumento.",
+        "links": [
+          [
+            "Tex’s French Grammar — consulta",
+            "https://www.laits.utexas.edu/tex/"
+          ],
+          [
+            "Français interactif — aulas e livro",
+            "https://www.laits.utexas.edu/fi/"
+          ],
+          [
+            "TV5MONDE — estudo complementar",
+            "https://apprendre.tv5monde.com/fr"
+          ]
+        ]
+      }
+    ]
+  }
+}

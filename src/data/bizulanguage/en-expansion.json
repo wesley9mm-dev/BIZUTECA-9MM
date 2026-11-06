@@ -1,0 +1,485 @@
+{
+  "name": "Inglês",
+  "lessons": {
+    "I": [
+      {
+        "title": "00.1. Do zero — construir frases e usar este caderno",
+        "objective": "Pré-A1: reconhecer a estrutura de uma frase e estudar sem depender de mídia.",
+        "rule": "Uma frase afirmativa básica costuma apresentar sujeito, verbo e complemento: I study English. O sujeito identifica de quem se fala; o verbo indica ação ou estado. Em inglês, normalmente escrevemos o sujeito mesmo quando o português o omite. Este caderno funciona por leitura e escrita: leia uma explicação, altere uma informação de um exemplo e resolva o exercício antes de consultar a resposta. As referências são opcionais. Use as aulas iniciais para construir frases, as intermediárias para relacionar ideias e as avançadas para ganhar precisão. Os níveis orientam o estudo, mas terminar as notas não certifica fluência.",
+        "examples": [
+          "I study English. — Eu estudo inglês.",
+          "She is a teacher. — Ela é professora.",
+          "We live in Brazil. — Moramos no Brasil."
+        ],
+        "bizu": "Pergunte QUEM? + FAZ/É O QUÊ? + QUAL COMPLEMENTO? para montar sua primeira frase.",
+        "trap": "Não retire I de I am tired só porque em português dizemos “Estou cansado”.",
+        "practice": "1. Identifique sujeito e verbo em They work here. 2. Reordene English / I / study. 3. Escreva “Ela é professora”.",
+        "answer": "1. They é o sujeito; work é o verbo; here indica lugar. 2. I study English. 3. She is a teacher. O artigo a acompanha a profissão singular.",
+        "summary": "Frase básica: sujeito + verbo + complemento.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ],
+          [
+            "Cambridge — preparação C1, gabaritos e textos",
+            "https://www.cambridgeenglish.org/exams-and-tests/advanced/preparation/"
+          ],
+          [
+            "OpenLearn — cursos gratuitos de línguas",
+            "https://www.open.edu/openlearn/languages/free-courses"
+          ]
+        ]
+      },
+      {
+        "title": "00.2. Letras, grafia e pistas de pronúncia",
+        "objective": "Pré-A1: distinguir palavras, maiúsculas e limites das pistas escritas.",
+        "rule": "O alfabeto inglês tem 26 letras. O nome de uma letra não corresponde necessariamente ao som dela em uma palavra. Aprender por texto permite reconhecer padrões, mas não avaliar pronúncia. Sh aparece em ship; ch em chair; th ocorre em think e this, com sons diferentes. O e final pode distinguir cap de cape; isso é uma pista, não uma regra sem exceções. Aprenda a grafia junto do significado. Para soletrar um nome, separe as letras; para entender uma palavra, considere o conjunto. O pronome I é sempre maiúsculo; meses e dias da semana também começam com maiúscula.",
+        "examples": [
+          "ship = navio; sheep = ovelha.",
+          "cap = boné; cape = capa.",
+          "My sister and I study on Monday. — Minha irmã e eu estudamos na segunda-feira."
+        ],
+        "bizu": "Memorize PALAVRA + SENTIDO + FRASE; uma escrita improvisada em português não representa todos os sons.",
+        "trap": "Não presuma que toda letra seja pronunciada: o k de know é silencioso.",
+        "practice": "1. Qual significa ovelha: ship ou sheep? 2. Corrija: i study on monday. 3. Know e no têm o mesmo significado?",
+        "answer": "1. Sheep. 2. I study on Monday. 3. Não. Know é saber/conhecer; no expressa negação. Palavras podem soar iguais e ter grafias e sentidos diferentes.",
+        "summary": "Grafia e som não correspondem letra por letra.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "03.1. Números, idade, datas e horas",
+        "objective": "A1: informar idade e combinar dia e horário.",
+        "rule": "Use cardinais para quantidade e idade: one, two, three, ten, twenty. Compostos entre 21 e 99 normalmente levam hífen: twenty-one. Idade usa be: I am twenty. Para horas, é possível dizer os números: seven thirty. Use at com horário e on com dia ou data. January é janeiro; February, fevereiro; March, março; April, abril. Datas numéricas variam entre países: para evitar ambiguidade, escreva o mês por extenso. Pergunte How old are you? para idade e What time is it? para as horas. Não traduza literalmente “ter vinte anos”.",
+        "examples": [
+          "I am twenty-one years old. — Tenho vinte e um anos.",
+          "The class starts at seven thirty. — A aula começa às sete e meia.",
+          "The appointment is on 6 November. — O compromisso é em 6 de novembro."
+        ],
+        "bizu": "IDADE → BE; HORÁRIO → AT; DIA/DATA → ON.",
+        "trap": "11/06 pode ser lido como 11 de junho ou 6 de novembro. Escrever o mês elimina essa dúvida.",
+        "practice": "1. Complete: I ___ thirty years old. 2. Complete: ___ Monday, ___ nine. 3. Escreva 25 em inglês.",
+        "answer": "1. Am. 2. On Monday, at nine. 3. Twenty-five. O hífen liga dezenas e unidades nesses números compostos.",
+        "summary": "Idade usa be; datas importantes pedem clareza.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "04.1. Frequência e rotina — always, usually e never",
+        "objective": "A1: escrever uma rotina com frequência e concordância.",
+        "rule": "Always, usually, often, sometimes, rarely e never indicam sempre, geralmente, frequentemente, às vezes, raramente e nunca. Normalmente ficam antes do verbo principal e depois de be. Expressões como every day e twice a week frequentemente ficam no final. Every day indica frequência; everyday é um adjetivo que significa cotidiano. Para escrever sua rotina, apresente uma ação verdadeira e acrescente a frequência. Na terceira pessoa do singular do presente, mantenha o s do verbo mesmo com never. Para uma negativa com not, use don’t ou doesn’t antes do verbo principal.",
+        "examples": [
+          "I usually study at night. — Geralmente estudo à noite.",
+          "She is always on time. — Ela sempre chega no horário.",
+          "We practise twice a week. — Praticamos duas vezes por semana."
+        ],
+        "bizu": "Antes da ação: usually study. Depois de be: is usually.",
+        "trap": "Never já tem sentido negativo. No inglês padrão, diga I never smoke, não I don’t never smoke.",
+        "practice": "1. Reordene always / is / he / tired. 2. Escolha: I read every day/everyday. 3. Traduza “Ela nunca trabalha aos domingos”.",
+        "answer": "1. He is always tired. 2. Every day. 3. She never works on Sundays. Never não elimina o s de works.",
+        "summary": "Frequência costuma vir antes da ação e depois de be.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "06.1. Lugar e movimento — in, on, at, to e from",
+        "objective": "A1–A2: localizar objetos e descrever trajetos.",
+        "rule": "In costuma indicar interior ou área; on, superfície; at, um ponto ou local considerado por sua função. To indica destino e from indica origem. Aprenda expressões completas porque a escolha não decorre apenas da tradução de “em”. Dizemos in Brazil, on the table, at school, go to work e come from Brazil. Between situa algo entre elementos; next to indica ao lado; opposite indica em frente, do outro lado. Para dar um endereço, combine um ponto de referência com uma instrução simples. Não confunda posição com deslocamento.",
+        "examples": [
+          "The book is on the table. — O livro está sobre a mesa.",
+          "She is at work. — Ela está no trabalho.",
+          "We are going to the station. — Estamos indo para a estação."
+        ],
+        "bizu": "ON apoia em superfície; IN situa dentro/na área; TO aponta destino. Aprenda também as expressões fixas.",
+        "trap": "Go home normalmente não leva to; go to home não é a forma usual.",
+        "practice": "1. Complete: The keys are ___ the bag. 2. Complete: I come ___ Brazil. 3. Traduza “A farmácia fica ao lado do banco”.",
+        "answer": "1. In. 2. From. 3. The pharmacy is next to the bank. O enunciado descreve localização, não movimento.",
+        "summary": "Diferencie onde algo está de para onde alguém vai.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "08.1. Diálogo escrito — pedir ajuda e esclarecer",
+        "objective": "A1–A2: formular pedidos e interpretar respostas curtas.",
+        "rule": "Use frases prontas para esclarecer uma mensagem: What does this mean? pergunta significado; Could you repeat that? pede repetição; Could you write it down? pede registro escrito. Excuse me abre um pedido de atenção; sorry costuma acompanhar uma desculpa. Please suaviza o pedido. Em mensagens, explique o problema e peça uma ação concreta. Leia o diálogo: “A: Excuse me. Where is the library? B: It is next to the bank. A: What does closed mean? B: It means fechado.” A primeira resposta informa o lugar; a segunda esclarece uma palavra.",
+        "examples": [
+          "I don’t understand this question. — Não entendo esta pergunta.",
+          "Could you help me, please? — Poderia me ajudar?",
+          "What does open mean? — O que open significa?"
+        ],
+        "bizu": "Reaproveite Could you + verbo? e What does ... mean?",
+        "trap": "Em What does this word mean?, mean fica sem s: does já marca a terceira pessoa.",
+        "practice": "1. Peça que alguém escreva uma informação. 2. Pergunte o significado de open. 3. No diálogo, onde fica a biblioteca?",
+        "answer": "1. Could you write it down, please? 2. What does open mean? 3. Next to the bank. Open significa aberto nesse contexto.",
+        "summary": "Pedir esclarecimento ajuda a manter a comunicação.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      }
+    ],
+    "M": [
+      {
+        "title": "04.1. Used to, be used to e adaptação",
+        "objective": "B1: distinguir hábito antigo e adaptação.",
+        "rule": "Used to + infinitivo descreve hábito ou estado passado que já não se mantém: I used to live here. Be used to + nome ou forma -ing significa estar acostumado. Get used to destaca o processo de adaptação. Nessas duas últimas construções, to é preposição, por isso aceita working. Em perguntas e negativas com did, a forma padrão é use to: Did you use to work here? I didn’t use to drive. Identifique a construção inteira antes de traduzir. A semelhança visual esconde sentidos diferentes.",
+        "examples": [
+          "I used to work at night. — Eu trabalhava à noite, mas isso mudou.",
+          "I am used to working at night. — Estou acostumado a trabalhar à noite.",
+          "I am getting used to the new schedule. — Estou me acostumando ao novo horário."
+        ],
+        "bizu": "USED TO DO = hábito anterior; BE USED TO DOING = estar acostumado.",
+        "trap": "I am used to work não expressa corretamente “estou acostumado a trabalhar”. Use working.",
+        "practice": "1. Complete: She is used to ___ early (wake up). 2. Traduza “Eu morava aqui”. 3. Negue: I used to drive.",
+        "answer": "1. Waking up. 2. I used to live here. 3. I didn’t use to drive. Did recebe a marca de passado.",
+        "summary": "A construção inteira determina o sentido de used to.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "07.1. Question tags — confirmar informação",
+        "objective": "B1–B2: construir perguntas de confirmação.",
+        "rule": "Question tags são pequenas perguntas no final de uma oração. No padrão de confirmação, uma oração afirmativa recebe tag negativa e uma negativa recebe tag afirmativa. Repita o auxiliar correspondente e substitua o sujeito por pronome. Sem auxiliar no presente ou passado simples, use do/does/did. Com be, repita be. Há particularidades: I am late, aren’t I? e Let’s go, shall we? O contexto define a intenção, portanto a tag não é uma tradução automática de todo “né?” em português.",
+        "examples": [
+          "You work here, don’t you? — Você trabalha aqui, não trabalha?",
+          "She hasn’t arrived, has she? — Ela ainda não chegou, chegou?",
+          "They were tired, weren’t they? — Eles estavam cansados, não estavam?"
+        ],
+        "bizu": "Procure o auxiliar, confira a polaridade e retome o sujeito por pronome.",
+        "trap": "She likes tea, isn’t she? está incorreto nesse padrão: use doesn’t she?",
+        "practice": "Complete: 1. He can swim, ___? 2. You didn’t call, ___? 3. Ana is ready, ___?",
+        "answer": "1. Can’t he? 2. Did you? 3. Isn’t she? Cada tag retoma o auxiliar e inverte a polaridade nesses exemplos.",
+        "summary": "Tag de confirmação: auxiliar correspondente + pronome.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "12. Leitura guiada — reclamação e solução",
+        "objective": "B1–B2: compreender e escrever uma reclamação objetiva.",
+        "rule": "Texto: “Dear customer service team, I ordered a desk on Monday. It arrived yesterday, but one leg was missing. I have attached a photo of the package. Could you send the missing part? I would prefer a replacement part to a refund because the desk fits my room. Please let me know when it can be delivered. Kind regards, Marina.” Primeiro identifique problema e pedido; depois procure os detalhes. O texto usa passado para acontecimentos concluídos e present perfect para uma ação relevante à mensagem. A solicitação é de uma peça, não de substituição de todo o móvel.",
+        "examples": [
+          "One leg was missing. — Faltava um pé da mesa.",
+          "I would prefer a replacement part to a refund. — Preferiria uma peça de reposição a um reembolso.",
+          "Please let me know... — Por favor, informe-me..."
+        ],
+        "bizu": "Reclamação clara: fato → problema → solução desejada → prazo.",
+        "trap": "Não conclua que a mesa veio quebrada: a informação explícita é a ausência de uma peça.",
+        "practice": "1. O que Marina comprou? 2. Qual solução prefere? 3. Escreva um pedido educado de prazo de entrega.",
+        "answer": "1. Uma mesa/escrivaninha. 2. Receber a peça faltante. 3. Modelo: Could you let me know when the part will arrive? Outras formulações claras e educadas são possíveis.",
+        "summary": "Leia o pedido sem acrescentar fatos que não constam no texto.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      }
+    ],
+    "A": [
+      {
+        "title": "10. Elipse e substituição — evitar repetição",
+        "objective": "C1: usar retomadas sem perder clareza.",
+        "rule": "Elipse omite elementos recuperáveis pelo contexto. Substituição usa uma forma que retoma conteúdo anterior. One/ones substituem substantivos contáveis; do pode retomar um verbo de ação; so pode retomar uma ideia afirmativa, como em I think so. Em certas construções, not retoma a negativa: I hope not. A escolha depende da estrutura anterior. Ao revisar, elimine repetições apenas quando a referência continuar clara. Não substitua automaticamente substantivos incontáveis por one: information normalmente é incontável em inglês.",
+        "examples": [
+          "I need a pen. Do you have one? — Preciso de uma caneta. Você tem uma?",
+          "Will it rain? I hope not. — Vai chover? Espero que não.",
+          "She reads more than I do. — Ela lê mais do que eu."
+        ],
+        "bizu": "Antes de cortar, pergunte se o leitor consegue recuperar exatamente o conteúdo.",
+        "trap": "Depois de I need some information, use it/some conforme a frase, não one com sentido de uma informação.",
+        "practice": "1. Retome books: I prefer the shorter ___. 2. Complete: Is he ready? I think ___. 3. O que do retoma no terceiro exemplo?",
+        "answer": "1. Ones. 2. So. 3. O verbo read. Do evita repetir a ação, sem significar “fazer” literalmente nessa frase.",
+        "summary": "Evitar repetição exige uma referência inequívoca.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "11. Foco, pressupostos e força da evidência",
+        "objective": "C1–C2: preservar nuances ao interpretar e resumir.",
+        "rule": "Only, even, still e already alteram o foco de uma frase. Only Ana reviewed the report restringe quem revisou; Ana reviewed only the report restringe o objeto. Em argumentos, examine também verbos e quantificadores: suggests não equivale a proves; some não equivale a all. Uma conclusão pode ser compatível com os dados sem estar demonstrada por eles. Ao resumir, preserve limitações e grau de certeza. A posição de um advérbio pode permitir mais de uma leitura; quando a ambiguidade for relevante, reescreva a frase.",
+        "examples": [
+          "The results suggest an improvement. — Os resultados sugerem uma melhora.",
+          "Only two participants disagreed. — Apenas dois participantes discordaram.",
+          "Even experienced readers made mistakes. — Até leitores experientes cometeram erros."
+        ],
+        "bizu": "Na síntese, SOME não vira ALL; MAY não vira WILL; SUGGEST não vira PROVE.",
+        "trap": "Uma associação entre prática e desempenho não demonstra sozinha causalidade.",
+        "practice": "1. Traduza Only Ana answered. 2. Escreva uma afirmação cautelosa sobre um método usando may. 3. Some learners improved permite concluir que todos melhoraram?",
+        "answer": "1. Apenas Ana respondeu. 2. Modelo: The method may help learners improve. 3. Não. All ampliaria indevidamente a afirmação.",
+        "summary": "Foco, quantidade e certeza fazem parte do significado.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "12. Oficina de escrita — opinião, motivo e ressalva",
+        "objective": "C1–C2: produzir um parágrafo com coesão e cautela.",
+        "rule": "Texto-modelo: “Public libraries should offer quiet study rooms. Such spaces can help people who share crowded homes. However, a quiet room alone will not solve unequal access to education. Reliable opening hours and accessible materials are also necessary.” O parágrafo apresenta posição, motivo e limite. Should recomenda; can apresenta possibilidade; however introduz ressalva. Such spaces retoma quiet study rooms. Ao escrever, procure generalizações, referências vagas e conectores sem relação lógica. Um texto avançado deve ser preciso; vocabulário raro não substitui uma ideia bem desenvolvida.",
+        "examples": [
+          "Such spaces retoma as salas de estudo.",
+          "However apresenta uma limitação, sem rejeitar toda a proposta.",
+          "Are also necessary acrescenta condições complementares."
+        ],
+        "bizu": "Planeje posição → motivo → limite → consequência.",
+        "trap": "Não invente estatísticas para dar aparência de evidência; identifique exemplos como exemplos.",
+        "practice": "1. Qual é a proposta central? 2. Ela resolve sozinha a desigualdade? 3. Escreva três frases sobre horário regular de estudo com uma ressalva.",
+        "answer": "1. Oferecer salas silenciosas em bibliotecas. 2. Não. 3. Modelo: A regular study schedule can improve consistency. However, learners also need rest. The schedule should therefore remain realistic. Avalie clareza e lógica, não reprodução literal.",
+        "summary": "Argumentar bem é sustentar e delimitar a afirmação.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      }
+    ],
+    "V": [
+      {
+        "title": "08. Saúde e necessidades em frases",
+        "objective": "A1–B1: descrever necessidades e solicitar atendimento.",
+        "rule": "Headache é dor de cabeça; sore throat, dor de garganta; appointment, consulta/compromisso agendado; prescription, receita médica; pharmacy, farmácia; dizzy, tonto; tired, cansado. Have acompanha alguns sintomas: have a headache. Feel + adjetivo descreve sensação. Hurt indica doer: My back hurts. Essas frases servem para relatar uma situação, não para diagnosticar ou escolher tratamento. Aprenda cada palavra com a construção: make an appointment é marcar consulta. Ao ler um diálogo, separe o que a pessoa efetivamente relata do que você imagina sobre a causa.",
+        "examples": [
+          "I have a sore throat. — Estou com dor de garganta.",
+          "My back hurts. — Minhas costas doem.",
+          "I’d like to make an appointment. — Gostaria de marcar uma consulta."
+        ],
+        "bizu": "HAVE + sintoma nominal; FEEL + adjetivo; parte do corpo + HURTS/HURT.",
+        "trap": "Recipe é receita culinária; prescription é receita médica.",
+        "practice": "1. Complete: I feel ___ (tonto). 2. Traduza “Gostaria de marcar uma consulta”. 3. Passe My leg hurts para duas pernas.",
+        "answer": "1. Dizzy. 2. I’d like to make an appointment. 3. My legs hurt. O plural tira o s do verbo no presente simples.",
+        "summary": "Memorize sintomas em frases completas.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "09. Dinheiro, preços e pagamentos",
+        "objective": "A2–B1: distinguir preço, cobrança, pagamento e empréstimo.",
+        "rule": "Price é preço; cost é custo/custar; fee é taxa por serviço; fare é tarifa de transporte; bill é conta; receipt é recibo; change pode ser troco. Borrow significa tomar emprestado; lend é emprestar a alguém. Spend normalmente combina com on antes do produto; pay com for. Cheap é barato; expensive, caro; affordable significa que cabe no orçamento. O contexto diferencia sentidos: change também pode ser mudança, e bill pode ter outros usos. Memorize expressões de atendimento para compreender o pedido e a resposta.",
+        "examples": [
+          "Can I pay by card? — Posso pagar com cartão?",
+          "Could I have a receipt? — Poderia receber um comprovante?",
+          "I borrowed ten pounds from Leo. Leo lent me ten pounds. — Duas perspectivas da mesma operação."
+        ],
+        "bizu": "BORROW recebe; LEND fornece. BILL cobra; RECEIPT comprova.",
+        "trap": "Receipt não significa receita culinária; nesse caso, use recipe.",
+        "practice": "1. Escolha: The bus fee/fare is two pounds. 2. Traduza “Paguei pela passagem”. 3. Complete: Can you ___ me a pen?",
+        "answer": "1. Fare. 2. I paid for the ticket. 3. Lend. A pessoa a quem se pede é quem empresta.",
+        "summary": "Escolha a palavra pela situação, não pela semelhança com o português.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "10. Emoções — interested e interesting",
+        "objective": "A2–B2: expressar sentimentos e suas causas.",
+        "rule": "Em muitos pares, -ed descreve quem sente e -ing o que provoca a sensação: bored/boring, interested/interesting, excited/exciting. Isso não significa que pessoas sempre recebam -ed: uma pessoa pode ser interesting por despertar interesse. Aprenda também as preposições: interested in, worried about, proud of, afraid of. Relieved é aliviado; disappointed, decepcionado; confident, confiante. Para desenvolver a frase, apresente a causa com because. Nem todo adjetivo obedece a essa formação; trate a regra como um padrão de certos pares.",
+        "examples": [
+          "I am bored because the lecture is boring. — Estou entediado porque a palestra é entediante.",
+          "She is interested in history. — Ela se interessa por história.",
+          "He is an interesting teacher. — Ele é um professor interessante."
+        ],
+        "bizu": "Pergunte: quem SENTE ou o que PROVOCA?",
+        "trap": "I am boring significa que você é entediante, não que está entediado.",
+        "practice": "1. Complete: I’m ___ in this ___ story (interested/interesting). 2. Complete: worried ___. 3. Traduza “Estou aliviado”.",
+        "answer": "1. Interested; interesting. 2. About. 3. I am relieved. A frase pode receber uma causa: because the exam is over.",
+        "summary": "Nos pares estudados, -ed sente; -ing provoca.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      },
+      {
+        "title": "11. Phrasal verbs — sentido e posição do objeto",
+        "objective": "B1–B2: usar combinações frequentes com estrutura correta.",
+        "rule": "Phrasal verbs combinam verbo e partícula. Em turn off, desligar, o objeto nominal pode ficar no meio ou depois: turn the light off / turn off the light. Com pronome, use turn it off. Look after, cuidar de, não permite essa separação: look after her. Find out é descobrir uma informação; give up pode significar desistir; run out of indica ficar sem. Aprenda uma construção de cada vez, observando o objeto. A mesma combinação pode ter diferentes sentidos em contextos diferentes; um exemplo não é uma lista exaustiva de significados.",
+        "examples": [
+          "Please turn it off. — Por favor, desligue isso.",
+          "She looks after her grandmother. — Ela cuida da avó.",
+          "We ran out of paper. — Ficamos sem papel."
+        ],
+        "bizu": "Nos separáveis, o pronome vai no meio: TURN IT OFF.",
+        "trap": "Look her after não significa cuidar dela; use look after her.",
+        "practice": "1. Substitua the computer por it: Turn off the computer. 2. Traduza “Ficamos sem água”. 3. Complete: She looks ___ her brother.",
+        "answer": "1. Turn it off. 2. We ran out of water. 3. After. A partícula faz parte da construção e do sentido.",
+        "summary": "Aprenda sentido, objeto e posição juntos.",
+        "links": [
+          [
+            "British Council — gramática",
+            "https://learnenglish.britishcouncil.org/free-resources/grammar"
+          ],
+          [
+            "Cambridge — atividades por nível",
+            "https://www.cambridgeenglish.org/learning-english/"
+          ],
+          [
+            "VOA — aulas e planos de estudo",
+            "https://learningenglish.voanews.com/p/5644.html"
+          ]
+        ]
+      }
+    ]
+  }
+}

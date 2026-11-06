@@ -1,0 +1,485 @@
+{
+  "name": "Italiano",
+  "lessons": {
+    "I": [
+      {
+        "title": "00.1. Do zero — construir frases e estudar no caderno",
+        "objective": "Pré-A1: reconhecer afirmação, pergunta e negação.",
+        "rule": "Uma frase básica apresenta sujeito, verbo e complemento: Io studio italiano. Em italiano, a terminação verbal frequentemente permite omitir o pronome: Studio italiano. Use o pronome para esclarecer ou contrastar. A negativa normalmente coloca non antes do verbo. Perguntas diretas podem manter a ordem afirmativa, com interrogação: Studi italiano? Neste caderno, cada aula é uma anotação textual: leia, altere um exemplo, escreva a resposta e confira o gabarito. As fontes externas são complementares; não são necessárias para resolver a atividade. A progressão orienta o estudo, sem prometer fluência apenas pela leitura.",
+        "examples": [
+          "Io studio italiano. — Eu estudo italiano.",
+          "Non lavoro qui. — Não trabalho aqui.",
+          "Abiti in Brasile? — Você mora no Brasil?"
+        ],
+        "bizu": "Aprenda uma frase e mude uma informação: pessoa, lugar ou objeto.",
+        "trap": "A semelhança com o português não garante equivalência: burro significa manteiga.",
+        "practice": "1. Negue Lavoro qui. 2. Escreva “Eu estudo italiano” sem pronome. 3. O que significa Abiti in Brasile?",
+        "answer": "1. Non lavoro qui. 2. Studio italiano. 3. Você mora no Brasil? Abitare significa morar.",
+        "summary": "Comece por frases completas e confira o sentido das palavras.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ],
+          [
+            "CILS — provas C2",
+            "https://cils.unistrasi.it/1/89/200/Prove_Liv._C2.htm"
+          ],
+          [
+            "OpenLearn — cursos gratuitos de línguas",
+            "https://www.open.edu/openlearn/languages/free-courses"
+          ]
+        ]
+      },
+      {
+        "title": "01.1. Escrita — c, g, h e consoantes duplas",
+        "objective": "Pré-A1–A1: reconhecer diferenças importantes de grafia.",
+        "rule": "C e g mudam de leitura conforme a vogal seguinte. Em ce/ci e ge/gi, os sons diferem de ca/co/cu e ga/go/gu. H conserva o som forte diante de e/i: che, chi, ghe, ghi. O h não é pronunciado isoladamente e distingue formas escritas como ho, tenho, e o, ou; ha, tem, e a, preposição. Consoantes duplas fazem parte da palavra: pala e palla têm sentidos diferentes. O acento final aparece em palavras como città e caffè. O texto ajuda a reconhecer essas formas, mas não avalia a pronúncia.",
+        "examples": [
+          "Ho un libro. — Tenho um livro.",
+          "Tè o caffè? — Chá ou café?",
+          "La palla è qui. — A bola está aqui."
+        ],
+        "bizu": "H pode preservar o som de C/G ou distinguir formas de AVERE.",
+        "trap": "Pala e palla não são grafias alternativas: pala é pá; palla é bola.",
+        "practice": "1. Complete: ___ un libro (ho/o). 2. Complete: tè ___ caffè (ho/o). 3. Qual significa bola: pala ou palla?",
+        "answer": "1. Ho. 2. O. 3. Palla. A consoante dupla precisa ser preservada na escrita.",
+        "summary": "H, acentos e consoantes duplas podem distinguir palavras.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "02.1. Números, idade, datas e horas",
+        "objective": "A1: informar idade e marcar horários.",
+        "rule": "Idade usa avere: Ho vent’anni. Para hora atual, diga È l’una no singular e Sono le due no plural. Para horário de atividade, use all’una ou alle due. Dias e meses normalmente começam com minúscula: lunedì, gennaio, novembre. Datas podem ser escritas como il 6 novembre; o primeiro dia é il primo novembre. Imparare numeri significa aprender números: uno, due, tre, dieci, venti, trenta. Na rotina escrita, associe horário à ação para praticar preposições. Não traduza “tenho vinte anos” usando essere.",
+        "examples": [
+          "Ho trent’anni. — Tenho trinta anos.",
+          "La lezione comincia alle nove. — A aula começa às nove.",
+          "Ci vediamo lunedì. — Nos vemos na segunda-feira."
+        ],
+        "bizu": "IDADE → AVERE; HORA ATUAL → È/SONO; HORÁRIO DA AÇÃO → ALL’/ALLE.",
+        "trap": "Sono vent’anni não é a construção habitual para informar sua idade.",
+        "practice": "1. Complete: ___ vent’anni. 2. Complete: ___ l’una; ___ le tre. 3. Traduza “A aula começa às oito”.",
+        "answer": "1. Ho. 2. È; sono. 3. La lezione comincia alle otto. O horário acompanha a ação com alle.",
+        "summary": "Avere informa idade; alle introduz horário de compromisso.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "03.1. Possessivos e nomes de família",
+        "objective": "A1–A2: indicar posse e relações familiares.",
+        "rule": "Mio, tuo, suo, nostro, vostro e loro indicam posse. Normalmente aparecem com artigo e concordam com o nome possuído: il mio libro, la mia casa, i miei libri, le mie case. Loro não varia, mas o artigo varia: il loro libro, i loro libri. Com muitos nomes de parentesco no singular sem modificador, omite-se o artigo: mia madre, tuo fratello. Há exceções e mudanças com plural, modificadores e loro: i miei fratelli, la loro madre. Aprenda a expressão inteira em vez de eliminar o artigo em todo contexto familiar.",
+        "examples": [
+          "La mia casa è piccola. — Minha casa é pequena.",
+          "Mio fratello studia. — Meu irmão estuda.",
+          "I miei fratelli studiano. — Meus irmãos estudam."
+        ],
+        "bizu": "A posse acompanha o gênero e o número do nome possuído.",
+        "trap": "Suo pode significar dele ou dela; não identifica sozinho o gênero do proprietário.",
+        "practice": "1. Complete: la ___ casa (mio/mia). 2. Passe mio fratello ao plural. 3. Complete: la ___ madre, para “a mãe deles”.",
+        "answer": "1. Mia. 2. I miei fratelli. 3. Loro. Loro permanece invariável.",
+        "summary": "Possessivo concorda com o possuído; parentesco tem usos específicos de artigo.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "05.1. Rotina e verbos reflexivos",
+        "objective": "A1–A2: escrever uma rotina em sequência.",
+        "rule": "Em alzarsi, lavarsi e vestirsi, use mi, ti, si, ci, vi, si conforme a pessoa. No presente, o pronome vem antes do verbo: mi alzo. Com infinitivo, liga-se ao final: alzarmi. Em construções com verbo modal, pode aparecer antes do conjunto ou ligado ao infinitivo: mi devo alzare / devo alzarmi. Nem todo verbo se traduz literalmente com reflexivo em português. Para narrar uma rotina, use prima, poi e infine. Observe a diferença entre levantar outra pessoa e levantar-se: alzo mio figlio / mi alzo.",
+        "examples": [
+          "Mi alzo alle sette. — Levanto-me às sete.",
+          "Ci vestiamo in fretta. — Nós nos vestimos depressa.",
+          "Devo alzarmi presto. — Preciso levantar cedo."
+        ],
+        "bizu": "Escolha a pessoa do pronome e conjugue o verbo para a mesma pessoa.",
+        "trap": "Mi alzi significa “você me levanta”; para “eu me levanto”, use mi alzo.",
+        "practice": "1. Complete: Io ___ alzo. 2. Complete: Noi ___ vestiamo. 3. Reescreva Devo alzarmi com pronome antes do modal.",
+        "answer": "1. Mi. 2. Ci. 3. Mi devo alzare. A mudança de posição é possível nessa construção.",
+        "summary": "Pronome e verbo precisam representar a pessoa correta.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "07.1. Diálogo escrito — estação e passagem",
+        "objective": "A1–A2: compreender uma compra de passagem.",
+        "rule": "Leia: “A: Buongiorno, vorrei un biglietto per Roma. B: Solo andata o andata e ritorno? A: Solo andata. Da quale binario parte il treno? B: Dal binario tre, alle dieci.” Vorrei significa gostaria e suaviza pedidos. Biglietto é passagem ou ingresso; binario é plataforma/via ferroviária no contexto. Solo andata indica apenas ida; andata e ritorno, ida e volta. Antes de traduzir palavra por palavra, identifique destino, tipo de passagem, local de saída e horário. A conversa não informa o preço.",
+        "examples": [
+          "Vorrei un biglietto per Roma. — Gostaria de uma passagem para Roma.",
+          "A che ora parte? — A que horas sai?",
+          "Dal binario tre. — Da plataforma três."
+        ],
+        "bizu": "Procure DESTINO + TIPO DE PASSAGEM + PLATAFORMA + HORA.",
+        "trap": "Binario não significa simplesmente “binário” nessa situação de viagem.",
+        "practice": "1. A passagem inclui volta? 2. A que horas sai o trem? 3. Peça uma passagem de ida e volta para Milão.",
+        "answer": "1. Não. 2. Alle dieci. 3. Vorrei un biglietto di andata e ritorno per Milano. Outras formulações naturais podem ser aceitas.",
+        "summary": "Leia informações presentes; não invente preço ou duração.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      }
+    ],
+    "M": [
+      {
+        "title": "02.1. Pronomes combinados — me lo, te la e glielo",
+        "objective": "B1–B2: retomar destinatário e objeto sem repetição.",
+        "rule": "Quando dois pronomes aparecem juntos, certas formas mudam: mi + lo vira me lo; ti + la vira te la; ci + li vira ce li; vi + le vira ve le. Gli/le com objeto direto formam glielo, gliela, glieli, gliele conforme o objeto. A posição usual antes do verbo conjugado é me lo dai; com infinitivo, podem ligar-se: darmelo. Identifique primeiro quem recebe e o que é dado. A terminação lo/la/li/le corresponde ao objeto direto. O contexto resolve a quem glielo se refere.",
+        "examples": [
+          "Mi dai il libro? Me lo dai? — Você me dá o livro?",
+          "Ti mando la foto. Te la mando. — Envio a foto para você.",
+          "Voglio spiegartelo. — Quero explicar isso a você."
+        ],
+        "bizu": "Primeiro o DESTINATÁRIO; depois a COISA. A forma da coisa determina lo/la/li/le.",
+        "trap": "Mi lo dai não é a combinação padrão; use me lo dai.",
+        "practice": "1. Retome la foto em Ti mando la foto. 2. Retome il libro em Do il libro a Marco. 3. Separe os sentidos de spiegartelo.",
+        "answer": "1. Te la mando. 2. Glielo do. 3. Spiegare = explicar; ti = a você; lo = isso. O infinitivo perde o e final ao receber os pronomes.",
+        "summary": "Pronomes combinados exigem forma e ordem próprias.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "03.1. Duração — da, per e fa",
+        "objective": "B1: organizar tempo com precisão.",
+        "rule": "Da pode indicar início ou duração de uma situação ainda vigente: Studio italiano da due anni. Per mede duração: Ho lavorato lì per due anni. Fa situa um acontecimento antes do presente: Sono arrivato due anni fa. Tra/fra aponta uma distância futura: tra due giorni. O português “há” pode corresponder a da ou fa conforme a frase. Antes de escolher, verifique se a atividade continua ou se você localiza um evento concluído. O tempo verbal também ajuda a interpretar o ponto de referência.",
+        "examples": [
+          "Vivo qui da gennaio. — Moro aqui desde janeiro.",
+          "Ho studiato per un’ora. — Estudei durante uma hora.",
+          "Tornerò fra due giorni. — Voltarei em dois dias."
+        ],
+        "bizu": "DA continua; PER mede duração; FA olha para trás; TRA/FRA olha adiante.",
+        "trap": "Due anni fa não significa “durante dois anos”.",
+        "practice": "1. Complete: Abito qui ___ 2020. 2. Complete: È partito due giorni ___. 3. Complete: La lezione comincia ___ dieci minuti.",
+        "answer": "1. Da. 2. Fa. 3. Tra ou fra. As duas preposições são possíveis nesse uso.",
+        "summary": "Distinga duração, início e distância temporal.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "07. Leitura guiada — entrega e atendimento",
+        "objective": "B1–B2: compreender e redigir reclamações.",
+        "rule": "Texto: “Buongiorno, ho ordinato una sedia lunedì. Il pacco è arrivato ieri, ma manca una vite. Potreste inviarmi il pezzo mancante? Preferirei ricevere la vite anziché restituire la sedia. Vi chiedo inoltre di indicarmi i tempi di consegna. Grazie, Elena.” A autora relata uma compra e solicita uma peça. Potreste e preferirei suavizam pedido e preferência. Manca concorda com una vite. Anziché apresenta alternativa rejeitada em favor de outra. O texto não diz que toda a cadeira está quebrada nem que houve recusa de atendimento.",
+        "examples": [
+          "Una vite = um parafuso.",
+          "Il pezzo mancante = a peça faltante.",
+          "I tempi di consegna = os prazos de entrega."
+        ],
+        "bizu": "Atendimento claro: FATO → PROBLEMA → SOLUÇÃO → PRAZO.",
+        "trap": "Restituire significa devolver; não confunda com simplesmente substituir.",
+        "practice": "1. O que foi comprado? 2. Qual solução Elena prefere? 3. Escreva um pedido educado de prazo.",
+        "answer": "1. Uma cadeira. 2. Receber o parafuso faltante em vez de devolver a cadeira. 3. Modelo: Potreste indicarmi quando arriverà il pezzo? Outras formulações corteses são válidas.",
+        "summary": "Identifique o pedido sem ampliar o problema descrito.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      }
+    ],
+    "A": [
+      {
+        "title": "06. Concordância temporal e congiuntivo",
+        "objective": "C1: distinguir opinião, conhecimento e anterioridade.",
+        "rule": "Depois de um verbo de opinião ou desejo no passado, o congiuntivo imperfetto pode indicar simultaneidade ou posterioridade em relação àquele ponto: Pensavo che fosse pronto. O congiuntivo trapassato indica anterioridade: Pensavo che fosse già partito. A escolha depende também do verbo introdutor e do sentido. Não trate todo che como gatilho de congiuntivo: So che è qui apresenta conhecimento. Para resolver, situe os dois acontecimentos numa linha temporal mental e pergunte qual ocorreu antes. Preserve a hipótese ou opinião em vez de convertê-la em fato.",
+        "examples": [
+          "Speravo che arrivasse presto. — Esperava que chegasse cedo.",
+          "Pensavo che avesse finito. — Pensava que tivesse terminado.",
+          "So che è qui. — Sei que está aqui."
+        ],
+        "bizu": "Primeiro situe a relação temporal; depois escolha o tempo subordinado.",
+        "trap": "Che sozinho não determina o modo verbal.",
+        "practice": "1. Complete: Pensavo che lui ___ già partito (fosse/era). 2. O término é anterior em Pensavo che avesse finito? 3. Traduza So che è qui.",
+        "answer": "1. Fosse, na estrutura de opinião aqui praticada. 2. Sim, o término é anterior ao pensamento no passado. 3. Sei que está aqui.",
+        "summary": "Modo e tempo mostram a perspectiva de quem afirma.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "07. Discurso relatado e futuro no passado",
+        "objective": "C1: narrar falas com referência temporal correta.",
+        "rule": "Ao relatar uma fala, ajuste pessoa e referências conforme o contexto. Em italiano, o futuro em relação a um ponto passado costuma usar condizionale passato: Ha detto che sarebbe venuto. A estrutura não indica necessariamente uma condição irreal; pode simplesmente expressar futuro no passado. Domani pode virar il giorno dopo se o relato ocorre em outro dia. Qui pode permanecer se o lugar continua o mesmo. Não faça substituições automáticas sem considerar quem relata, de onde e em que momento.",
+        "examples": [
+          "Ha detto: «Verrò domani». → Ha detto che sarebbe venuto il giorno dopo.",
+          "Maria ha detto che era stanca. — Maria disse que estava cansada.",
+          "Mi ha chiesto se ero pronto. — Perguntou-me se eu estava pronto."
+        ],
+        "bizu": "No futuro do passado italiano, procure SAREBBE + PARTICÍPIO ou outra forma do condizionale passato.",
+        "trap": "Não confunda automaticamente sarebbe venuto com uma condição impossível: pode ser apenas uma previsão relatada.",
+        "practice": "1. Relate Marco ha detto: «Partirò domani», de outro dia. 2. Qual expressão substitui domani nesse contexto? 3. Qui sempre muda?",
+        "answer": "1. Marco ha detto che sarebbe partito il giorno dopo. 2. Il giorno dopo. 3. Não; depende de o lugar de referência ter mudado.",
+        "summary": "O relato muda o ponto de vista, não o conteúdo pretendido.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "08. Oficina de síntese — tese, benefício e condição",
+        "objective": "C1–C2: produzir argumentos e resumos precisos.",
+        "rule": "Texto-modelo: “Aprire la biblioteca la sera potrebbe favorire chi lavora durante il giorno. Tuttavia, il servizio richiederebbe personale aggiuntivo. Prima di fissare l’orario, sarebbe opportuno valutare la domanda.” Potrebbe e richiederebbe apresentam possibilidades e consequências projetadas; tuttavia introduz ressalva. Uma síntese fiel mantém o benefício e a condição. Não transforme proposta em resultado comprovado. Para escrever, apresente tese, motivo e limite; depois conclua de modo proporcional. Linguagem avançada exige precisão, não uma coleção de palavras raras.",
+        "examples": [
+          "Chi lavora = quem trabalha.",
+          "Personale aggiuntivo = pessoal adicional.",
+          "Sarebbe opportuno = seria oportuno."
+        ],
+        "bizu": "Resuma a TESE junto do LIMITE; não apague a ressalva.",
+        "trap": "“Horário noturno resolve o acesso” é mais forte que a afirmação do texto.",
+        "practice": "1. Quem seria beneficiado? 2. Qual recurso adicional é mencionado? 3. Faça uma síntese de duas frases em italiano.",
+        "answer": "1. Quem trabalha durante o dia. 2. Pessoal adicional. 3. Modelo: L’apertura serale potrebbe agevolare i lavoratori. Occorre però valutare la domanda e il personale necessario. A resposta deve preservar a condição.",
+        "summary": "Síntese fiel conserva possibilidade, alcance e ressalva.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      }
+    ],
+    "V": [
+      {
+        "title": "06. Compras, tamanhos e pagamentos",
+        "objective": "A1–B1: comprar e pedir informação comercial.",
+        "rule": "Prezzo é preço; sconto, desconto; resto pode ser troco; contanti é dinheiro em espécie; carta di credito é cartão de crédito. Taglia indica tamanho de roupa; numero pode indicar tamanho de calçado. Provare pode ser experimentar uma peça; comprare, comprar; costoso, caro; economico, econômico/barato conforme o contexto. Para pedir informação, use Quanto costa? e Posso provarlo/provarla? O pronome concorda com o produto retomado. Aprenda cada expressão no atendimento para evitar traduzir automaticamente palavras isoladas.",
+        "examples": [
+          "Posso pagare con la carta? — Posso pagar com cartão?",
+          "Vorrei una taglia più piccola. — Gostaria de um tamanho menor.",
+          "Pago in contanti. — Pago em dinheiro."
+        ],
+        "bizu": "TAGLIA veste; CONTANTI pagam em espécie; RESTO pode ser troco.",
+        "trap": "Saldi, em uma vitrine, costuma indicar liquidações, não simplesmente saldos de conta.",
+        "practice": "1. Traduza “em dinheiro”. 2. Pergunte o preço. 3. Retome la giacca em Posso provare la giacca?",
+        "answer": "1. In contanti. 2. Quanto costa? 3. Posso provarla? La se liga ao infinitivo, que perde o e final.",
+        "summary": "Aprenda objeto, tamanho e pagamento em frases.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "07. Corpo e necessidades — dor, fome e consulta",
+        "objective": "A2–B1: comunicar necessidades e reconhecer concordância.",
+        "rule": "Testa é cabeça; schiena, costas; gola, garganta; ginocchio, joelho; appuntamento é compromisso/consulta; ricetta pode ser receita médica ou culinária. Ho mal di testa significa estou com dor de cabeça. Mi fa male la schiena descreve dor nas costas; mi fanno male i piedi usa plural conforme a parte do corpo. Avere fame/sete/freddo/caldo indica fome, sede, frio e calor. Essas expressões relatam necessidades, não estabelecem diagnóstico. Em uma mensagem, descreva o problema e peça atendimento sem inventar causas.",
+        "examples": [
+          "Ho mal di gola. — Estou com dor de garganta.",
+          "Mi fanno male i piedi. — Meus pés doem.",
+          "Vorrei fissare un appuntamento. — Gostaria de marcar uma consulta."
+        ],
+        "bizu": "FA/FANNO concordam com a parte que dói, não com mi.",
+        "trap": "Sono freddo pode caracterizar frieza; para sentir frio, use Ho freddo.",
+        "practice": "1. Complete: Mi ___ male i piedi. 2. Traduza “Estou com sede”. 3. O que ricetta significa na farmácia?",
+        "answer": "1. Fanno. 2. Ho sete. 3. Receita médica. Em culinária, a mesma palavra pode ter outro contexto.",
+        "summary": "Sensações frequentes usam avere.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "08. Emoções, relações e falsos amigos",
+        "objective": "A2–B2: expressar emoções sem tradução literal.",
+        "rule": "Felice é feliz; preoccupato, preocupado; deluso, decepcionado; sollevato, aliviado; orgoglioso, orgulhoso. Ajuste gênero e número: preoccupata, preoccupati. Avere voglia di + infinitivo significa ter vontade; andare d’accordo con é dar-se bem com. Mi manca la mia famiglia significa sinto falta da minha família; o sujeito é aquilo que faz falta, e o verbo varia: mi mancano i miei amici. Atualmente é attualmente; eventualmente pode significar se necessário/conforme o caso. Aprenda cada construção como uma unidade de sentido.",
+        "examples": [
+          "Sono sollevata. — Estou aliviada.",
+          "Ho voglia di riposare. — Estou com vontade de descansar.",
+          "Mi mancano i miei amici. — Sinto falta dos meus amigos."
+        ],
+        "bizu": "Em MANCARE, a coisa ou pessoa que faz falta determina o verbo.",
+        "trap": "Deluso significa decepcionado, não delirante.",
+        "practice": "1. Traduza “Estou preocupado”, dito por homem. 2. Complete: Mi ___ i miei amici. 3. Traduza Ho voglia di studiare.",
+        "answer": "1. Sono preoccupato. 2. Mancano. 3. Estou com vontade de estudar. Di faz parte da construção.",
+        "summary": "Sentimentos exigem atenção à concordância e à estrutura.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      },
+      {
+        "title": "09. Conectores e palavras de evidência",
+        "objective": "B2–C2: interpretar evidência e redigir com precisão.",
+        "rule": "Inoltre acrescenta; tuttavia contrasta; quindi apresenta consequência; invece contrapõe; cioè reformula; benché introduz concessão e normalmente pede congiuntivo. Dati são dados; prova é prova; indizio, indício; fonte, fonte; conclusione, conclusão. Suggerire é mais cauteloso que dimostrare. Alcuni significa alguns, não todos. Ao escrever, defina a relação lógica antes de selecionar o conector. Uma frase deve apoiar a seguinte; variar palavras não corrige falta de sentido. Ao sintetizar, preserve os limites da evidência e do grupo mencionado.",
+        "examples": [
+          "I dati suggeriscono un miglioramento. — Os dados sugerem uma melhora.",
+          "Alcuni studenti hanno fatto progressi. — Alguns estudantes progrediram.",
+          "Ha studiato; tuttavia, ha ancora dubbi. — Estudou; contudo, ainda tem dúvidas."
+        ],
+        "bizu": "Escolha primeiro a relação: ADIÇÃO, CONTRASTE, REFORMULAÇÃO ou CONCLUSÃO.",
+        "trap": "Trocar suggeriscono por dimostrano fortalece a afirmação e pode distorcer o texto.",
+        "practice": "1. Qual reformula: cioè ou inoltre? 2. Traduza “Alguns estudantes progrediram”. 3. Pode trocar alcuni por tutti numa síntese fiel?",
+        "answer": "1. Cioè. 2. Alcuni studenti hanno fatto progressi. 3. Não. Tutti amplia a afirmação para todo o grupo.",
+        "summary": "Conectores ligam ideias; quantificadores delimitam o alcance.",
+        "links": [
+          [
+            "Loescher — fichas de italiano",
+            "https://italianoperstranieri.loescher.it/materiale-didattico"
+          ],
+          [
+            "RAI Scuola — italiano para estrangeiros",
+            "https://www.raiscuola.rai.it/percorsi/corsoditalianoperstranieri"
+          ],
+          [
+            "CILS — modelos de avaliação",
+            "https://cils.unistrasi.it/1/89/188/Esempi-prove-di-esami.htm"
+          ]
+        ]
+      }
+    ]
+  }
+}

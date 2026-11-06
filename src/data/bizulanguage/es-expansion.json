@@ -1,0 +1,485 @@
+{
+  "name": "Espanhol",
+  "lessons": {
+    "I": [
+      {
+        "title": "00.1. Do zero — construir frases e estudar por texto",
+        "objective": "Pré-A1: reconhecer a ordem básica e a pontuação espanhola.",
+        "rule": "Comece com sujeito, verbo e complemento: Yo estudio español. Em espanhol, a terminação verbal muitas vezes permite omitir o pronome: Estudio español. Use o pronome quando ele ajudar a esclarecer ou contrastar. Uma frase negativa normalmente põe no antes do verbo. As perguntas escritas usam sinal de abertura e fechamento: ¿...? Este caderno oferece aulas, exercícios e respostas em texto. Leia, altere um exemplo e escreva sem consultar; depois compare com o gabarito. As referências são complementares. A semelhança com o português facilita a leitura, mas não elimina diferenças de significado ou de construção.",
+        "examples": [
+          "Yo estudio español. — Eu estudo espanhol.",
+          "No trabajo aquí. — Não trabalho aqui.",
+          "¿Vives en Brasil? — Você mora no Brasil?"
+        ],
+        "bizu": "Aprenda uma frase e troque uma informação: cidade, pessoa, horário ou objeto.",
+        "trap": "Semelhança visual não garante significado igual: embarazada significa grávida.",
+        "practice": "1. Negue Trabajo aquí. 2. Escreva “Eu estudo espanhol” sem pronome. 3. Coloque os sinais na pergunta Vives aquí.",
+        "answer": "1. No trabajo aquí. 2. Estudio español. 3. ¿Vives aquí? A abertura também faz parte da pontuação escrita.",
+        "summary": "Use frases completas e confira os falsos amigos.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ],
+          [
+            "Universidade do Texas — situações de comunicação",
+            "https://laits.utexas.edu/spe/"
+          ],
+          [
+            "OpenLearn — cursos gratuitos de línguas",
+            "https://www.open.edu/openlearn/languages/free-courses"
+          ]
+        ]
+      },
+      {
+        "title": "01.1. Escrita — acento, ñ, r e sinais de pergunta",
+        "objective": "Pré-A1–A1: copiar e distinguir formas frequentes.",
+        "rule": "Ñ é uma letra diferente de n: año significa ano; ano tem outro significado. Em espanhol, a sílaba tônica geralmente é a penúltima nas palavras terminadas em vogal, n ou s, e a última nas demais; o acento gráfico pode marcar o desvio. Há também acentos que distinguem palavras, como tú/tu e él/el. R no começo de palavra e rr entre vogais representam a vibrante forte; r simples entre vogais pode distinguir palavras. Essas pistas de escrita ajudam a reconhecer vocabulário, mas um caderno textual não verifica pronúncia. Preserve sinais e acentos ao copiar.",
+        "examples": [
+          "Tu libro está aquí. — Seu livro está aqui.",
+          "Tú estudias; él trabaja. — Você estuda; ele trabalha.",
+          "¿Qué quieres? — O que você quer?"
+        ],
+        "bizu": "TÚ é pessoa; TU acompanha um nome. ÉL é pronome; EL é artigo.",
+        "trap": "Carro e caro não são grafias intercambiáveis; rr pode mudar a palavra.",
+        "practice": "1. Complete: ___ casa (tu/tú). 2. Complete: ___ es profesor (el/él). 3. Corrija: Que quieres? numa pergunta direta.",
+        "answer": "1. Tu casa. 2. Él es profesor. 3. ¿Qué quieres? Qué interrogativo leva acento.",
+        "summary": "Acentos e letras como ñ fazem parte do sentido.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "02.1. Números, idade, datas e horas",
+        "objective": "A1: dizer idade e marcar horários.",
+        "rule": "Aprenda uno, dos, tres, diez, veinte e treinta. A idade usa tener: Tengo veinte años. Para horas, diga Es la una no singular e Son las dos no plural. Para horário de uma atividade, use a la una ou a las dos. Dias e meses normalmente começam com minúscula: lunes, enero, noviembre. Datas podem ser escritas como el 6 de noviembre. Antes de nome masculino, uno pode assumir un: veintiún años. Ao combinar um compromisso, escreva dia e hora explicitamente, sem depender de um número de data ambíguo.",
+        "examples": [
+          "Tengo veintiún años. — Tenho vinte e um anos.",
+          "La clase empieza a las ocho. — A aula começa às oito.",
+          "Nos vemos el lunes. — Nos vemos na segunda-feira."
+        ],
+        "bizu": "IDADE → TENER; UMA HORA → ES LA; DEMAIS HORAS → SON LAS.",
+        "trap": "Não use soy veinte años para informar idade.",
+        "practice": "1. Complete: ___ treinta años. 2. Complete: ___ la una; ___ las tres. 3. Traduza “A aula começa às nove”.",
+        "answer": "1. Tengo, se o sujeito for eu. 2. Es; son. 3. La clase empieza a las nueve. Para dizer a hora atual: Son las nueve.",
+        "summary": "Tener informa idade; a las indica o horário de uma ação.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "04.1. Rotina e verbos reflexivos",
+        "objective": "A1–A2: escrever uma rotina em sequência.",
+        "rule": "Em levantarse, ducharse e acostarse, o pronome acompanha a pessoa: me, te, se, nos, os, se. No presente, o pronome vem antes do verbo conjugado: me levanto. Com infinitivo, pode ficar ligado a ele: levantarme; em voy a levantarme, também se admite me voy a levantar. Nem todo verbo espanhol reflexivo corresponde a um reflexivo em português. Aprenda a expressão inteira e observe mudanças na raiz: acostarse forma me acuesto, mas nos acostamos. Para narrar a rotina, use primero, después e finalmente.",
+        "examples": [
+          "Me levanto a las siete. — Levanto-me às sete.",
+          "Nos acostamos temprano. — Vamos dormir cedo.",
+          "Voy a ducharme. — Vou tomar banho."
+        ],
+        "bizu": "Primeiro escolha o pronome; depois conjugue o verbo para a pessoa.",
+        "trap": "Me levantas significa “você me levanta”, não “eu me levanto”.",
+        "practice": "1. Complete: Yo ___ levanto. 2. Complete: Nosotros ___ acostamos. 3. Reescreva Voy a ducharme com o pronome antes da locução.",
+        "answer": "1. Me. 2. Nos. 3. Me voy a duchar. As duas posições são possíveis nessa construção.",
+        "summary": "Pronome e conjugação devem corresponder à pessoa.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "06.1. Comparações — más, menos, tan e tanto",
+        "objective": "A2: comparar características e quantidades.",
+        "rule": "Compare qualidades com más/menos + adjetivo + que. Para igualdade de qualidade, use tan + adjetivo + como. Para quantidade, tanto concorda com o nome: tantos libros como. Mejor e peor são comparativos frequentes; evite más mejor no padrão estudado. Mayor e menor podem comparar idade, enquanto más grande e más pequeño são usuais para tamanho. Diferencie a pergunta pela característica e pela quantidade. Antes de escrever, identifique o elemento comparado: preço, altura, número de objetos ou frequência de uma ação.",
+        "examples": [
+          "Este libro es más corto que aquel. — Este livro é mais curto que aquele.",
+          "Ana es tan alta como Eva. — Ana é tão alta quanto Eva.",
+          "Tengo tantos libros como tú. — Tenho tantos livros quanto você."
+        ],
+        "bizu": "TAN acompanha qualidade; TANTO varia quando acompanha quantidade de coisas.",
+        "trap": "Não traduza “tão” sempre como tanto: tan interesante, não tanto interesante.",
+        "practice": "1. Complete: tan fácil ___ este. 2. Complete: tantas preguntas ___ respuestas. 3. Corrija: Este resultado es más mejor.",
+        "answer": "1. Como. 2. Como. 3. Este resultado es mejor. Mejor já contém a comparação de superioridade.",
+        "summary": "Qualidade: tan... como; quantidade: tanto(s)/tanta(s)... como.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "08.1. Diálogo escrito — pedir informação na cidade",
+        "objective": "A1–A2: compreender trajetos e solicitar esclarecimento.",
+        "rule": "Leia: “A: Disculpe, ¿dónde está la estación? B: Siga recto y gire a la derecha. Está enfrente del banco. A: ¿Está lejos? B: No, a cinco minutos a pie.” Disculpe é um pedido educado de atenção. Siga e gire são formas de orientação com tratamento usted. Recto significa em frente; a la derecha, à direita; a pie, a pé. Antes de traduzir cada palavra, identifique objetivo, trajeto e referência. Estar enfrente de um lugar não significa estar dentro dele. Para pedir esclarecimento escrito, use ¿Puede escribirlo, por favor?",
+        "examples": [
+          "¿Dónde está la estación? — Onde fica a estação?",
+          "Gire a la derecha. — Vire à direita.",
+          "Está a cinco minutos a pie. — Fica a cinco minutos a pé."
+        ],
+        "bizu": "Localize DESTINO → DIREÇÃO → REFERÊNCIA.",
+        "trap": "Derecha é direita; derecho pode ter outros sentidos, como direito ou reto conforme a construção.",
+        "practice": "1. Qual é o destino? 2. A pessoa deve virar para qual lado? 3. Peça que a informação seja escrita.",
+        "answer": "1. A estação. 2. À direita. 3. ¿Puede escribirlo, por favor? A forma mantém tratamento respeitoso.",
+        "summary": "Interprete a sequência das instruções.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      }
+    ],
+    "M": [
+      {
+        "title": "02.1. A pessoal e objetos diretos",
+        "objective": "B1: distinguir preposição e função do objeto.",
+        "rule": "Em espanhol, objetos diretos que designam pessoas determinadas costumam ser introduzidos por a: Veo a Ana. Isso não transforma o objeto em indireto. Compare Veo la casa e Veo a mi hermana. O uso depende também de especificidade e de construção; não se deve colocar a diante de todo substantivo. Com buscar, a oposição pode envolver uma pessoa identificada ou um profissional não específico. Ao substituir um objeto feminino singular direto, use la no padrão básico: La veo. A preposição inicial pode desaparecer na retomada por pronome.",
+        "examples": [
+          "Veo a mi hermana. La veo. — Vejo minha irmã. Eu a vejo.",
+          "Visito el museo. — Visito o museu.",
+          "Busco un profesor que hable japonés. — Procuro um professor que fale japonês, sem pessoa determinada."
+        ],
+        "bizu": "A antes de pessoa não prova que o objeto seja indireto.",
+        "trap": "Não use a automaticamente diante de objeto inanimado: veo la mesa.",
+        "practice": "1. Complete: Veo ___ Ana. 2. Substitua a mi hermana: Veo a mi hermana. 3. Complete: Visito ___ museo (el/a el).",
+        "answer": "1. A. 2. La veo. 3. El. No segundo exemplo, la retoma objeto direto feminino singular.",
+        "summary": "Objeto direto de pessoa determinada pode receber a.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "05.1. Pedir, ordenar e proibir — imperativos",
+        "objective": "B1–B2: formular pedidos e proibições.",
+        "rule": "Para tú, muitos imperativos afirmativos coincidem com a terceira pessoa do presente: habla, come, escribe. Há irregulares como di, haz, ve, pon, sal, sé, ten e ven. A negativa usa formas do subjuntivo: no hables, no comas, no escribas. Na afirmativa, pronomes se ligam ao verbo; na negativa, ficam antes: dímelo / no me lo digas. O acento escrito pode ser necessário depois da ligação. Para pedidos educados, fórmulas como ¿Podrías...? podem ser mais adequadas que uma ordem direta.",
+        "examples": [
+          "Abre la puerta. — Abra a porta, com tú.",
+          "No abras la ventana. — Não abra a janela.",
+          "Dímelo. / No me lo digas. — Diga-me isso. / Não me diga isso."
+        ],
+        "bizu": "AFIRMATIVA junta o pronome; NEGATIVA põe antes.",
+        "trap": "No habla não é o imperativo negativo de tú; use no hables.",
+        "practice": "1. Negue Abre la puerta. 2. Negue Dímelo. 3. Faça um pedido com podrías para abrir a janela.",
+        "answer": "1. No abras la puerta. 2. No me lo digas. 3. ¿Podrías abrir la ventana? Outras fórmulas de cortesia também são possíveis.",
+        "summary": "Imperativo negativo exige forma própria e muda a posição do pronome.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "07. Leitura guiada — mensagem sobre reserva",
+        "objective": "B1–B2: compreender e escrever mensagens de serviço.",
+        "rule": "Texto: “Buenos días: reservé una habitación para el viernes, pero mi tren llegará después de las diez de la noche. ¿Sería posible recoger la llave en recepción a esa hora? No necesito cambiar la fecha. Solo quisiera confirmar el procedimiento de entrada. Muchas gracias, Lucía.” A autora não cancela a reserva; pede instruções para uma chegada tardia. Reservé relata um fato concluído. Sería posible e quisiera suavizam a solicitação. Em atendimento escrito, explique a situação, delimite o pedido e agradeça. Evite transformar uma pergunta em afirmação garantida.",
+        "examples": [
+          "Llegará después de las diez. — Chegará depois das dez.",
+          "Recoger la llave. — Retirar a chave.",
+          "No necesito cambiar la fecha. — Não preciso mudar a data."
+        ],
+        "bizu": "Procure o que a pessoa QUER e o que ela explicitamente NÃO PEDE.",
+        "trap": "Recepción aqui é a recepção do estabelecimento; não indica necessariamente uma festa.",
+        "practice": "1. Lucía quer mudar o dia? 2. Qual problema motiva a mensagem? 3. Escreva uma pergunta educada para confirmar o horário.",
+        "answer": "1. Não. 2. O trem chegará depois das 22h. 3. Modelo: ¿Podría confirmar el horario de recepción? A resposta do hotel não está no texto.",
+        "summary": "Cortesia e precisão ajudam a delimitar um pedido.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      }
+    ],
+    "A": [
+      {
+        "title": "06. Subjuntivo e informação conhecida ou procurada",
+        "objective": "C1: interpretar identificação, desejo e existência.",
+        "rule": "Em relativas, o indicativo pode apresentar uma característica de um referente identificado, enquanto o subjuntivo pode expressar uma condição desejada sem afirmar a existência do referente. Busco al profesor que habla japonés aponta para um professor identificado; busco un profesor que hable japonés procura alguém com essa capacidade. A escolha depende do sentido e não apenas da presença de que. Não memorize “que pede subjuntivo”: compare Sé que viene e Espero que venga. O primeiro apresenta conhecimento; o segundo, expectativa.",
+        "examples": [
+          "Conozco a alguien que sabe hacerlo. — Conheço alguém que sabe fazer isso.",
+          "Necesito a alguien que sepa hacerlo. — Preciso de alguém que saiba fazer isso.",
+          "No hay nadie que pueda ayudar. — Não há ninguém que possa ajudar."
+        ],
+        "bizu": "Pergunte: o texto AFIRMA uma característica ou ESTABELECE uma condição procurada?",
+        "trap": "Que sozinho não determina o modo verbal.",
+        "practice": "1. Complete: Sé que ella ___ (viene/venga). 2. Complete: Busco un libro que ___ ejercicios, sem livro específico (tiene/tenga). 3. Explique a diferença entre os dois primeiros exemplos.",
+        "answer": "1. Viene. 2. Tenga. 3. O primeiro afirma que conhece alguém com a habilidade; o segundo expressa necessidade, sem garantir uma pessoa identificada.",
+        "summary": "Modo verbal ajuda a apresentar o estatuto da informação.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "07. Discurso relatado e ponto de vista temporal",
+        "objective": "C1: transformar falas preservando contexto.",
+        "rule": "Relatar fala exige ajustar pessoa, tempo e referências conforme o contexto. Se a referência muda, hoy pode tornar-se ese día e mañana, al día siguiente. Após verbo introdutor no passado, o presente frequentemente passa ao imperfeito e o futuro ao condicional: Dijo que vendría. Entretanto, a transformação não é mecânica: uma informação ainda válida pode manter o presente. Perguntas de sim/não são introduzidas por si: Preguntó si estábamos listos. Ao reescrever, preserve quem fala e a perspectiva temporal, sem mudar o conteúdo.",
+        "examples": [
+          "Dijo: «Estoy cansada». → Dijo que estaba cansada.",
+          "Dijo: «Vendré mañana». → Dijo que vendría al día siguiente, relatando de outro dia.",
+          "Preguntó: «¿Estáis listos?» → Preguntó si estábamos listos, se o narrador fazia parte do grupo."
+        ],
+        "bizu": "Ajuste PESSOA + TEMPO + REFERÊNCIA; não troque palavras isoladamente.",
+        "trap": "Mañana não vira sempre al día siguiente: depende de quando o relato é feito.",
+        "practice": "Relate de outro dia: 1. Ana dijo: «Trabajo aquí». 2. Ana dijo: «Volveré mañana». 3. A mudança de aquí é sempre obrigatória?",
+        "answer": "1. Ana dijo que trabajaba allí, se mudou o lugar de referência. 2. Ana dijo que volvería al día siguiente. 3. Não; se o lugar continua sendo o mesmo, aquí pode permanecer.",
+        "summary": "O relato depende do ponto de vista de quem escreve.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "08. Oficina — argumento, concessão e síntese",
+        "objective": "C1–C2: sintetizar e escrever com precisão.",
+        "rule": "Texto-modelo: “Las bibliotecas deberían ampliar sus horarios. Esta medida facilitaría el acceso de quienes trabajan durante el día. Sin embargo, la ampliación exige personal y recursos. Por tanto, conviene evaluar la demanda antes de establecer un horario definitivo.” Deberían recomenda; facilitaría apresenta um efeito projetado; sin embargo acrescenta ressalva; por tanto introduz consequência do raciocínio. Uma síntese deve manter proposta e limite. Diferencie opinião, previsão e fato comprovado. Não acrescente números nem transforme uma possibilidade em certeza ao resumir.",
+        "examples": [
+          "Quienes trabajan = as pessoas que trabalham.",
+          "Sin embargo = no entanto.",
+          "Conviene evaluar = é conveniente avaliar."
+        ],
+        "bizu": "Uma síntese fiel conserva a tese E a ressalva.",
+        "trap": "“Mais horas sempre resolvem o acesso” é mais forte que o texto e elimina suas condições.",
+        "practice": "1. Qual é a proposta? 2. Qual limite é apontado? 3. Resuma em duas frases em espanhol.",
+        "answer": "1. Ampliar os horários. 2. Necessidade de pessoal e recursos. 3. Modelo: Se propone ampliar el horario para facilitar el acceso. Antes de fijarlo, conviene evaluar la demanda y los recursos. Avalie fidelidade e coesão.",
+        "summary": "Argumentação clara combina proposta, motivo e limites.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      }
+    ],
+    "V": [
+      {
+        "title": "06. Compras, valores e falsos amigos",
+        "objective": "A1–B1: comprar e distinguir tamanhos e pagamentos.",
+        "rule": "Precio é preço; descuento, desconto; cambio pode ser troco ou mudança; recibo é recibo; tarjeta é cartão; efectivo é dinheiro em espécie. Caro e barato qualificam preços. Pedir una talla refere-se ao tamanho de roupa; número pode indicar tamanho de calçado. Aprenda frases completas: pagar con tarjeta, pagar en efectivo, probarse una camisa. Não confunda largo, comprido, com largo em português; ancho significa largo. A leitura de uma etiqueta exige observar unidade, preço e condições, sem concluir que todo anúncio inclui desconto.",
+        "examples": [
+          "¿Puedo pagar con tarjeta? — Posso pagar com cartão?",
+          "¿Tiene una talla más grande? — Tem um tamanho maior?",
+          "Quisiera probarme esta camisa. — Gostaria de experimentar esta camisa."
+        ],
+        "bizu": "TARJETA paga; TALLA mede roupa; EFECTIVO é dinheiro em espécie.",
+        "trap": "Largo = comprido; ancho = largo. Roupa larga e roupa comprida não são a mesma coisa.",
+        "practice": "1. Traduza “em dinheiro”. 2. Peça um tamanho menor. 3. O que significa una calle ancha?",
+        "answer": "1. En efectivo. 2. ¿Tiene una talla más pequeña? 3. Uma rua larga. Não significa necessariamente longa.",
+        "summary": "Vocabulário de compra precisa de contexto e unidade.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "07. Saúde e corpo — relatar necessidades",
+        "objective": "A2–B1: comunicar necessidades de saúde por escrito.",
+        "rule": "Cabeza é cabeça; espalda, costas; garganta, garganta; rodilla, joelho; cita pode ser consulta agendada; receta é receita médica ou culinária conforme o contexto. Duele concorda com a parte que dói: me duele la cabeza; me duelen los pies. Tener fiebre significa estar com febre. Estar mareado indica estar tonto. Essas expressões comunicam sintomas, não estabelecem diagnóstico. Para escrever uma mensagem, informe o problema de forma objetiva e peça atendimento. Não traduza “estou com” sempre com estar: muitas expressões usam tener.",
+        "examples": [
+          "Me duele la espalda. — Minhas costas doem.",
+          "Me duelen los pies. — Meus pés doem.",
+          "Quisiera pedir una cita. — Gostaria de marcar uma consulta."
+        ],
+        "bizu": "Quem determina DUELE/DUELEN é a parte do corpo, não me.",
+        "trap": "Estoy embarazada significa estou grávida; não significa estou envergonhada.",
+        "practice": "1. Complete: Me ___ las rodillas. 2. Traduza “Estou com febre”. 3. Traduza “Estou tonto”, dito por homem.",
+        "answer": "1. Duelen. 2. Tengo fiebre. 3. Estoy mareado. Para mulher: mareada.",
+        "summary": "Aprenda sintoma e construção verbal juntos.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "08. Emoções, relações e expressões usuais",
+        "objective": "A2–B2: descrever sentimentos e relações.",
+        "rule": "Contento é contente; preocupado, preocupado; decepcionado, decepcionado; orgulloso, orgulhoso; aburrido pode ser entediado ou entediante conforme ser/estar. Tener ganas de + infinitivo expressa vontade; llevarse bien con alguém significa dar-se bem; echar de menos significa sentir falta. Ser aburrido caracteriza como entediante; estar aburrido descreve estado de tédio. Acrescente uma causa com porque para produzir frases úteis. Aprenda também a regência: preocupado por, orgulloso de. O contexto evita traduções palavra por palavra.",
+        "examples": [
+          "Estoy aburrido. — Estou entediado.",
+          "Me llevo bien con mis compañeros. — Dou-me bem com meus colegas.",
+          "Tengo ganas de descansar. — Estou com vontade de descansar."
+        ],
+        "bizu": "SER caracteriza; ESTAR pode apresentar o estado, como no contraste aburrido.",
+        "trap": "Echar de menos não se traduz literalmente como “jogar de menos”.",
+        "practice": "1. Traduza “Sinto falta da minha família”. 2. Complete: orgullosa ___ su trabajo. 3. Compare Es aburrido e Está aburrido.",
+        "answer": "1. Echo de menos a mi familia. 2. De. 3. A primeira pode caracterizar alguém como entediante; a segunda indica que está entediado.",
+        "summary": "Expressões inteiras carregam sentidos que as palavras isoladas não mostram.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      },
+      {
+        "title": "09. Conectores e palavras para avaliar evidência",
+        "objective": "B2–C2: escrever argumentos e resumos fiéis.",
+        "rule": "Además acrescenta; sin embargo contrasta; por eso apresenta consequência; aunque introduz concessão; es decir reformula; en cambio contrapõe situações. Para avaliar informação, use datos, prueba, indicio, fuente e conclusión. Indicio é indício; não equivale automaticamente a prova conclusiva. Sugiere é mais cauteloso que demuestra. Ao conectar frases, identifique primeiro a relação: adição, oposição, causa ou reformulação. Um conector elegante não corrige uma relação lógica inexistente. Para resumir, preserve quantificadores como algunos e muchos.",
+        "examples": [
+          "Estudia mucho; sin embargo, necesita descansar.",
+          "Hay indicios, pero faltan pruebas. — Há indícios, mas faltam provas.",
+          "Algunos participantes mejoraron. — Alguns participantes melhoraram."
+        ],
+        "bizu": "Classifique a relação antes de escolher o conector.",
+        "trap": "Algunos significa alguns; trocar por todos amplia indevidamente a afirmação.",
+        "practice": "1. Qual conector reformula: es decir ou además? 2. Traduza “Os dados sugerem uma melhora”. 3. Algunos pode virar todos numa síntese?",
+        "answer": "1. Es decir. 2. Los datos sugieren una mejora. 3. Não. Isso ampliaria indevidamente o alcance da afirmação.",
+        "summary": "Conectores organizam; quantificadores delimitam.",
+        "links": [
+          [
+            "Cervantes — conteúdos e referência curricular",
+            "https://cvc.cervantes.es/ensenanza/"
+          ],
+          [
+            "Cervantes — leituras graduadas",
+            "https://cvc.cervantes.es/aula/lecturas/"
+          ],
+          [
+            "DELE — modelos de avaliação",
+            "https://examenes.cervantes.es/es/dele/preparar-prueba/modelos-examen"
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,18 +1,21 @@
 'use strict';
 
-const collection = [
+const original = [
   require('../data/bizulanguage/en.json'),
   require('../data/bizulanguage/es.json'),
   require('../data/bizulanguage/fr.json'),
   require('../data/bizulanguage/it.json'),
 ];
+const expansion = ['en','es','fr','it'].map(code => require('../data/bizulanguage/'+code+'-expansion.json'));
+const collection = [...original, ...expansion];
+const originalMarker = 'bizulanguage_v1';
 const levels = {
   I: 'Iniciante',
   M: 'Intermediário',
   A: 'Avançado',
   V: 'Aumentar vocabulário',
 };
-const marker = 'bizulanguage_v1';
+const marker = 'bizulanguage_v2';
 const entities = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'};
 const escape = value => value.replace(/[&<>"]/g, char => entities[char]);
 const lessonCount = collection.reduce((count, language) =>
@@ -21,10 +24,13 @@ const lessonCount = collection.reduce((count, language) =>
 function lessonHtml(lesson) {
   const references = lesson.links?.map(([label, url]) =>
     '<li><a href="' + escape(url) + '">' + escape(label) + '</a></li>').join('');
-  return '<h2>Explicação</h2><p>' + escape(lesson.rule) + '</p>' +
+  return (lesson.objective ? '<h2>Objetivo</h2><p>'+escape(lesson.objective)+'</p>' : '') + '<h2>Explicação</h2><p>' + escape(lesson.rule) + '</p>' +
     '<h2>Exemplos</h2><ul>' + lesson.examples.map(example => '<li>' + escape(example) + '</li>').join('') + '</ul>' +
+    (lesson.bizu ? '<h2>Bizu</h2><p>'+escape(lesson.bizu)+'</p>' : '') +
+    (lesson.trap ? '<h2>Atenção à pegadinha</h2><p>'+escape(lesson.trap)+'</p>' : '') +
     '<h2>Pratique</h2><p>' + escape(lesson.practice) + '</p>' +
     '<h2>Gabarito</h2><p>' + escape(lesson.answer) + '</p>' +
+    (lesson.summary ? '<h2>Resumo para revisar</h2><p>'+escape(lesson.summary)+'</p>' : '') +
     (references ? '<h2>Referências para aprofundar</h2><ul>' + references + '</ul>' : '') +
     '<p><strong>BizuLanguage</strong></p>';
 }
@@ -42,7 +48,10 @@ function install(lib) {
       ?? lib.createFolder({name, parentId});
     const matching = lib.db.prepare('SELECT 1 FROM notes WHERE folder_id = ? AND title = ? AND content_html = ? AND deleted_at IS NULL');
     let inserted = 0;
-    for (const {name, lessons} of collection) {
+    // v1 lessons may have been edited, moved, archived or deleted by the owner.
+    // Updating the collection adds only the new edition; it never recreates v1 notes.
+    const hasOriginal = Boolean(lib.db.prepare('SELECT 1 FROM meta WHERE key = ?').get(originalMarker));
+    for (const {name, lessons} of (hasOriginal ? expansion : collection)) {
       const parentId = folder(name);
       for (const [key, label] of Object.entries(levels)) {
         const folderId = folder(label, parentId);
@@ -54,9 +63,10 @@ function install(lib) {
         }
       }
     }
+    lib.db.prepare('INSERT OR IGNORE INTO meta(key, value) VALUES (?, ?)').run(originalMarker, '1');
     lib.db.prepare('INSERT INTO meta(key, value) VALUES (?, ?)').run(marker, '1');
     return inserted;
   });
 }
 
-module.exports = {install, installed, lessonCount};
+module.exports = {install, installed, lessonCount, lessonHtml};

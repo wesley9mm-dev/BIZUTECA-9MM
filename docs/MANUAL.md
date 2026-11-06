@@ -14,7 +14,7 @@ Arraste a borda da biblioteca para ajustar a largura. Clique duas vezes na borda
 
 Na biblioteca, abra **Inglês**, **Espanhol**, **Francês** ou **Italiano**. Em cada idioma, as pastas **Iniciante**, **Intermediário**, **Avançado** e **Aumentar vocabulário** agrupam as aulas por assunto. Comece pelo roteiro na pasta Iniciante.
 
-As 113 anotações podem ser lidas offline. Elas incluem explicações em português, exemplos, atividades e gabaritos. Os roteiros indicam fontes externas para aprofundar o estudo. Na biblioteca que você já usa, entre em **Dados e configurações → Acrescentar BizuLanguage**. O programa cria um backup e acrescenta as aulas à biblioteca atual.
+As 177 anotações podem ser lidas offline. Elas incluem explicações em português, exemplos, atividades e gabaritos. Os roteiros indicam fontes externas para aprofundar o estudo. Na biblioteca que você já usa, entre em **Dados e configurações → Acrescentar / atualizar BizuLanguage**. O programa cria um backup e acrescenta as aulas à biblioteca atual.
 
 ## Escrever e localizar material
 
@@ -47,3 +47,13 @@ A Home mostra o próximo compromisso. Clique nele para abrir o dia correspondent
 4. Abra a nova versão e confira seus materiais. **Local de salvamento → Abrir pasta** mostra o endereço da biblioteca ativa.
 
 [Versões do Bizuteca 9MM](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases)
+
+## Atualização 1.3.0 — caderno de idiomas e Home
+
+A Home apresenta **Pastas-mãe** em ordem alfabética. Clique em uma delas para acessar as subpastas e, depois, as anotações. Recentes e Favoritos continuam disponíveis no menu. Anotações sem pasta aparecem em uma seção própria para não ficarem escondidas. O próximo compromisso permanece na Home.
+
+O BizuLanguage contém **177 aulas e anotações em texto**: 56 de inglês, 41 de espanhol, 40 de francês e 40 de italiano. As 64 novas aulas incluem objetivo, explicação, exemplos, bizu, pegadinha, prática, gabarito e resumo. Não exigem áudio, vídeo ou internet. Os links ao final são consultas opcionais.
+
+**Biblioteca nova:** o material completo já vem incluído. **Biblioteca existente:** abra Dados e configurações → Acrescentar / atualizar BizuLanguage e confirme. A aplicação cria uma cópia de segurança antes de acrescentar. Quem já tem a edição anterior recebe somente as 64 aulas novas; notas antigas editadas, movidas, arquivadas ou excluídas não são recriadas nem sobrescritas. A operação não se repete ao clicar novamente.
+
+O caderno trabalha leitura, gramática, vocabulário e escrita. Os níveis são referências de organização, não uma certificação de fluência. Veja o [catálogo e a sequência de aulas](BIZULANGUAGE.md).

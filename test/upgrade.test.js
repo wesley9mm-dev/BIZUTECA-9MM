@@ -125,8 +125,8 @@ test('BizuLanguage installs once with four complete study paths and preserves ex
   const {dir,db} = fixture(t);
   const parent = db.createFolder({name:'INGLÊS'});
   const personal = db.createNote({folderId:parent,title:'Anotação pessoal',contentHtml:'<p>Meu conteúdo</p>'});
-  assert.equal(course.install(db),113);
-  assert.equal(course.lessonCount,113);
+  assert.equal(course.install(db),course.lessonCount);
+  assert.equal(course.lessonCount,177);
   assert.equal(course.install(db),0);
   const folders = db.listFolders();
   assert.deepEqual(folders.filter(f=>f.parentId===null).map(f=>f.name.toLowerCase()).sort(),
@@ -137,7 +137,7 @@ test('BizuLanguage installs once with four complete study paths and preserves ex
     assert.ok(levels.every(f=>db.listNotes({folderId:f.id}).length>=5));
   }
   const lessons = db.listNotes({tag:'BizuLanguage'});
-  assert.equal(lessons.length,113);
+  assert.equal(lessons.length,course.lessonCount);
   for (const {id} of lessons) {
     const note = db.getNote(id);
     assert.match(note.contentHtml, /Explicação.*Exemplos.*Pratique.*Gabarito.*<p><strong>BizuLanguage<\/strong><\/p>$/);
@@ -152,7 +152,7 @@ test('BizuLanguage installs once with four complete study paths and preserves ex
   const restored=new Library(file);
   try {
     assert.equal(course.installed(restored),true);
-    assert.equal(restored.listNotes({tag:'BizuLanguage'}).length,113);
+    assert.equal(restored.listNotes({tag:'BizuLanguage'}).length,course.lessonCount);
     assert.equal(restored.getNote(personal).contentText,'Meu conteúdo');
   } finally {restored.close();}
 });

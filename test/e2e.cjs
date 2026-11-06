@@ -5,7 +5,8 @@ const os = require('node:os');
 const path = require('node:path');
 const {_electron:electron} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
 const dates = require('../src/core/dates');
-const {decodePackage} = require('../src/core/storage');
+const {decodePackage,assertDirectory} = require('../src/core/storage');
+const runtime = require('../src/core/runtime');
 
 const root = path.resolve(__dirname,'..');
 const data = fs.mkdtempSync(path.join(os.tmpdir(),'bizuteca-e2e-'));
@@ -16,12 +17,12 @@ const future = dates.key(new Date(new Date().getFullYear()+1,1,20));
 let application, page;
 const pageErrors = [];
 
-async function launch() {
+async function launch(libraryBase=data) {
   const packaged = process.env.BIZUTECA_E2E_EXECUTABLE;
   application = await electron.launch({
     executablePath:packaged || require('electron'),
     args:packaged ? [] : [root],
-    env:{...process.env,BIZUTECA_TEST_DATA:data},
+    env:{...process.env,BIZUTECA_TEST_DATA:libraryBase},
     timeout:30000
   });
   const deadline=Date.now()+30000;
@@ -52,7 +53,7 @@ async function step(name,run) {
     await launch();
     await step('Abertura e biblioteca vazia',async()=>{
       assert.equal((await call('listFolders')).length,0);
-      assert.equal((await call('init')).version,'1.1.0');
+      assert.equal((await call('init')).version,require('../package.json').version);
       await page.locator('#next-event').getByText('Nenhum compromisso futuro.').waitFor();
       await page.screenshot({path:path.join(output,'home.png')});
     });
@@ -190,6 +191,19 @@ async function step(name,run) {
     assert.equal((await call('listEvents')).length,1);
     assert.equal((await call('listNotes')).length,1);
     console.log('PASS Evento e nota persistem após fechar e reabrir');
+    const existing=(await call('init')).directory;
+    await application.close();
+    application=null;
+    page=null;
+    const blocked=fs.mkdtempSync(path.join(os.tmpdir(),'bizuteca-e2e-bloqueado-'));
+    fs.writeFileSync(runtime.supportDirectory(blocked),'bloqueia a gravação no local portátil');
+    const pointer=runtime.configurationPath(blocked,blocked,assertDirectory);
+    fs.writeFileSync(pointer,JSON.stringify({absolute:existing}));
+    await launch(blocked);
+    assert.equal((await call('init')).directory,existing);
+    assert.equal((await call('listNotes')).length,1);
+    assert.equal((await call('listEvents')).length,1);
+    console.log('PASS Pasta escolhida reaproveitada sem pedir localização ao abrir');
   } catch(error) {
     console.error(error);
     if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'falha.png')}).catch(()=>{});

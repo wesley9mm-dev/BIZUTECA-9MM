@@ -2,12 +2,26 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
+const { createHash } = require('node:crypto');
 
 function supportDirectory(base) { return path.join(base, 'BIZUTECA-Suporte'); }
-function locateConfiguration(base) {
+function configurationPath(base, appData, ensureWritable) {
+  const directory = supportDirectory(base);
+  const portable = path.join(directory, 'config.json');
+  const resolved = path.resolve(base);
+  const key = createHash('sha256').update(process.platform === 'win32' ? resolved.toLowerCase() : resolved).digest('hex');
+  const fallbackDirectory = path.join(appData, 'Bizuteca 9MM', 'localizacoes');
+  const fallback = path.join(fallbackDirectory, key + '.json');
+  if (!fs.existsSync(fallback)) {
+    try { ensureWritable(directory); return portable; } catch {}
+  }
+  ensureWritable(fallbackDirectory);
+  return fallback;
+}
+function locateConfiguration(base, preferred) {
   const current = path.join(supportDirectory(base), 'config.json');
   const legacy = path.join(base, 'bizuteca-local.json');
-  const source = fs.existsSync(current) ? current : fs.existsSync(legacy) ? legacy : null;
+  const source = [preferred, current, legacy].find(file => file && fs.existsSync(file));
   if (!source) return null;
   let saved;
   try { saved = JSON.parse(fs.readFileSync(source, 'utf8')); }
@@ -44,4 +58,4 @@ function cleanupSession(directory) {
     return true;
   } catch { return false; } // Windows can retain cache locks until its child processes exit.
 }
-module.exports = { supportDirectory, locateConfiguration, dataDirectory, configureRuntime, cleanupSession };
+module.exports = { supportDirectory, configurationPath, locateConfiguration, dataDirectory, configureRuntime, cleanupSession };

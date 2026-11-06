@@ -55,3 +55,23 @@ test('runtime: cleanup removes only the temporary session and leaves library and
   assert.equal(fs.readFileSync(path.join(base, 'biblioteca.db'), 'utf8'), 'library');
   assert.equal(fs.readFileSync(path.join(result.profileDirectory, 'config-test'), 'utf8'), 'persistent');
 });
+
+test('runtime: remembers a chosen library when the portable directory is read-only', t => {
+  const folder = fixture(t);
+  const base = path.join(folder, 'portatil');
+  const appData = path.join(folder, 'app-data');
+  const destination = path.join(folder, 'meu-caderno');
+  const writable = directory => fs.mkdirSync(directory, { recursive: true });
+  const readOnlyPortable = directory => {
+    if (directory === runtime.supportDirectory(base)) throw Error('Acesso negado');
+    writable(directory);
+  };
+  const pointer = runtime.configurationPath(base, appData, readOnlyPortable);
+  assert.equal(path.dirname(pointer), path.join(appData, 'Bizuteca 9MM', 'localizacoes'));
+  assert.equal(runtime.locateConfiguration(base, pointer), null);
+  fs.writeFileSync(pointer, JSON.stringify({ absolute: destination }));
+  assert.equal(runtime.configurationPath(base, appData, readOnlyPortable), pointer);
+  assert.equal(runtime.configurationPath(base, appData, writable), pointer);
+  assert.equal(runtime.dataDirectory(base, runtime.locateConfiguration(base, pointer)), destination);
+  assert.notEqual(runtime.configurationPath(path.join(folder, 'outro-portatil'), appData, writable), pointer);
+});

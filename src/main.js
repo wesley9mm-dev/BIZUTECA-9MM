@@ -3,6 +3,7 @@ const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,ClipboardItem,shell,n
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const runtime=require('./core/runtime');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
+const appData=app.getPath('appData');
 const runtimePaths=runtime.configureRuntime(app,portableBase);
 const {Library}=require('./core/library');
 const {search}=require('./core/search');
@@ -237,11 +238,25 @@ app.whenReady().then(async()=>{
  splash=new BrowserWindow({width,height:Math.round(width/1.6),frame:false,show:false,resizable:false,closable:false,backgroundColor:'#08130a',webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false}});
  await splash.loadFile(path.join(__dirname,'renderer','splash.html'));
  splash.show();
- base=process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));if(test)base=test;
- pointer=path.join(runtime.supportDirectory(base),'config.json');const saved=runtime.locateConfiguration(base);
+ base=portableBase;
+ pointer=runtime.configurationPath(base, test || appData, storage.assertDirectory);
+ const saved=runtime.locateConfiguration(base,pointer);
  dir=test&&!saved?test:runtime.dataDirectory(base,saved);
- if(saved&&!fs.existsSync(path.join(dir,'biblioteca.db'))){splash.hide();const result=await dialog.showMessageBox({type:'warning',buttons:['Localizar biblioteca','Encerrar'],defaultId:0,cancelId:1,message:'A pasta de dados não foi encontrada.',detail:'Conecte o pendrive ou localize a pasta original. Nenhuma biblioteca vazia será criada.'});if(result.response!==0){app.quit();return;}const picked=await dialog.showOpenDialog({title:'Localizar pasta que contém biblioteca.db',properties:['openDirectory']});if(picked.canceled||!fs.existsSync(path.join(picked.filePaths[0],'biblioteca.db'))){app.quit();return;}dir=picked.filePaths[0];}
- try{storage.assertDirectory(base);}catch{const picked=await dialog.showOpenDialog({title:'Escolher uma pasta gravável para configuração e dados',properties:['openDirectory','createDirectory']});if(picked.canceled){app.quit();return;}base=picked.filePaths[0];fs.mkdirSync(runtime.supportDirectory(base),{recursive:true});pointer=path.join(runtime.supportDirectory(base),'config.json');dir=runtime.dataDirectory(base,null);}
+ if(saved&&!fs.existsSync(path.join(dir,'biblioteca.db'))){
+   splash.hide();
+   const result=await dialog.showMessageBox({type:'warning',buttons:['Localizar biblioteca','Encerrar'],defaultId:0,cancelId:1,message:'A pasta de dados não foi encontrada.',detail:'Conecte o pendrive ou localize a pasta original. Nenhuma biblioteca vazia será criada.'});
+   if(result.response!==0){app.quit();return;}
+   const picked=await dialog.showOpenDialog({title:'Localizar pasta que contém biblioteca.db',properties:['openDirectory']});
+   if(picked.canceled||!fs.existsSync(path.join(picked.filePaths[0],'biblioteca.db'))){app.quit();return;}
+   dir=picked.filePaths[0];
+ } else if(!saved && pointer!==path.join(runtime.supportDirectory(base),'config.json') && !fs.existsSync(path.join(dir,'biblioteca.db'))){
+   const picked=await dialog.showOpenDialog({title:'Escolher pasta de dados do Bizuteca',properties:['openDirectory','createDirectory']});
+   if(picked.canceled){app.quit();return;}
+   const selected=picked.filePaths[0];
+   const previous=runtime.locateConfiguration(selected);
+   dir=fs.existsSync(path.join(selected,'biblioteca.db'))?selected:runtime.dataDirectory(selected,previous);
+   if(previous&&!fs.existsSync(path.join(dir,'biblioteca.db')))throw Error('A pasta escolhida aponta para uma biblioteca que não foi encontrada.');
+ }
  try{const opened=openLibrary(dir);lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false}});win.setMenuBarVisibility(false);

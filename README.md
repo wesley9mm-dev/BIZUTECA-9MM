@@ -4,9 +4,9 @@ Anote. Organize. Revise. Domine.
 
 Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por matérias e consulta offline ao material salvo.
 
-[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.3.0-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/BIZUTECA-9MM-Portatil.exe)
+[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.3.1-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.1-rc.42274422046.1/BIZUTECA-9MM-Portatil.exe)
 
-**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.3.0**
+**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.3.1**
 
 ## Downloads para Windows
 
@@ -14,7 +14,8 @@ Todas as versões publicadas são **preliminares**, portáteis e para Windows de
 
 | Versão | Novidades | Download direto | Detalhes |
 | --- | --- | --- | --- |
-| **1.3.0** · Mais recente | Home com pastas-mãe e BizuLanguage com 177 anotações em texto. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.0-rc.42221649832.1) |
+| **1.3.1** · Mais recente | Importação de texto em lote com reversão em caso de erro e validação de anexos para Windows. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.1-rc.42274422046.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.1-rc.42274422046.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.1-rc.42274422046.1) |
+| **1.3.0** | Home com pastas-mãe e BizuLanguage com 177 anotações em texto. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.0-rc.42221649832.1) |
 | **1.2.0** | BizuLanguage com 113 anotações de inglês, espanhol, francês e italiano. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.2.0-rc.42172517583.1) |
 | **1.1.1** | Lembra a pasta da biblioteca quando a pasta do executável impede a gravação. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.1-rc.42168572263.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.1-rc.42168572263.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.1.1-rc.42168572263.1) |
 | **1.1.0** | Abertura com a identidade oficial, calendário, melhorias no editor e backups `.b9mm`. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.1.0-rc.42159833267.1) |
@@ -25,6 +26,12 @@ Todas as versões publicadas são **preliminares**, portáteis e para Windows de
 Para atualizar, faça um backup, feche o Bizuteca e substitua o executável na mesma pasta. Preserve `BIZUTECA-Suporte` e a pasta da biblioteca. [Manual de atualização](docs/MANUAL.md)
 
 [Histórico completo de publicações](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases)
+
+## O que mudou na versão 1.3.1
+
+A importação de TXT, Markdown e HTML agora desfaz todo o lote se um arquivo falhar. Aceita UTF-8 e UTF-16 com BOM. O leitor de backups rejeita nomes de anexos reservados ou que diferem apenas por maiúsculas e minúsculas.
+
+[Validação no Windows](https://github.com/wesley9mm-dev/BIZUTECA-9MM/actions/runs/42274422046)
 
 ## O que mudou na versão 1.3.0
 

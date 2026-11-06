@@ -9,6 +9,7 @@ const {Library}=require('./core/library');
 const {search}=require('./core/search');
 const {consult}=require('./core/assistant');
 const storage=require('./core/storage');
+const {importTextFiles}=require('./core/text-import');
 const events=require('./core/events');
 const bizulanguage=require('./core/bizulanguage');
 const backups=require('./core/backups');
@@ -150,7 +151,11 @@ async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Numb
 }
 async function attach(noteId){if(!lib.getNote(Number(noteId)))throw Error('Anotação não encontrada.');const result=await dialog.showOpenDialog(win,{title:'Anexar PDF, imagem ou texto',properties:['openFile','multiSelections'],filters:[{name:'Materiais de estudo',extensions:['pdf','png','jpg','jpeg','webp','gif','txt']}]});if(result.canceled)return null;const assets=path.join(dir,'anexos');fs.mkdirSync(assets,{recursive:true});let count=0;
  for(const file of result.filePaths){if(fs.statSync(file).size>50*1024*1024)throw Error('Cada anexo pode ter até 50 MB.');const ext=path.extname(file).slice(1).toLowerCase();if(!/^(pdf|png|jpg|jpeg|gif|webp|txt)$/.test(ext))throw Error('Tipo de anexo não permitido.');const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(assets,name),fs.readFileSync(file));lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(Number(noteId),path.basename(file),name,ext);count++;}return count;}
-async function importText(){const result=await dialog.showOpenDialog(win,{title:'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:['txt','md','html','htm']}]});if(result.canceled)return null;let count=0;for(const f of result.filePaths){if(fs.statSync(f).size>20*1024*1024)throw Error('Texto maior que 20 MB.');let html=fs.readFileSync(f,'utf8');if(!/\.html?$/i.test(f))html='<p>'+html.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(/\r?\n/g,'<br>')+'</p>';lib.createNote({title:path.basename(f,path.extname(f)),contentHtml:html});count++;}return count;}
+async function importText(){
+  const result=await dialog.showOpenDialog(win,{title:'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:['txt','md','html','htm']}]});
+  if(result.canceled)return null;
+  return importTextFiles(lib,result.filePaths);
+}
 function imageData(src) {
   if (typeof src !== 'string' || src.length > 28000000) throw Error('Imagem inválida ou muito grande.');
   const local = src.match(/^tv-attachment:\/\/([a-f0-9-]+\.(png|jpe?g|gif|webp|bmp))\/?$/i);
@@ -271,7 +276,7 @@ app.whenReady().then(async()=>{
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
- ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
+ ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage','importText'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|devtools:)/.test(details.url)}));

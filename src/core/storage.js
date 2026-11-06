@@ -8,7 +8,8 @@ const { DatabaseSync } = require('node:sqlite');
 const events = require('./events');
 const MAGIC = Buffer.from('BIZUTECA9MM1\n');
 const hash = b => crypto.createHash('sha256').update(b).digest('hex');
-const safeName = n => typeof n === 'string' && /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]{1,12}$/.test(n);
+const safeName = n => typeof n === 'string' && /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]{1,12}$/.test(n)
+  && !/^(?:CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])\./i.test(n);
 function atomicWrite(file, data) {
   const temp = file + '.' + crypto.randomUUID() + '.tmp';
   const fd = fs.openSync(temp, 'wx');
@@ -47,13 +48,13 @@ function decodePackage(raw) {
   } else if(raw.subarray(0,old.length).equals(old)) {
     doc=JSON.parse(zlib.inflateSync(raw.subarray(old.length),{maxOutputLength:512*1024*1024}).toString('utf8'));
     if(doc.format!=='taticas-vagabundas-backup'||doc.version!==1)throw Error('Backup antigo inválido.');
-  } else throw Error('Escolha um arquivo .bizuteca ou .tvbackup válido.');
+  } else throw Error('Escolha um arquivo .b9mm, .bizuteca ou .tvbackup válido.');
   if(!doc||typeof doc.database!=='string'||!Array.isArray(doc.images)||doc.images.length>30000)throw Error('Pacote incompleto.');
   const database=Buffer.from(doc.database,'base64');
   if(database.subarray(0,16).toString('binary')!=='SQLite format 3\0')throw Error('Banco de dados inválido.');
   if(doc.sha256&&hash(database)!==doc.sha256)throw Error('O pacote está corrompido.');
   const names=new Set();
-  const images=doc.images.map(i=>{if(!i||!safeName(i.name)||typeof i.data!=='string'||names.has(i.name))throw Error('Anexo inválido no pacote.');names.add(i.name);const bytes=Buffer.from(i.data,'base64');if(i.sha256&&hash(bytes)!==i.sha256)throw Error('Anexo corrompido: '+i.name);return {name:i.name,bytes};});
+  const images=doc.images.map(i=>{if(!i||!safeName(i.name)||typeof i.data!=='string'||names.has(i.name.toLowerCase()))throw Error('Anexo inválido no pacote.');names.add(i.name.toLowerCase());const bytes=Buffer.from(i.data,'base64');if(i.sha256&&hash(bytes)!==i.sha256)throw Error('Anexo corrompido: '+i.name);return {name:i.name,bytes};});
   return {database,images};
 }
 function seedTec(lib, data) {

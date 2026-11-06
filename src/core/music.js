@@ -5,16 +5,19 @@ const {Readable}=require('node:stream');
 
 const folder=directory=>path.join(directory,'musicas');
 const isTrack=name=>!name.includes(':')&&name===path.win32.basename(name)&&name===path.posix.basename(name)&&/\.mp3$/i.test(name);
-function list(directory){
+function listFiles(directory){
   try{
-    return fs.readdirSync(folder(directory),{withFileTypes:true})
+    return fs.readdirSync(directory,{withFileTypes:true})
       .filter(entry=>entry.isFile()&&isTrack(entry.name))
-      .map(entry=>entry.name)
-      .sort((a,b)=>a.localeCompare(b,'pt-BR'));
+      .map(entry=>entry.name);
   }catch(error){
     if(error.code==='ENOENT')return [];
     throw error;
   }
+}
+function list(directory,bundled){
+  return [...new Set([...listFiles(folder(directory)),...(bundled?listFiles(bundled):[])])]
+    .sort((a,b)=>a.localeCompare(b,'pt-BR'));
 }
 async function add(directory,sources){
   const target=folder(directory);
@@ -27,12 +30,16 @@ async function add(directory,sources){
   }
   return list(directory);
 }
-async function response(directory,request){
+async function response(directory,request,bundled){
   const url=new URL(request.url);
   const name=decodeURIComponent(url.pathname.slice(1));
   if(url.hostname!=='local'||!isTrack(name))return new Response(null,{status:404});
-  const file=path.join(folder(directory),name);
-  const stat=await fs.promises.lstat(file).catch(()=>null);
+  let file=path.join(folder(directory),name);
+  let stat=await fs.promises.lstat(file).catch(()=>null);
+  if(!stat?.isFile()&&bundled){
+    file=path.join(bundled,name);
+    stat=await fs.promises.lstat(file).catch(()=>null);
+  }
   if(!stat?.isFile()||!stat.size)return new Response(null,{status:404});
   const headers={'Content-Type':'audio/mpeg','Accept-Ranges':'bytes','X-Content-Type-Options':'nosniff'};
   const range=request.headers.get('range');

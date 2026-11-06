@@ -61,13 +61,17 @@ async function step(name,run) {
     fs.writeFileSync(path.join(musicFolder,'Primeira faixa.mp3'),silence);
     fs.writeFileSync(path.join(musicFolder,'Segunda faixa.mp3'),silence);
     await launch();
-    await step('Reprodutor offline inicia uma faixa, pausa e salva o volume',async()=>{
+    await step('Reprodutor abre em silêncio e permite tocar, pausar e ajustar o volume',async()=>{
+      await page.locator('#music-player summary').click();
+      await page.locator('#music-play:not([disabled])').waitFor();
+      assert.equal(await page.locator('#music-autoplay').isChecked(),false);
+      assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.paused&&!audio.getAttribute('src')),true);
+      await page.locator('#music-play').click();
       await page.waitForFunction(()=>{
         const audio=document.querySelector('#music-audio');
         return !audio.paused&&audio.currentTime>0;
       });
       assert.equal((await call('listMusic')).tracks.length,2);
-      await page.locator('#music-player summary').click();
       await page.locator('#music-play').click();
       assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.paused),true);
       await page.locator('#music-volume').fill('35');
@@ -76,6 +80,8 @@ async function step(name,run) {
       assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.volume),0.35);
       await page.locator('#music-play').click();
       await page.waitForFunction(()=>!document.querySelector('#music-audio').paused);
+      await page.locator('#music-autoplay').check();
+      await page.waitForFunction(async()=>(await window.biz.call('listMusic')).options.autoplay===true);
       await page.locator('#music-autoplay').uncheck();
       await page.waitForFunction(async()=>(await window.biz.call('listMusic')).options.autoplay===false);
       await page.locator('#music-play').click();
@@ -336,6 +342,29 @@ async function step(name,run) {
     assert.equal((await call('getNote',personal)).contentText,'Meu texto');
     assert.equal(await call('applyBizuLanguage'),0);
     console.log('PASS Coleção opcional acrescentada uma vez à biblioteca existente');
+    await step('Importar TXT cria as anotações dentro da subpasta aberta',async()=>{
+      const parent=await call('createFolder',{name:'Português'});
+      const child=await call('createFolder',{name:'Sintaxe',parentId:parent});
+      const files=['Regência','Concordância'].map(name=>path.join(previous,name+'.txt'));
+      for(const file of files)fs.writeFileSync(file,'Texto para revisão.');
+      await application.evaluate(({dialog},paths)=>{
+        dialog.showOpenDialog=async(_window,options)=>{
+          if(options.filters[0].extensions.join()!=='txt')throw Error('Filtro TXT não aplicado.');
+          return {canceled:false,filePaths:paths};
+        };
+        dialog.showMessageBox=async(_window,options)=>{
+          if(!options.detail.includes('Sintaxe'))throw Error('Destino incorreto.');
+          return {response:1};
+        };
+      },files);
+      await page.locator('#home').click();
+      await page.locator('#home-folders [data-open-folder="'+parent+'"]').click();
+      await page.locator('#main [data-open-folder="'+child+'"]').click();
+      await page.locator('#folder-import-txt').click();
+      await page.getByText('2 anotação(ões) importada(s).',{exact:true}).waitFor();
+      const notes=(await call('listNotes')).filter(note=>note.folderId===child);
+      assert.deepEqual(notes.map(note=>note.title).sort(),['Concordância','Regência']);
+    });
   } catch(error) {
     console.error(error);
     if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'falha.png')}).catch(()=>{});

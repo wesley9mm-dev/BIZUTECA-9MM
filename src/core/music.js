@@ -1,0 +1,55 @@
+'use strict';
+const fs=require('node:fs');
+const path=require('node:path');
+const {Readable}=require('node:stream');
+
+const folder=directory=>path.join(directory,'musicas');
+const isTrack=name=>!name.includes(':')&&name===path.win32.basename(name)&&name===path.posix.basename(name)&&/\.mp3$/i.test(name);
+function list(directory){
+  try{
+    return fs.readdirSync(folder(directory),{withFileTypes:true})
+      .filter(entry=>entry.isFile()&&isTrack(entry.name))
+      .map(entry=>entry.name)
+      .sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  }catch(error){
+    if(error.code==='ENOENT')return [];
+    throw error;
+  }
+}
+async function add(directory,sources){
+  const target=folder(directory);
+  await fs.promises.mkdir(target,{recursive:true});
+  for(const source of sources){
+    const name=path.basename(source);
+    if(!isTrack(name))continue;
+    try{await fs.promises.copyFile(source,path.join(target,name),fs.constants.COPYFILE_EXCL);}
+    catch(error){if(error.code!=='EEXIST')throw error;}
+  }
+  return list(directory);
+}
+async function response(directory,request){
+  const url=new URL(request.url);
+  const name=decodeURIComponent(url.pathname.slice(1));
+  if(url.hostname!=='local'||!isTrack(name))return new Response(null,{status:404});
+  const file=path.join(folder(directory),name);
+  const stat=await fs.promises.lstat(file).catch(()=>null);
+  if(!stat?.isFile()||!stat.size)return new Response(null,{status:404});
+  const headers={'Content-Type':'audio/mpeg','Accept-Ranges':'bytes','X-Content-Type-Options':'nosniff'};
+  const range=request.headers.get('range');
+  let start=0,end=stat.size-1;
+  if(range){
+    const match=/^bytes=(\d*)-(\d*)$/.exec(range);
+    if(match&&(match[1]||match[2])){
+      if(match[1]){
+        start=Number(match[1]);
+        if(match[2])end=Math.min(end,Number(match[2]));
+      }else start=Math.max(0,stat.size-Number(match[2]));
+    }else start=stat.size;
+    if(start>end||start>=stat.size)return new Response(null,{status:416,headers:{'Content-Range':'bytes */'+stat.size}});
+    headers['Content-Range']='bytes '+start+'-'+end+'/'+stat.size;
+  }
+  headers['Content-Length']=String(end-start+1);
+  const stream=request.method==='HEAD'?null:Readable.toWeb(fs.createReadStream(file,{start,end}));
+  return new Response(stream,{status:range?206:200,headers});
+}
+module.exports={list,add,response};

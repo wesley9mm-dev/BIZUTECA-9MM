@@ -52,7 +52,36 @@ async function step(name,run) {
 
 (async()=>{
   try {
+    // MPEG-1 Layer III frames with silent payload, used to exercise local playback.
+    const musicFolder=path.join(data,'musicas');
+    fs.mkdirSync(musicFolder,{recursive:true});
+    const frame=Buffer.alloc(417);
+    frame.set([0xff,0xfb,0x90,0x64]);
+    const silence=Buffer.concat(Array.from({length:1600},()=>frame));
+    fs.writeFileSync(path.join(musicFolder,'Primeira faixa.mp3'),silence);
+    fs.writeFileSync(path.join(musicFolder,'Segunda faixa.mp3'),silence);
     await launch();
+    await step('Reprodutor offline inicia uma faixa, pausa e salva o volume',async()=>{
+      await page.waitForFunction(()=>{
+        const audio=document.querySelector('#music-audio');
+        return !audio.paused&&audio.currentTime>0;
+      });
+      assert.equal((await call('listMusic')).tracks.length,2);
+      await page.locator('#music-player summary').click();
+      await page.locator('#music-play').click();
+      assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.paused),true);
+      await page.locator('#music-volume').fill('35');
+      await page.locator('#music-volume').dispatchEvent('change');
+      await page.waitForFunction(async()=>(await window.biz.call('listMusic')).options.volume===35);
+      assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.volume),0.35);
+      await page.locator('#music-play').click();
+      await page.waitForFunction(()=>!document.querySelector('#music-audio').paused);
+      await page.locator('#music-autoplay').uncheck();
+      await page.waitForFunction(async()=>(await window.biz.call('listMusic')).options.autoplay===false);
+      await page.locator('#music-play').click();
+      await page.locator('#music-player summary').click();
+    });
+
     await step('Universos Visuais carregam a arte local e aplicam o fundo',async()=>{
       await page.locator('[data-view="themes"]').click();
       await button('Universos Visuais').click();

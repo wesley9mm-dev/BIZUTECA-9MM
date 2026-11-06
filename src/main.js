@@ -11,13 +11,14 @@ const {consult}=require('./core/assistant');
 const storage=require('./core/storage');
 const {importTextFiles}=require('./core/text-import');
 const events=require('./core/events');
+const music=require('./core/music');
 const bizulanguage=require('./core/bizulanguage');
 const backups=require('./core/backups');
 const {DatabaseSync}=require('node:sqlite');
 const {makeHtmlExport}=require('./core/export');
 // Prioritize predictable rendering on older integrated GPUs and removable drives.
 app.disableHardwareAcceleration();
-protocol.registerSchemesAsPrivileged([{scheme:'tv-attachment',privileges:{standard:true,secure:true,supportFetchAPI:true}},{scheme:'biz-file',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
+protocol.registerSchemesAsPrivileged([{scheme:'biz-music',privileges:{standard:true,secure:true,stream:true}},{scheme:'tv-attachment',privileges:{standard:true,secure:true,supportFetchAPI:true}},{scheme:'biz-file',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
 let win,lib,dir,pointer,base,closing=false,maintenance=false,lockPath,splash,backupTimer,backupChanges=0;
 const test=process.env.BIZUTECA_TEST_DATA;
 const allowed=new Set(['listFolders','createFolder','renameFolder','setFolderFavorite','moveFolder','reorderFolders','folderPath','deleteFolder','restoreFolder','purgeFolder','createNote','getNote','updateNote','moveNote','setNoteFavorite','archiveNote','duplicateNote','deleteNote','restoreNote','purgeNote','listTrash','emptyTrash','listNotes','listTags','listVersions','getVersion','restoreVersion','setTags','listSynonyms','addSynonym','removeSynonym']);
@@ -196,6 +197,17 @@ async function action(op,args){
  if(allowed.has(op)){if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
  case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length};
+ case 'listMusic':return {tracks:music.list(dir),options:setting('musicOptions')||{}};
+ case 'addMusic':{
+   const result=await dialog.showOpenDialog(win,{title:'Adicionar músicas locais',properties:['openFile','multiSelections'],filters:[{name:'Músicas MP3',extensions:['mp3']}]});
+   if(result.canceled)return null;
+   return music.add(dir,result.filePaths);
+ }
+ case 'saveMusicOptions':{
+   const value=args[0]||{};
+   const volume=Number.isFinite(value.volume)?Math.max(0,Math.min(100,Math.round(value.volume))):20;
+   return setting('musicOptions',{volume,autoplay:value.autoplay!==false,randomStart:value.randomStart!==false});
+ }
  case 'savePreferences':return setting('preferences',args[0]);
  case 'saveThemes':return setting('customThemes',args[0]);
  case 'search':return search(lib,String(args[0]||'').slice(0,12000),args[1]||{});
@@ -280,13 +292,14 @@ app.whenReady().then(async()=>{
    if(previous&&!fs.existsSync(path.join(dir,'biblioteca.db')))throw Error('A pasta escolhida aponta para uma biblioteca que não foi encontrada.');
  }
  try{const opened=openLibrary(dir);lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
+ protocol.handle('biz-music',req=>music.response(dir,req).catch(()=>new Response(null,{status:404})));
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
- win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false}});win.setMenuBarVisibility(false);
+ win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
  ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage','importText'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
- win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|devtools:)/.test(details.url)}));
+ win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));
  win.on('close',e=>{if(!closing){e.preventDefault();win.webContents.send('prepare-close');}});ipcMain.on('ready-close',event=>{if(event.sender===win.webContents){closing=true;win.close();}});
  const display = (event,success) => {
    if (event && (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)) return;

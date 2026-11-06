@@ -53,6 +53,27 @@ async function step(name,run) {
 (async()=>{
   try {
     await launch();
+    await step('Universos Visuais carregam a arte local e aplicam o fundo',async()=>{
+      await page.locator('[data-view="themes"]').click();
+      await button('Universos Visuais').click();
+      assert.equal(await page.locator('.universe-card-art img').count(),38);
+      const missing=await page.locator('.universe-card-art img').evaluateAll(async images=>{
+        const failures=[];
+        for(const thumbnail of images){
+          const image=new Image();
+          image.src=thumbnail.src;
+          try{await image.decode();}catch{failures.push(thumbnail.src);}
+        }
+        return failures;
+      });
+      assert.deepEqual(missing,[]);
+      await page.locator('[data-theme-apply="universe-goku-e-bills-no-horizonte-azul"]').click();
+      await page.waitForFunction(()=>document.body.dataset.universe==='true'
+        &&getComputedStyle(document.querySelector('.main')).backgroundImage.includes('universe-goku-e-bills-no-horizonte-azul'));
+      assert.equal((await call('init')).settings.theme,'universe-goku-e-bills-no-horizonte-azul');
+      await button('Restaurar padrão 9MM').click();
+      await page.waitForFunction(()=>document.body.dataset.universe==='false');
+    });
     await step('Abertura com a coleção BizuLanguage',async()=>{
       const folders=await call('listFolders');
       assert.deepEqual(folders.filter(folder=>folder.parentId===null).map(folder=>folder.name).sort(),

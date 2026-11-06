@@ -62,7 +62,7 @@ window.BizMusic=(()=>{
     stop();
     tracks=result.tracks;
     volume.value=result.options.volume??20;
-    autoplay.checked=result.options.autoplay!==false;
+    autoplay.checked=result.options.autoplay===true;
     random.checked=result.options.randomStart!==false;
     title.textContent=tracks.length?tracks.length+' faixa(s) disponível(is)':'Nenhuma música adicionada';
     adjustVolume();

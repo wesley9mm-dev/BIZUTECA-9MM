@@ -12,6 +12,7 @@ const storage=require('./core/storage');
 const {importTextFiles}=require('./core/text-import');
 const events=require('./core/events');
 const music=require('./core/music');
+const bundledMusic=path.join(__dirname,'assets','musicas');
 const bizulanguage=require('./core/bizulanguage');
 const backups=require('./core/backups');
 const {DatabaseSync}=require('node:sqlite');
@@ -152,8 +153,8 @@ async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Numb
 }
 async function attach(noteId){if(!lib.getNote(Number(noteId)))throw Error('Anotação não encontrada.');const result=await dialog.showOpenDialog(win,{title:'Anexar PDF, imagem ou texto',properties:['openFile','multiSelections'],filters:[{name:'Materiais de estudo',extensions:['pdf','png','jpg','jpeg','webp','gif','txt']}]});if(result.canceled)return null;const assets=path.join(dir,'anexos');fs.mkdirSync(assets,{recursive:true});let count=0;
  for(const file of result.filePaths){if(fs.statSync(file).size>50*1024*1024)throw Error('Cada anexo pode ter até 50 MB.');const ext=path.extname(file).slice(1).toLowerCase();if(!/^(pdf|png|jpg|jpeg|gif|webp|txt)$/.test(ext))throw Error('Tipo de anexo não permitido.');const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(assets,name),fs.readFileSync(file));lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(Number(noteId),path.basename(file),name,ext);count++;}return count;}
-async function importText(folderId=null){
-  const result=await dialog.showOpenDialog(win,{title:'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:['txt','md','html','htm']}]});
+async function importText(folderId=null,txtOnly=false){
+  const result=await dialog.showOpenDialog(win,{title:txtOnly?'Importar TXT como anotação':'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:txtOnly?['txt']:['txt','md','html','htm']}]});
   if(result.canceled)return null;
   const folder=folderId==null?null:lib.listFolders().find(item=>item.id===folderId);
   if(folderId!=null&&!folder)throw Error('A pasta de destino não está disponível.');
@@ -162,6 +163,7 @@ async function importText(folderId=null){
     detail:'Destino: '+(folder?lib.folderPath(folder.id):'Sem pasta'),
     buttons:['Cancelar','Importar'],defaultId:1,cancelId:0});
   if(answer.response!==1)return null;
+  if(txtOnly&&result.filePaths.some(file=>path.extname(file).toLowerCase()!=='.txt'))throw Error('Selecione apenas arquivos TXT.');
   return importTextFiles(lib,result.filePaths,folderId);
 }
 function imageData(src) {
@@ -197,16 +199,17 @@ async function action(op,args){
  if(allowed.has(op)){if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
  case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length};
- case 'listMusic':return {tracks:music.list(dir),options:setting('musicOptions')||{}};
+ case 'listMusic':return {tracks:music.list(dir,bundledMusic),options:setting('musicOptions')||{}};
  case 'addMusic':{
    const result=await dialog.showOpenDialog(win,{title:'Adicionar músicas locais',properties:['openFile','multiSelections'],filters:[{name:'Músicas MP3',extensions:['mp3']}]});
    if(result.canceled)return null;
-   return music.add(dir,result.filePaths);
+   await music.add(dir,result.filePaths);
+   return music.list(dir,bundledMusic);
  }
  case 'saveMusicOptions':{
    const value=args[0]||{};
    const volume=Number.isFinite(value.volume)?Math.max(0,Math.min(100,Math.round(value.volume))):20;
-   return setting('musicOptions',{volume,autoplay:value.autoplay!==false,randomStart:value.randomStart!==false});
+   return setting('musicOptions',{volume,autoplay:value.autoplay===true,randomStart:value.randomStart!==false});
  }
  case 'savePreferences':return setting('preferences',args[0]);
  case 'saveThemes':return setting('customThemes',args[0]);
@@ -255,7 +258,7 @@ async function action(op,args){
  case 'changeData':return changeData(args[0]);
  case 'openData':return shell.openPath(dir);
  case 'exportMaterial':return exportMaterial(...args);
- case 'importText':return importText(args[0]);
+ case 'importText':return importText(args[0],args[1]===true);
  case 'attach':return attach(args[0]);
  case 'files':return lib.db.prepare('SELECT id,note_id AS noteId,name,file,mime FROM biz_files WHERE note_id=?').all(Number(args[0]));
  case 'openFile':{const f=lib.db.prepare('SELECT * FROM biz_files WHERE id=?').get(Number(args[0]));if(!f||!storage.safeName(f.file))throw Error('Anexo não encontrado.');return shell.openPath(path.join(dir,'anexos',f.file));}
@@ -292,7 +295,7 @@ app.whenReady().then(async()=>{
    if(previous&&!fs.existsSync(path.join(dir,'biblioteca.db')))throw Error('A pasta escolhida aponta para uma biblioteca que não foi encontrada.');
  }
  try{const opened=openLibrary(dir);lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
- protocol.handle('biz-music',req=>music.response(dir,req).catch(()=>new Response(null,{status:404})));
+ protocol.handle('biz-music',req=>music.response(dir,req,bundledMusic).catch(()=>new Response(null,{status:404})));
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();

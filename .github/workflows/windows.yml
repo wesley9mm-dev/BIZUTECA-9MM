@@ -42,7 +42,7 @@ jobs:
         run: |
           $env:BIZUTECA_TEST_DATA = Join-Path $env:RUNNER_TEMP ('bizuteca-portable-' + $env:GITHUB_RUN_ID)
           $env:BIZUTECA_SMOKE = '1'
-          $process = Start-Process -FilePath (Resolve-Path 'dist/BIZUTECA-9MM-Portatil.exe').Path -WindowStyle Hidden -PassThru
+          $process = Start-Process -FilePath (Resolve-Path 'dist/BIZUTECA 9MM.exe').Path -WindowStyle Hidden -PassThru
           $marker = Join-Path $env:BIZUTECA_TEST_DATA 'smoke-ready.json'
           $deadline = (Get-Date).AddSeconds(55)
           while (!(Test-Path -LiteralPath $marker) -and (Get-Date) -lt $deadline) {
@@ -54,8 +54,8 @@ jobs:
           $lessons = node -p "require('./src/core/bizulanguage').lessonCount"
           if ($LASTEXITCODE -ne 0 -or $result.version -ne $package.version -or $result.notes -ne [int]$lessons) { throw 'Abertura do portátil inconsistente.' }
           Wait-Process -Id $process.Id -Timeout 10 -ErrorAction SilentlyContinue
-          $hash = (Get-FileHash -LiteralPath 'dist/BIZUTECA-9MM-Portatil.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
-          "$hash  BIZUTECA-9MM-Portatil.exe" | Set-Content -LiteralPath 'dist/SHA256.txt' -Encoding ascii
+          $hash = (Get-FileHash -LiteralPath 'dist/BIZUTECA 9MM.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  BIZUTECA 9MM.exe" | Set-Content -LiteralPath 'dist/SHA256.txt' -Encoding ascii
       - name: Guardar evidências da interface
         if: always()
         uses: actions/upload-artifact@v4
@@ -68,7 +68,7 @@ jobs:
         with:
           name: BIZUTECA-9MM-Windows-Portatil
           path: |
-            dist/BIZUTECA-9MM-Portatil.exe
+            dist/BIZUTECA 9MM.exe
             dist/SHA256.txt
           if-no-files-found: error
       - name: Publicar versão validada para teste
@@ -78,5 +78,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Versão portátil com reprodutor offline de MP3s locais, volume, reprodução automática e início aleatório."
+          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Importação de TXT direto na pasta e reprodução automática de música opcional."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

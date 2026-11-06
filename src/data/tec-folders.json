@@ -145,13 +145,13 @@
   },
   {
     "key": 9,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Fonética (Fonemas, Dígrafos, Encontros Consonantais, Vocálicos). Separação Silábica",
     "page": 2
   },
   {
     "key": 10,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Morfologia",
     "page": 2
   },
@@ -307,13 +307,13 @@
   },
   {
     "key": 36,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Colocação Pronominal",
     "page": 4
   },
   {
     "key": 37,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Semântica",
     "page": 4
   },
@@ -361,7 +361,7 @@
   },
   {
     "key": 45,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Sintaxe",
     "page": 5
   },
@@ -463,13 +463,13 @@
   },
   {
     "key": 62,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Pontuação (Ponto, Vírgula, Travessão, Aspas, Parênteses, etc)",
     "page": 7
   },
   {
     "key": 63,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Regência",
     "page": 7
   },
@@ -487,31 +487,31 @@
   },
   {
     "key": 66,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Concordância (Verbal e Nominal)",
     "page": 7
   },
   {
     "key": 67,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Vozes (Voz Passiva e Voz Ativa)",
     "page": 7
   },
   {
     "key": 68,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Coerência. Coesão (Anáfora, Catáfora, Uso dos Conectores - Pronomes Relativos, Conjunções, etc)",
     "page": 8
   },
   {
     "key": 69,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Tipos de Discurso (Direto, Indireto e Indireto Livre)",
     "page": 8
   },
   {
     "key": 70,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Linguagem",
     "page": 8
   },
@@ -547,55 +547,55 @@
   },
   {
     "key": 76,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Partícula \"Se\"",
     "page": 8
   },
   {
     "key": 77,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Vocábulo \"Como\"",
     "page": 8
   },
   {
     "key": 78,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Vocábulo \"Que\"",
     "page": 9
   },
   {
     "key": 79,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Interpretação de Textos (Compreensão)",
     "page": 9
   },
   {
     "key": 80,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Tipologia e Gênero Textual",
     "page": 9
   },
   {
     "key": 81,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Paralelismo",
     "page": 9
   },
   {
     "key": 82,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Reescrita de Frases. Substituição de Palavras ou Trechos de Texto.",
     "page": 9
   },
   {
     "key": 83,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Clareza e Correção",
     "page": 9
   },
   {
     "key": 84,
-    "parent": 1,
+    "parent": "root-0",
     "name": "Outras Questões de Português e Questões Mescladas (Interpretação de Textos ou Gramática)",
     "page": 9
   },
@@ -7441,13 +7441,13 @@
   },
   {
     "key": 1225,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Economia (COFECON e CORECON)",
     "page": 135
   },
   {
     "key": 1226,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Educação Física (CONFEF e CREF)",
     "page": 135
   },
@@ -7531,7 +7531,7 @@
   },
   {
     "key": 1240,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Engenharia (CONFEA e CREA)",
     "page": 136
   },
@@ -7729,7 +7729,7 @@
   },
   {
     "key": 1273,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Enfermagem (COFEN e COREN)",
     "page": 140
   },
@@ -7981,7 +7981,7 @@
   },
   {
     "key": 1315,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Farmácia (CFF e CRF)",
     "page": 145
   },
@@ -8113,7 +8113,7 @@
   },
   {
     "key": 1337,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Fisioterapia e Terapia Ocupacional (COFFITO e CREFITO)",
     "page": 148
   },
@@ -8233,7 +8233,7 @@
   },
   {
     "key": 1357,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Fonoaudiologia (CFFA e CREFONO)",
     "page": 150
   },
@@ -8359,7 +8359,7 @@
   },
   {
     "key": 1378,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Medicina (CFM e CRM)",
     "page": 153
   },
@@ -8515,7 +8515,7 @@
   },
   {
     "key": 1404,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Medicina Veterinária e Zootecnia (CFMV e CRMV)",
     "page": 155
   },
@@ -8821,7 +8821,7 @@
   },
   {
     "key": 1455,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Nutrição (CFN e CRN)",
     "page": 161
   },
@@ -9007,7 +9007,7 @@
   },
   {
     "key": 1486,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Odontologia (CFO e CRO)",
     "page": 165
   },
@@ -9109,7 +9109,7 @@
   },
   {
     "key": 1503,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Psicologia (CFP e CRP)",
     "page": 167
   },
@@ -9295,7 +9295,7 @@
   },
   {
     "key": 1534,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Química (CFQ e CRQ)",
     "page": 170
   },
@@ -9367,7 +9367,7 @@
   },
   {
     "key": 1546,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Representante Comercial (CONFERE e CORE)",
     "page": 172
   },
@@ -9415,7 +9415,7 @@
   },
   {
     "key": 1554,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Secretariado",
     "page": 173
   },
@@ -9433,7 +9433,7 @@
   },
   {
     "key": 1557,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Serviço Social (CFESS e CRESS)",
     "page": 173
   },
@@ -9691,7 +9691,7 @@
   },
   {
     "key": 1600,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Técnico em Radiologia (CONTER e CRTR)",
     "page": 178
   },
@@ -9739,7 +9739,7 @@
   },
   {
     "key": 1608,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Orientador Educacional",
     "page": 179
   },
@@ -9763,7 +9763,7 @@
   },
   {
     "key": 1612,
-    "parent": 1214,
+    "parent": "root-6",
     "name": "Legislação Profissional de Técnico Industrial (CFT e CRT)",
     "page": 179
   },

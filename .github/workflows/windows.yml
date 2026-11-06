@@ -1,8 +1,8 @@
-name: Compilar BIZUTECA para Windows
+name: Validar e compilar BIZUTECA para Windows
 
 on:
   push:
-    branches: [main]
+    branches: ['desenvolvimento/**']
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
 jobs:
   portable:
     runs-on: windows-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,22 +23,59 @@ jobs:
           node-version: '24'
       - name: Instalar dependências
         run: npm install
-      - name: Testar núcleo
+      - name: Testar núcleo e compatibilidade
         run: npm test
       - name: Gerar executável portátil
         run: npm run dist
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-      - name: Guardar executável da compilação
+      - name: Testar a interface da aplicação empacotada
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -LiteralPath 'dist/win-unpacked' -Filter '*.exe' -File | Select-Object -First 1
+          if (-not $exe) { throw 'Aplicação empacotada não encontrada.' }
+          $env:BIZUTECA_E2E_EXECUTABLE = $exe.FullName
+          npm run test:e2e
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Abrir o executável portátil final e conferir a interface
+        shell: pwsh
+        run: |
+          $env:BIZUTECA_TEST_DATA = Join-Path $env:RUNNER_TEMP ('bizuteca-portable-' + $env:GITHUB_RUN_ID)
+          $env:BIZUTECA_SMOKE = '1'
+          $process = Start-Process -FilePath (Resolve-Path 'dist/BIZUTECA-9MM-Portatil.exe').Path -WindowStyle Hidden -PassThru
+          $marker = Join-Path $env:BIZUTECA_TEST_DATA 'smoke-ready.json'
+          $deadline = (Get-Date).AddSeconds(55)
+          while (!(Test-Path -LiteralPath $marker) -and (Get-Date) -lt $deadline) {
+            Start-Sleep -Milliseconds 300
+          }
+          if (!(Test-Path -LiteralPath $marker)) { throw 'O executável portátil não confirmou a abertura.' }
+          $result = Get-Content -LiteralPath $marker -Raw | ConvertFrom-Json
+          $package = Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json
+          if ($result.version -ne $package.version -or $result.notes -ne 0) { throw 'Abertura do portátil inconsistente.' }
+          Wait-Process -Id $process.Id -Timeout 10 -ErrorAction SilentlyContinue
+          $hash = (Get-FileHash -LiteralPath 'dist/BIZUTECA-9MM-Portatil.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  BIZUTECA-9MM-Portatil.exe" | Set-Content -LiteralPath 'dist/SHA256.txt' -Encoding ascii
+      - name: Guardar evidências da interface
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BIZUTECA-9MM-Testes-Interface
+          path: test-results/*.png
+          if-no-files-found: ignore
+      - name: Guardar programa e checksum
         uses: actions/upload-artifact@v4
         with:
           name: BIZUTECA-9MM-Windows-Portatil
-          path: dist/BIZUTECA-9MM-Portatil.exe
+          path: |
+            dist/BIZUTECA-9MM-Portatil.exe
+            dist/SHA256.txt
           if-no-files-found: error
-      - name: Publicar versão preliminar
+      - name: Publicar versão validada para teste
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = "preliminar-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "BIZUTECA 9MM 1.0.1 - versão preliminar" --notes "Versão 1.0.1 com logo oficial e cache temporário fora da pasta do programa, gerada após 20 testes automatizados. A validação de abertura e interface ainda está pendente. Use uma biblioteca de teste antes de guardar material importante."
+          $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
+          $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
+          gh release create $tag dist/BIZUTECA-9MM-Portatil.exe dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Versão portátil com abertura oficial, calendário, editor aprimorado e pacotes .b9mm. A compilação passou pelos testes de núcleo, interface Windows e abertura do executável final. Consulte o manual para atualizar mantendo a pasta de dados."
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

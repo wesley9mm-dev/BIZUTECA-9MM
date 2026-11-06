@@ -3,15 +3,19 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const zlib = require('node:zlib');
-const { Library } = require('./library');
+const os = require('node:os');
+const { DatabaseSync } = require('node:sqlite');
+const events = require('./events');
 const MAGIC = Buffer.from('BIZUTECA9MM1\n');
 const hash = b => crypto.createHash('sha256').update(b).digest('hex');
 const safeName = n => typeof n === 'string' && /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]{1,12}$/.test(n);
 function atomicWrite(file, data) {
   const temp = file + '.' + crypto.randomUUID() + '.tmp';
   const fd = fs.openSync(temp, 'wx');
-  try { fs.writeFileSync(fd, data); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
-  try { fs.renameSync(temp, file); } catch(e) { fs.rmSync(temp, {force:true}); throw e; }
+  try {
+    try { fs.writeFileSync(fd, data); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
+    fs.renameSync(temp, file);
+  } catch (error) { try { fs.unlinkSync(temp); } catch {} throw error; }
 }
 function assertDirectory(dir) {
   fs.mkdirSync(dir, {recursive:true});
@@ -19,20 +23,20 @@ function assertDirectory(dir) {
   fs.writeFileSync(p, 'ok', {flag:'wx'}); fs.unlinkSync(p);
 }
 function encodePackage(lib, dir) {
-  lib.db.exec('PRAGMA wal_checkpoint(TRUNCATE)');
-  const db = fs.readFileSync(path.join(dir, 'biblioteca.db'));
+  const snapshot = path.join(os.tmpdir(), 'bizuteca-snapshot-' + crypto.randomUUID() + '.db');
+  let db;
+  try { lib.db.prepare('VACUUM INTO ?').run(snapshot); db = fs.readFileSync(snapshot); }
+  finally { try { fs.unlinkSync(snapshot); } catch (e) { if (e.code !== 'ENOENT') throw e; } }
   const images = [];
   const assetDir = path.join(dir, 'anexos');
   if(fs.existsSync(assetDir)) for(const name of fs.readdirSync(assetDir)) {
     if(!safeName(name)) continue;
     const b=fs.readFileSync(path.join(assetDir,name)); images.push({name, data:b.toString('base64'),sha256:hash(b)});
   }
-  for(const row of lib.db.prepare('SELECT content_html AS html FROM notes UNION ALL SELECT content_html AS html FROM note_versions').all()) {
-    for(const m of String(row.html).matchAll(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi)) {
-      if(!images.some(i=>i.name===m[1])) throw Error('Não foi possível incluir uma imagem do resumo: '+m[1]);
-    }
-  }
-  return Buffer.concat([MAGIC,zlib.deflateSync(Buffer.from(JSON.stringify({format:'bizuteca-9mm',version:1,createdAt:new Date().toISOString(),database:db.toString('base64'),sha256:hash(db),images})))]);
+  validateAttachments(lib.db, new Set(images.map(image => image.name)));
+  const payload = Buffer.from(JSON.stringify({format:'bizuteca-9mm',version:1,createdAt:new Date().toISOString(),database:db.toString('base64'),sha256:hash(db),images}));
+  if (payload.length > 512 * 1024 * 1024) throw Error('A biblioteca excede o tamanho aceito para um pacote.');
+  return Buffer.concat([MAGIC, zlib.deflateSync(payload)]);
 }
 function decodePackage(raw) {
   let doc;
@@ -44,7 +48,7 @@ function decodePackage(raw) {
     doc=JSON.parse(zlib.inflateSync(raw.subarray(old.length),{maxOutputLength:512*1024*1024}).toString('utf8'));
     if(doc.format!=='taticas-vagabundas-backup'||doc.version!==1)throw Error('Backup antigo inválido.');
   } else throw Error('Escolha um arquivo .bizuteca ou .tvbackup válido.');
-  if(typeof doc.database!=='string'||!Array.isArray(doc.images)||doc.images.length>30000)throw Error('Pacote incompleto.');
+  if(!doc||typeof doc.database!=='string'||!Array.isArray(doc.images)||doc.images.length>30000)throw Error('Pacote incompleto.');
   const database=Buffer.from(doc.database,'base64');
   if(database.subarray(0,16).toString('binary')!=='SQLite format 3\0')throw Error('Banco de dados inválido.');
   if(doc.sha256&&hash(database)!==doc.sha256)throw Error('O pacote está corrompido.');
@@ -66,12 +70,45 @@ function seedTec(lib, data) {
 function extendSchema(lib) {
   lib.db.exec(`CREATE TABLE IF NOT EXISTS biz_settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS biz_files(id INTEGER PRIMARY KEY,note_id INTEGER NOT NULL,name TEXT NOT NULL,file TEXT NOT NULL,mime TEXT NOT NULL);`);
+  events.ensureEvents(lib.db);
+  lib.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('biz_events_schema','1')").run();
 }
-function validateDatabase(file) {
-  const lib=new Library(file);try {const check=lib.db.prepare('PRAGMA integrity_check').get();if(Object.values(check)[0]!=='ok')throw Error('A integridade do banco não foi confirmada.');lib.listFolders();lib.listNotes({limit:1});return true;}finally{lib.close();}
+function validateAttachments(db, available) {
+  const sources = db.prepare('SELECT content_html AS html FROM notes UNION ALL SELECT content_html AS html FROM note_versions').iterate();
+  for (const {html} of sources) {
+    for (const match of String(html).matchAll(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi)) {
+      if (!available.has(match[1])) throw Error('Imagem ausente no pacote: ' + match[1]);
+    }
+  }
+  if (db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='biz_files'").get()) {
+    for (const {file} of db.prepare('SELECT file FROM biz_files').iterate()) {
+      if (!safeName(file) || !available.has(file)) throw Error('Anexo ausente ou inválido: ' + file);
+    }
+  }
+}
+function validateDatabase(file, assets) {
+  const db = new DatabaseSync(file, {readOnly:true});
+  try {
+    db.exec('PRAGMA trusted_schema=OFF');
+    const tables = new Set(db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(r=>r.name));
+    for (const table of ['meta','folders','notes','note_versions','notes_fts']) if (!tables.has(table)) throw Error('Banco incompatível: tabela ausente ' + table);
+    if (db.prepare("SELECT 1 FROM sqlite_master WHERE type='trigger' LIMIT 1").get()) throw Error('O pacote contém gatilhos SQLite não reconhecidos.');
+    if (Object.values(db.prepare('PRAGMA integrity_check').get())[0] !== 'ok' || db.prepare('PRAGMA foreign_key_check').all().length) throw Error('A integridade do banco não foi confirmada.');
+    const parents = new Map(db.prepare('SELECT id,parent_id FROM folders').all().map(row=>[row.id,row.parent_id]));
+    for (const id of parents.keys()) {
+      const seen = new Set();
+      let cursor = id;
+      while (cursor != null) {
+        if (seen.has(cursor) || !parents.has(cursor) || seen.size >= 100) throw Error('Hierarquia de pastas inválida.');
+        seen.add(cursor); cursor = parents.get(cursor);
+      }
+    }
+    if (assets) validateAttachments(db, new Set(assets.map(asset=>asset.name)));
+    return true;
+  } finally { db.close(); }
 }
 function mergeLibraries(target, incoming) {
-  const map=new Map();let inserted=0,duplicates=0;
+  const map=new Map();let inserted=0,duplicates=0,eventCounts={};
   target._tx(()=>{
     let remaining=incoming.listFolders();let guard=0;
     while(remaining.length&&guard++<100){const next=[];for(const f of remaining){if(f.parentId!=null&&!map.has(f.parentId)){next.push(f);continue;}const parent=f.parentId==null?null:map.get(f.parentId);const found=target.db.prepare('SELECT id FROM folders WHERE parent_id IS ? AND name=? AND deleted_at IS NULL').get(parent,f.name);map.set(f.id,found?.id??target.createFolder({name:f.name,parentId:parent}));}if(next.length===remaining.length)throw Error('Pastas com hierarquia inválida.');remaining=next;}
@@ -87,6 +124,8 @@ function mergeLibraries(target, incoming) {
     for(const s of incoming.listSynonyms())target.addSynonym(s.a,s.b);
     const table=incoming.db.prepare("SELECT name FROM sqlite_master WHERE name='biz_files'").get();
     if(table)for(const f of incoming.db.prepare('SELECT * FROM biz_files').all()){const nid=noteMap.get(f.note_id);if(nid&&!target.db.prepare('SELECT id FROM biz_files WHERE note_id=? AND file=?').get(nid,f.file))target.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(nid,f.name,f.file,f.mime);}
-  });return {inserted,duplicates};
+    eventCounts=events.mergeEvents(target.db,incoming.db);
+  });
+  return {inserted,duplicates,...eventCounts};
 }
 module.exports={atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName};

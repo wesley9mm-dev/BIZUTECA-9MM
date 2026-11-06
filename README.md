@@ -8,13 +8,14 @@ Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por
 
 **Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.0.1**
 
-## Recursos do código atual
+## Recursos
 
-- Pastas e subpastas: estrutura inicial do TEC com 16 matérias e 2.165 pastas.
-- Editor de anotações com formatação, favoritos, lixeira e versões recuperáveis.
-- Pesquisa e consulta por enunciado para localizar e abrir anotações; não gera gabaritos.
-- Seleção da pasta de dados, exportação, importação e cópias de segurança.
-- 36 temas, sem animações.
+- Navegação com histórico, caminhos clicáveis e seletor pesquisável.
+- Editor de notas com tabelas, imagens, modos de edição e leitura e histórico de versões.
+- Calendário local e próximo evento na Home.
+- Pesquisa offline por conteúdo e enunciado.
+- 36 temas e modelo TEC opcional com 2.165 pastas.
+- Exportações em .b9mm, importação aditiva e backups automáticos.
 
 ## Baixar o programa
 
@@ -46,9 +47,10 @@ npm run dist
 
 O resultado fica em `dist/BIZUTECA-9MM-Portatil.exe`. O executável e as bibliotecas do Electron são gerados no processo de compilação; não são incluídos no histórico do código.
 
-## Estado da validação
+## Guia e testes
 
-Os 20 testes automatizados passaram em 04/11/2026, incluindo organização, notas, lixeira, versões, pesquisa, pacotes de backup, estrutura do TEC, temas, separação do cache e compatibilidade da configuração antiga. O teste de interface em `test/e2e.cjs` ainda apresentou falha ao iniciar o Electron no ambiente local; portanto, a abertura e o funcionamento visual do executável ainda precisam de validação. O fluxo do GitHub executa os testes do núcleo antes de gerar a versão preliminar.
+- [Manual de uso e atualização](docs/MANUAL.md)
+- [Relatório técnico da versão 1.1.0](docs/RELATORIO-1.1.0.md)
 
 ## Dados pessoais
 

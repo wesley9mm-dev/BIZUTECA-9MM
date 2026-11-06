@@ -4,9 +4,9 @@ Anote. Organize. Revise. Domine.
 
 Caderno pessoal de resumos, anotações e bizus para Windows, com biblioteca por matérias e consulta offline ao material salvo.
 
-[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.2.0-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/BIZUTECA-9MM-Portatil.exe)
+[![Baixar BIZUTECA 9MM para Windows](https://img.shields.io/badge/BAIXAR_PARA_WINDOWS-v1.3.0-2e7d32?style=for-the-badge)](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/BIZUTECA-9MM-Portatil.exe)
 
-**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.2.0**
+**Windows 64 bits · Portátil · Sem instalação · Versão preliminar 1.3.0**
 
 ## Downloads para Windows
 
@@ -14,7 +14,8 @@ Todas as versões publicadas são **preliminares**, portáteis e para Windows de
 
 | Versão | Novidades | Download direto | Detalhes |
 | --- | --- | --- | --- |
-| **1.2.0** · Mais recente | BizuLanguage com 113 anotações de inglês, espanhol, francês e italiano. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.2.0-rc.42172517583.1) |
+| **1.3.0** · Mais recente | Home com pastas-mãe e BizuLanguage com 177 anotações em texto. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.3.0-rc.42221649832.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.3.0-rc.42221649832.1) |
+| **1.2.0** | BizuLanguage com 113 anotações de inglês, espanhol, francês e italiano. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.2.0-rc.42172517583.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.2.0-rc.42172517583.1) |
 | **1.1.1** | Lembra a pasta da biblioteca quando a pasta do executável impede a gravação. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.1-rc.42168572263.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.1-rc.42168572263.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.1.1-rc.42168572263.1) |
 | **1.1.0** | Abertura com a identidade oficial, calendário, melhorias no editor e backups `.b9mm`. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42159833267.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.1.0-rc.42159833267.1) |
 | **1.1.0** · Compilação adicional | Recompilação da versão 1.1.0. | [Baixar .exe](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42168525929.1/BIZUTECA-9MM-Portatil.exe) · [SHA-256](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/download/v1.1.0-rc.42168525929.1/SHA256.txt) | [Publicação](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases/tag/v1.1.0-rc.42168525929.1) |
@@ -25,13 +26,15 @@ Para atualizar, faça um backup, feche o Bizuteca e substitua o executável na m
 
 [Histórico completo de publicações](https://github.com/wesley9mm-dev/BIZUTECA-9MM/releases)
 
-## Atualização do código 1.3.0
+## O que mudou na versão 1.3.0
 
 - Home com **pastas-mãe**, em ordem alfabética, abrindo suas subpastas ao clicar.
 - BizuLanguage ampliado para **177 anotações em texto**, com 64 novas aulas, bizus, pegadinhas, exercícios resolvidos e resumos.
 - Inglês: 56; espanhol: 41; francês: 40; italiano: 40.
 - Atualização aditiva da coleção: preserva aulas anteriores, inclusive as editadas, movidas, arquivadas ou excluídas.
 - Conteúdo de leitura e escrita disponível offline; referências externas são opcionais.
+
+Validação: 34 testes de núcleo, interface Windows empacotada e abertura do executável portátil concluídos. [Resultados no GitHub](https://github.com/wesley9mm-dev/BIZUTECA-9MM/actions/runs/42221649832).
 
 [Catálogo das aulas e fontes de consulta](docs/BIZULANGUAGE.md) · [Como atualizar sua coleção](docs/MANUAL.md)
 

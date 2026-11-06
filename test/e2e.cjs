@@ -69,8 +69,28 @@ async function step(name,run) {
       assert.deepEqual(missing,[]);
       await page.locator('[data-theme-apply="universe-goku-e-bills-no-horizonte-azul"]').click();
       await page.waitForFunction(()=>document.body.dataset.universe==='true'
-        &&getComputedStyle(document.querySelector('.main')).backgroundImage.includes('universe-goku-e-bills-no-horizonte-azul'));
+        &&getComputedStyle(document.body).backgroundImage.includes('universe-goku-e-bills-no-horizonte-azul'));
       assert.equal((await call('init')).settings.theme,'universe-goku-e-bills-no-horizonte-azul');
+      await button('Universos Visuais').click();
+      await page.locator('[data-theme-preview="universe-goku-e-bills-no-horizonte-azul"]').click();
+      await page.locator('#universe-wallpaper').fill('35');
+      await page.locator('#universe-interface').fill('80');
+      assert.deepEqual(await page.evaluate(()=>{
+        const style=document.documentElement.style;
+        return [style.getPropertyValue('--wallpaper-veil'),style.getPropertyValue('--interface-fill'),document.body.dataset.translucent];
+      }),['65%','80%','true']);
+      await page.locator('#cancel-preview').click();
+      assert.equal(await page.evaluate(()=>document.body.dataset.translucent),'false');
+      await page.locator('[data-theme-preview="universe-goku-e-bills-no-horizonte-azul"]').click();
+      await page.locator('#universe-wallpaper').fill('35');
+      await page.locator('#universe-interface').fill('80');
+      await page.locator('#accept-preview').click();
+      await page.waitForFunction(async()=>{
+        const data=await window.biz.call('init');
+        return data.settings.universeAppearance?.['universe-goku-e-bills-no-horizonte-azul']?.interface===80;
+      });
+      assert.deepEqual((await call('init')).settings.universeAppearance['universe-goku-e-bills-no-horizonte-azul'],
+        {wallpaper:35,interface:80});
       await button('Restaurar padrão 9MM').click();
       await page.waitForFunction(()=>document.body.dataset.universe==='false');
     });

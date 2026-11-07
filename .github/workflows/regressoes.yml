@@ -18,3 +18,22 @@ jobs:
           node-version: '24'
       - run: npm install
       - run: npm test
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install
+      - run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Testar aplicativo empacotado
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -LiteralPath 'dist/win-unpacked' -Filter '*.exe' -File | Select-Object -First 1
+          if (-not $exe) { throw 'Aplicação empacotada não encontrada.' }
+          $env:BIZUTECA_E2E_EXECUTABLE = $exe.FullName
+          npm run test:e2e
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

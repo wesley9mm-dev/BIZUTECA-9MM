@@ -71,6 +71,7 @@ function scheduledBackup() {
     if (additional) {
       const name = path.basename(local);
       if (!fs.statSync(additional).isDirectory()) throw Error('A unidade de backup adicional está indisponível.');
+      if (!fs.existsSync(local)) throw Error('O backup local recém-criado não foi encontrado para a cópia adicional.');
       storage.atomicWrite(path.join(additional,name),fs.readFileSync(local));
     }
   } catch (error) {

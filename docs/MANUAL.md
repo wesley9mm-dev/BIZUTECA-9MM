@@ -57,3 +57,7 @@ O BizuLanguage contém **177 aulas e anotações em texto**: 56 de inglês, 41 d
 **Biblioteca nova:** o material completo já vem incluído. **Biblioteca existente:** abra Dados e configurações → Acrescentar / atualizar BizuLanguage e confirme. A aplicação cria uma cópia de segurança antes de acrescentar. Quem já tem a edição anterior recebe somente as 64 aulas novas; notas antigas editadas, movidas, arquivadas ou excluídas não são recriadas nem sobrescritas. A operação não se repete ao clicar novamente.
 
 O caderno trabalha leitura, gramática, vocabulário e escrita. Os níveis são referências de organização, não uma certificação de fluência. Veja o [catálogo e a sequência de aulas](BIZULANGUAGE.md).
+
+## Músicas pessoais
+
+A opção **Copiar biblioteca para outra pasta** inclui os MP3s pessoais. Os pacotes `.b9mm` de backup e exportação incluem o banco e os anexos de anotações. Para guardar os MP3s em separado, copie a subpasta `musicas` da biblioteca.

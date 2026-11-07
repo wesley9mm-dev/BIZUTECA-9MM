@@ -2,6 +2,7 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const {Readable}=require('node:stream');
+const {createHash}=require('node:crypto');
 
 const folder=directory=>path.join(directory,'musicas');
 const isTrack=name=>!name.includes(':')&&name===path.win32.basename(name)&&name===path.posix.basename(name)&&/\.mp3$/i.test(name);
@@ -19,14 +20,24 @@ function list(directory,bundled){
   return [...new Set([...listFiles(folder(directory)),...(bundled?listFiles(bundled):[])])]
     .sort((a,b)=>a.localeCompare(b,'pt-BR'));
 }
-async function add(directory,sources){
+async function digest(file){
+  const hash=createHash('sha256');
+  for await(const chunk of fs.createReadStream(file))hash.update(chunk);
+  return hash.digest('hex');
+}
+async function add(directory,sources,onConflict){
   const target=folder(directory);
   await fs.promises.mkdir(target,{recursive:true});
   for(const source of sources){
     const name=path.basename(source);
     if(!isTrack(name))continue;
-    try{await fs.promises.copyFile(source,path.join(target,name),fs.constants.COPYFILE_EXCL);}
-    catch(error){if(error.code!=='EEXIST')throw error;}
+    const dest=path.join(target,name);
+    try{await fs.promises.copyFile(source,dest,fs.constants.COPYFILE_EXCL);}
+    catch(error){
+      if(error.code!=='EEXIST')throw error;
+      const stat=await fs.promises.lstat(dest);
+      if(!stat.isFile()||stat.size!==(await fs.promises.stat(source)).size||await digest(dest)!==await digest(source))onConflict?.(name);
+    }
   }
   return list(directory);
 }
@@ -59,4 +70,7 @@ async function response(directory,request,bundled){
   const stream=request.method==='HEAD'?null:Readable.toWeb(fs.createReadStream(file,{start,end}));
   return new Response(stream,{status:range?206:200,headers});
 }
-module.exports={list,add,response};
+function copyLibrary(source,target,onConflict){
+  return add(target,listFiles(folder(source)).map(name=>path.join(folder(source),name)),onConflict);
+}
+module.exports={list,add,copyLibrary,response};

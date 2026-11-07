@@ -171,7 +171,7 @@ async function importPackage(mode) {
 }
 async function changeData(mode){if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');const target=await chooseDir();if(!target||path.resolve(target)===path.resolve(dir))return null;storage.assertDirectory(target);const exists=fs.existsSync(path.join(target,'biblioteca.db'));if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
  if(mode==='new'&&fs.readdirSync(target).length)throw Error('Escolha ou crie uma pasta vazia para a nova biblioteca.');
- if(mode==='move'){const pack=storage.decodePackage(storage.encodePackage(lib,dir));copyAssets(pack.images,target);storage.atomicWrite(path.join(target,'biblioteca.db'),pack.database);}
+ if(mode==='move'){const pack=storage.decodePackage(storage.encodePackage(lib,dir));copyAssets(pack.images,target);await music.copyLibrary(dir,target,name=>{throw Error('A pasta de destino contém uma música diferente com o mesmo nome: '+name);});storage.atomicWrite(path.join(target,'biblioteca.db'),pack.database);}
  const next=openLibrary(target,{seed:mode!=='new'});try{remember(target);}catch(e){next.lib.close();unlock(next.lock);throw e;}lib.close();unlock(lockPath);lib=next.lib;lockPath=next.lock;dir=target;trackBackup();return {directory:dir};}
 async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
  const out=await dialog.showSaveDialog(win,{title:'Exportar material',defaultPath:'meus-resumos.'+kind,filters:[{name:kind.toUpperCase(),extensions:[kind]}]});if(out.canceled)return null;
@@ -232,7 +232,9 @@ async function action(op,args){
  case 'addMusic':{
    const result=await dialog.showOpenDialog(win,{title:'Adicionar músicas locais',properties:['openFile','multiSelections'],filters:[{name:'Músicas MP3',extensions:['mp3']}]});
    if(result.canceled)return null;
-   await music.add(dir,result.filePaths);
+   const conflicts=[];
+   await music.add(dir,result.filePaths,name=>conflicts.push(name));
+   if(conflicts.length)win?.webContents.send('backup-warning','Músicas ignoradas por nome repetido: '+conflicts.join(', '));
    return {tracks:music.list(dir,bundledMusic),personal:music.list(dir)};
  }
  case 'saveMusicOptions':{

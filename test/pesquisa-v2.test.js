@@ -27,7 +27,7 @@ test('personal dictionary survives .b9mm export, restore and merge without chang
  const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),storage=require('../src/core/storage');
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'abbr-b9mm-'));const lib=new Library(path.join(dir,'library.db'));
  storage.extendSchema(lib);lib.saveAbbreviation('XP','expressão pessoal');lib.createNote({title:'Expressão pessoal'});
- const raw=storage.encodePackage(lib,dir);assert.equal(raw.subarray(0,12).toString(),'BIZUTECA9MM1\n');
+ const raw=storage.encodePackage(lib,dir);assert.equal(raw.subarray(0,Buffer.byteLength('BIZUTECA9MM1\n')).toString(),'BIZUTECA9MM1\n');
  const file=path.join(dir,'restored.db');fs.writeFileSync(file,storage.decodePackage(raw).database);
  const copy=new Library(file),target=new Library();storage.extendSchema(target);
  t.after(()=>{target.close();copy.close();lib.close();fs.rmSync(dir,{recursive:true,force:true});});

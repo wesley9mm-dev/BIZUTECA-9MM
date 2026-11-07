@@ -95,6 +95,7 @@ function scheduledBackup() {
       if (!fs.statSync(additional).isDirectory()) throw Error('A unidade de backup adicional está indisponível.');
       if (!fs.existsSync(local)) throw Error('O backup local recém-criado não foi encontrado para a cópia adicional.');
       storage.atomicWrite(path.join(additional,name),fs.readFileSync(local));
+      backups.retainAutomatic(additional,name);
     }
   } catch (error) {
     win?.webContents.send('backup-warning','Backup automático: '+error.message);

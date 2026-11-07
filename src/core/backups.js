@@ -46,6 +46,7 @@ function writeBackup(lib, directory, options = {}) {
   if (options.additional) {
     if (!fs.statSync(options.additional).isDirectory()) throw Error('A unidade da cópia adicional está indisponível. O backup local foi criado em ' + file);
     storage.atomicWrite(path.join(options.additional,name),raw);
+    if(options.automatic)retainAutomatic(options.additional,name);
   }
   if (options.automatic) retainAutomatic(dest,name);
   return file;

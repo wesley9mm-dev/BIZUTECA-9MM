@@ -2,7 +2,7 @@
 
 ## 1.3.11
 
-- A tela de abertura fica visível por pelo menos quatro segundos.
+- Otimização de inicialização.
 
 ## 1.3.10
 

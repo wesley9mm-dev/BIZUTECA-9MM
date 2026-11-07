@@ -14,7 +14,7 @@ Baixe o executável e abra o programa. O GitHub usa pontos no nome do arquivo ba
 
 ## Atualizações
 
-- **1.3.11** — Tela de abertura visível por pelo menos quatro segundos.
+- **1.3.11** — Otimização de inicialização.
 - **1.3.10** — Correções de backups, importação, exportação e estabilidade. [Histórico de alterações](CHANGELOG.md)
 - **1.3.9** — Biblioteca vazia em pasta separada, faixa Pulse of Gaia embutida e volume padrão de 10%.
 - **1.3.8** — Transparência ampliada e aba **Minhas músicas**, com importação de MP3 e fila aleatória.

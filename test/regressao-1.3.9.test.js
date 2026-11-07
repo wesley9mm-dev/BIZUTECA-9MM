@@ -164,3 +164,24 @@ test('BUG-11 copia músicas pessoais e avisa sobre nomes iguais com conteúdo di
  assert.deepEqual(conflicts,['Faixa.mp3']);
  assert.equal(fs.readFileSync(path.join(target,'musicas','Faixa.mp3'),'utf8'),'original');
 });
+
+test('BUG-12 aplica retenção automática também no destino adicional',t=>{
+ const {dir,lib}=library(t),additional=path.join(dir,'externo');
+ fs.mkdirSync(additional);
+ for(let i=0;i<30;i++){
+   const file=path.join(additional,backups.backupName(new Date(2026,9,i+1),'auto'));
+   const date=new Date(2026,9,i+1);
+   fs.writeFileSync(file,'backup anterior');
+   fs.utimesSync(file,date,date);
+ }
+ fs.writeFileSync(path.join(additional,'manual.b9mm'),'manual');
+ backups.writeBackup(lib,dir,{automatic:true,additional});
+ assert.ok(fs.readdirSync(additional).filter(file=>file.startsWith('auto-')).length<=14);
+ assert.ok(fs.existsSync(path.join(additional,'manual.b9mm')));
+});
+test('BUG-16 atualização de calendário ignora manutenção em segundo plano',async()=>{
+ const file=fs.readFileSync(path.join(__dirname,'../src/renderer/upgrade.js'),'utf8');
+ const from=file.indexOf('async function nextEventCard('),to=file.indexOf('async function calendar(',from);
+ const fn=new Function('$','api',file.slice(from,to)+';return nextEventCard')(()=>({isConnected:true}),async()=>{throw Error('Aguarde a operação de dados em andamento.');});
+ await assert.doesNotReject(fn());
+});

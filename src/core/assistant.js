@@ -22,7 +22,7 @@ function consult(lib,q={}){
  const results=found.rows.map(r=>{
   const n=lib.getNote(r.id);
   let passages=n.contentText.split(/\n+/).filter(Boolean).flatMap((line)=>line.match(/[\s\S]{1,700}(?:\s|$)/g)||[line]).map((s,index)=>({text:s,index,ranges:rangesFor(s,r.matched)})).filter(p=>p.ranges.length).sort((a,b)=>b.ranges.length-a.ranges.length).slice(0,3);
-  return {id:n.id,title:n.title,path:n.path,discipline:n.path.split(' / ')[0]||'',tags:n.tags,favorite:n.favorite,updatedAt:n.updatedAt,score:Math.round(r.score*100)/100,matchedTerms:r.matched.map(g=>g.label),totalTerms:found.groups.length,coverage:Math.round(r.coverage*100)/100,partial:r.n<found.groups.length,reasons:['conteúdo'],passages,feedback:r.feedback};
+  return {id:n.id,title:n.title,path:n.path,discipline:n.path.split(' / ')[0]||'',tags:n.tags,favorite:n.favorite,updatedAt:n.updatedAt,score:Math.round(r.score*100)/100,matchedTerms:[...new Set([...r.matched.map(g=>g.label),...rangesFor(n.contentText,r.matched).slice(0,40).map(([a,b])=>n.contentText.slice(a,b))])],totalTerms:found.groups.length,coverage:Math.round(r.coverage*100)/100,partial:r.n<found.groups.length,reasons:['conteúdo'],passages,feedback:r.feedback};
  });
  return {mode:found.mode,query:text,keyTerms:found.groups.map(g=>({term:g.label,weight:g.weight,corrected:g.corrected||null})),ignored:found.missing,results,sufficient:!!results.length,message:results.length?'':'Nada no seu material sobre isso'};
 }

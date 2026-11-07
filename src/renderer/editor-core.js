@@ -170,7 +170,7 @@ const BizuEditor=(()=>{
    if(cell){
     e.preventDefault();const table=cell.closest('table'),cells=Array.from(table.querySelectorAll('td,th')),index=cells.indexOf(cell)+(e.shiftKey?-1:1);
     if(index>=cells.length){if(Array.from(table.rows).some(r=>Array.from(r.cells).some(c=>c.colSpan>1||c.rowSpan>1))){toast('Adicione linhas em uma tabela sem células mescladas.');return;}const row=table.insertRow();for(let i=0;i<cell.parentElement.cells.length;i++)row.insertCell().innerHTML='<br>';selectCell(row.cells[0]);markDirty();}
-    else if(index<0){exitBlock(table);}else selectCell(cells[index]);return;
+    else if(index<0){const p=document.createElement('p');p.innerHTML='<br>';table.before(p);selectCell(p);markDirty();}else selectCell(cells[index]);return;
    }
    if(editorTarget('li')){e.preventDefault();format(e.shiftKey?'outdent':'indent');return;}
   }
@@ -184,7 +184,7 @@ const BizuEditor=(()=>{
   }
   const p=editorTarget('p');
   if(k==='enter'&&block&&p&&!p.textContent.trim()&&p===block.lastElementChild){e.preventDefault();p.remove();exitBlock(block);return;}
-  if(k==='backspace'&&block?.matches('.bizu,.pegadinha')&&p&&p===block.querySelector('p')&&getSelection().anchorOffset===0){e.preventDefault();block.querySelector('.callout-label')?.remove();block.replaceWith(...block.childNodes);markDirty();return;}
+  if(k==='backspace'&&block?.matches('.bizu,.pegadinha')&&p&&p===block.querySelector('p')&&(()=>{const sel=getSelection();if(!sel.rangeCount||!sel.isCollapsed)return false;const prefix=sel.getRangeAt(0).cloneRange();prefix.selectNodeContents(p);prefix.setEnd(sel.anchorNode,sel.anchorOffset);return !prefix.toString();})()){e.preventDefault();block.querySelector('.callout-label')?.remove();block.replaceWith(...block.childNodes);markDirty();return;}
   const current=editorTarget('p,div')||(editor.childElementCount===0?editor:null);const action=current?markdownAction(current.textContent.replace(/\u00a0/g,' ')+(k===' '?' ':'')):null;
   if((k===' '&&action)||(k==='enter'&&action==='rule')){
    e.preventDefault();const range=document.createRange();range.selectNodeContents(current);const sel=getSelection();sel.removeAllRanges();sel.addRange(range);selectionSave();
@@ -193,15 +193,15 @@ const BizuEditor=(()=>{
   }
  }
  async function paste(e){
-  e.preventDefault();selectionSave();const editor=e.currentTarget,clip=e.clipboardData,text=clip.getData('text/plain'),html=clip.getData('text/html');
+  e.preventDefault();selectionSave();const editor=e.currentTarget,clip=e.clipboardData,text=clip.getData('text/plain'),html=clip.getData('text/html'),keep=editor.dataset.keepPaste==='true';delete editor.dataset.keepPaste;
   if(Number(editor.dataset.plainPaste)>Date.now()){delete editor.dataset.plainPaste;insertHtml(esc(text).replace(/\r?\n/g,'<br>'));return;}
   const images=Array.from(clip.items).filter(i=>i.kind==='file'&&i.type.startsWith('image/'));
   if(images.length){for(const item of images)await insertImage(item.getAsFile());return;}
-  if(/^(https?:\/\/|mailto:)\S+$/i.test(text.trim())&&(!html||!/<(?:p|div|table|ul|ol)\b/i.test(html))){
+  if(/^(https?:\/\/|mailto:)\S+$/i.test(text.trim())){
    if(!getSelection().isCollapsed)format('createLink',text.trim());else insertHtml('<a href="'+esc(text.trim())+'">'+esc(text.trim())+'</a>');return;
   }
   if(html){
-   const doc=document.createElement('template');doc.innerHTML=editor.dataset.keepPaste==='true'?sanitize(html):cleanPaste(html);delete editor.dataset.keepPaste;
+   const doc=document.createElement('template');doc.innerHTML=keep?sanitize(html):cleanPaste(html);
    for(const image of Array.from(doc.content.querySelectorAll('img'))){
     const src=image.getAttribute('src')||'';
     if(src.startsWith('data:')){
@@ -217,7 +217,7 @@ const BizuEditor=(()=>{
  function wireEditor(editor,note){
   controller?.abort();controller=new AbortController();const signal=controller.signal;
   document.execCommand('styleWithCSS',false,true);lockLabels(editor);
-  editor.onpaste=e=>run(()=>paste(e));editor.oninput=()=>{lockLabels(editor);markDirty();slashMenu();};
+  editor.onpaste=e=>{const pending=paste(e);run(()=>pending);};editor.oninput=()=>{lockLabels(editor);markDirty();slashMenu();};
   editor.addEventListener('beforeinput',()=>clearNoteHighlights(editor),{signal});
   editor.addEventListener('focus',()=>{
    clearNoteHighlights(editor);const sel=getSelection();

@@ -1,5 +1,9 @@
 # Histórico de alterações
 
+## 1.3.11
+
+- A tela de abertura fica visível por pelo menos quatro segundos.
+
 ## 1.3.10
 
 - **Segurança e backups (BUG-01, BUG-02, BUG-03, BUG-12, BUG-15)** — Bloqueia anexos executáveis, preserva o backup mais recente e avisa sobre arquivos ausentes. Aplica retenção no destino adicional e permite gerenciar backups locais. Recupera bloqueios comprovadamente antigos no mesmo computador e pede confirmação em casos incertos.

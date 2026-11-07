@@ -222,3 +222,36 @@ test('BUG-12 inventário só inclui backups reconhecidos e exclusão recusa cami
  assert.ok(fs.existsSync(path.join(dir,'fora.b9mm')));
  assert.ok(fs.existsSync(path.join(local,'pessoal.b9mm')));
 });
+
+test('BUG-15 recupera bloqueio da mesma máquina anterior ao boot e respeita sessão viva',t=>{
+ const {dir}=library(t);
+ const main=fs.readFileSync(path.join(__dirname,'../src/main.js'),'utf8');
+ const before=main.split('\n').find(line=>line.startsWith('function lock(target)'));
+ const locks=before?{lock:new Function('fs','path','process',before+';return lock')(fs,path,process)}:require('../src/core/lock');
+ const file=path.join(dir,'.bizuteca.lock'),old=new Date(Date.now()-os.uptime()*1000-60000);
+ fs.writeFileSync(file,JSON.stringify({pid:process.pid,host:os.hostname().toLowerCase(),start:+old}));
+ fs.utimesSync(file,old,old);
+ const owner=locks.lock(dir);
+ assert.throws(()=>locks.lock(dir),/biblioteca/i);
+ locks.unlock(owner);
+ assert.equal(fs.existsSync(file),false);
+});
+test('BUG-16 reserva a operação durante o diálogo e bloqueia IPC só durante o trabalho',async()=>{
+ const {createMaintenance}=require('../src/core/maintenance');
+ const gate=createMaintenance(),steps=[];
+ let release;
+ const wait=new Promise(resolve=>{release=resolve;});
+ const run=gate.reserve(async()=>{
+   assert.equal(gate.active,false);
+   await wait;
+   await gate.work(async()=>{assert.equal(gate.active,true);steps.push('trabalho');});
+   assert.equal(gate.active,false);
+ });
+ await assert.rejects(gate.reserve(()=>{}),/Aguarde a operação/);
+ assert.equal(gate.active,false);
+ release();
+ await run;
+ assert.deepEqual(steps,['trabalho']);
+ await assert.rejects(gate.work(()=>{throw Error('falha');}),/falha/);
+ assert.equal(gate.active,false);
+});

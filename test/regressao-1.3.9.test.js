@@ -133,3 +133,24 @@ test('BUG-19 permite procurar palavras curtas na busca interna',()=>{
  const tools=fs.readFileSync(path.join(__dirname,'../src/renderer/editor-tools.js'),'utf8');
  assert.match(tools,/highlightEditor\(value\.split\(\/\\s\+\/\),false,1\)/);
 });
+
+test('BUG-07 encaminha a navegação para as anotações arquivadas',async()=>{
+ const calls=[];
+ const navigate=rendererFunction('navigate',{flush(){},$(){},applyTheme(){},themeById(){},state:{},showArchived:()=>calls.push('arquivadas'),home:()=>calls.push('início')});
+ await navigate('archived');
+ assert.deepEqual(calls,['arquivadas']);
+});
+test('BUG-11 copia músicas pessoais e avisa sobre nomes iguais com conteúdo diferente',async t=>{
+ const {dir:origin}=library(t),{dir:target}=library(t),{dir:other}=library(t);
+ const music=require('../src/core/music');
+ const source=path.join(origin,'Faixa.mp3'),same=path.join(other,'Faixa.mp3');
+ fs.writeFileSync(source,'original');
+ fs.writeFileSync(same,'diferente');
+ await music.add(origin,[source]);
+ await music.copyLibrary(origin,target);
+ const conflicts=[];
+ await music.add(target,[source,same],name=>conflicts.push(name));
+ assert.deepEqual(music.list(target),['Faixa.mp3']);
+ assert.deepEqual(conflicts,['Faixa.mp3']);
+ assert.equal(fs.readFileSync(path.join(target,'musicas','Faixa.mp3'),'utf8'),'original');
+});

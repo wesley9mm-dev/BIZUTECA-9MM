@@ -22,6 +22,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -35,5 +37,6 @@ jobs:
           $exe = Get-ChildItem -LiteralPath 'dist/win-unpacked' -Filter '*.exe' -File | Select-Object -First 1
           if (-not $exe) { throw 'Aplicação empacotada não encontrada.' }
           $env:BIZUTECA_E2E_EXECUTABLE = $exe.FullName
+          $env:BIZUTECA_VERIFY_LEGACY = '1'
           npm run test:e2e
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

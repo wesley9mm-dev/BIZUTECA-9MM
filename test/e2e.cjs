@@ -414,6 +414,65 @@ async function step(name,run) {
       await page.getByText('Local de dados atualizado. A biblioteca anterior foi preservada.',{exact:true}).waitFor();
       assert.equal((await call('getNote',personal)).contentText,'Meu texto');
     });
+    if(process.env.BIZUTECA_VERIFY_LEGACY==='1'){
+      await application.close();
+      application=null;
+      page=null;
+      const {execFileSync}=require('node:child_process');
+      const {DatabaseSync}=require('node:sqlite');
+      const references=[
+        ['1.2.0','1eb0e3ee6032ee980f41940351000e92849d401b'],
+        ['1.3.9','2625cf6f7e714399066dc44f15339da1a5c5420b']
+      ];
+      for(const [version,commit] of references){
+        await step('Migra biblioteca '+version+' com backup e sem repetir a migração',async()=>{
+          const sources=fs.mkdtempSync(path.join(os.tmpdir(),'biz-fontes-antigas-'));
+          const target=fs.mkdtempSync(path.join(os.tmpdir(),'biz-biblioteca-antiga-'));
+          for(const name of ['library.js','text.js','storage.js','events.js','dates.js']){
+            fs.writeFileSync(path.join(sources,name),execFileSync('git',['show',commit+':src/core/'+name],{cwd:root}));
+          }
+          const OldLibrary=require(path.join(sources,'library.js')).Library;
+          const oldStorage=require(path.join(sources,'storage.js'));
+          const file=path.join(target,'biblioteca.db');
+          const old=new OldLibrary(file);
+          const html='<table><tr><td>Planejamento</td><td>Organização</td></tr></table>';
+          let note;
+          try{
+            oldStorage.extendSchema(old);
+            note=old.createNote({title:'Tabela de '+version,contentHtml:html});
+            assert.equal(old.getNote(note).contentText,'PlanejamentoOrganização');
+            old.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(note+100,'antigo.pdf','antigo.pdf','application/pdf');
+          }finally{old.close();}
+          await launch(target);
+          const migrated=await call('getNote',note);
+          assert.equal(migrated.contentHtml,html);
+          assert.equal(migrated.contentText,'Planejamento Organização');
+          assert.ok((await call('search','organizacao')).results.some(row=>row.id===note));
+          await application.close();
+          application=null;
+          page=null;
+          const local=path.join(target,'backups');
+          const snapshots=()=>fs.readdirSync(local).filter(name=>name.startsWith('antes-indice-v2-'));
+          const [name,...others]=snapshots();
+          assert.ok(name);
+          assert.deepEqual(others,[]);
+          const saved=path.join(sources,'backup-validado.db');
+          fs.writeFileSync(saved,decodePackage(fs.readFileSync(path.join(local,name))).database);
+          const original=new DatabaseSync(saved,{readOnly:true});
+          const updated=new DatabaseSync(file,{readOnly:true});
+          try{
+            assert.equal(original.prepare('SELECT content_text FROM notes WHERE id=?').get(note).content_text,'PlanejamentoOrganização');
+            assert.equal(original.prepare('SELECT COUNT(*) AS n FROM biz_files').get().n,1);
+            assert.equal(updated.prepare('SELECT COUNT(*) AS n FROM biz_files').get().n,0);
+          }finally{original.close();updated.close();}
+          await launch(target);
+          assert.deepEqual(snapshots(),[name]);
+          await application.close();
+          application=null;
+          page=null;
+        });
+      }
+    }
   } catch(error) {
     console.error(error);
     if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'falha.png')}).catch(()=>{});

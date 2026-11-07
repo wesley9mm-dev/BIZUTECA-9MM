@@ -18,7 +18,7 @@ function consult(lib,q={}){
   }
   r.score*=Math.max(0.15,1+0.35*Math.max(-2,Math.min(2,adjustment)));
  }
- found.rows.sort((a,b)=>b.score-a.score||a.id-b.id);
+ found.rows.sort((a,b)=>b.score-a.score||b.tie-a.tie||a.id-b.id);
  const results=found.rows.map(r=>{
   const n=lib.getNote(r.id);
   let passages=n.contentText.split(/\n+/).filter(Boolean).flatMap((line)=>line.match(/[\s\S]{1,700}(?:\s|$)/g)||[line]).map((s,index)=>({text:s,index,ranges:rangesFor(s,r.matched)})).filter(p=>p.ranges.length).sort((a,b)=>b.ranges.length-a.ranges.length).slice(0,3);

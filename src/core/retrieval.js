@@ -92,10 +92,10 @@ function retrieve(lib,text,opts={}){
  const weights=groups.map(g=>g.weight).sort((a,b)=>a-b),median=weights[Math.floor(weights.length/2)];
  const scores=new Map();
  for(const g of known)for(const r of g.hits){
-  const e=scores.get(r.id)||{id:r.id,score:0,cov:0,n:0,matched:[],high:false};
+  const e=scores.get(r.id)||{id:r.id,score:0,tie:0,cov:0,n:0,matched:[],high:false};
   const title=g.title.has(r.id);
   e.score+=g.weight*(1+(title?0.6:0))*(statement&&g.raw?.length>=5&&/(ar|er|ir)$/.test(g.raw)?1.5:1);
-  e.cov+=g.weight;e.n++;e.matched.push(g);
+  e.tie-=r.rank*g.weight;e.cov+=g.weight;e.n++;e.matched.push(g);
   if(g.weight>=median)e.high=true;
   scores.set(r.id,e);
  }
@@ -129,7 +129,7 @@ function retrieve(lib,text,opts={}){
  }
  rows=rows.filter(r=>groups.filter(g=>g.exact).every(g=>g.ids.has(r.id)));
  for(const r of rows)r.coverage=r.cov/(statement?Math.max(total,knownTotal):knownTotal);
- rows.sort((a,b)=>b.score-a.score||a.id-b.id);
+ rows.sort((a,b)=>b.score-a.score||b.tie-a.tie||a.id-b.id);
  return {rows:rows.slice(0,Math.max(1,Math.min(200,Number(opts.limit)||30))),groups,missing,mode:rows.length?mode:'none'};
 }
 function rangesFor(text,groups){

@@ -31,3 +31,10 @@ test('image files take priority when clipboard also includes Word HTML',async t=
  await w.editorTest.paste({preventDefault(){},currentTarget:editor,clipboardData:{getData:type=>type==='text/html'?'<p>Imagem do Word</p>':'Imagem do Word',items:[{kind:'file',type:'image/png',getAsFile:()=>file}]}});
  assert.deepEqual(inserted,[file]);
 });
+
+test('embedded clipboard images are persisted as attachments before insertion',async t=>{
+ const w=setup(t),editor=w.document.createElement('article'),calls=[],inserted=[];
+ w.$=()=>editor;w.selectionSave=()=>{};w.insertHtml=html=>inserted.push(html);w.api=async(op,value)=>{calls.push({op,value});return 'tv-attachment://abcdef.png';};
+ await w.editorTest.paste({preventDefault(){},currentTarget:editor,clipboardData:{items:[],getData:type=>type==='text/html'?'<p>Antes<img src="data:image/png;base64,aGVsbG8=">Depois</p>':'Antes Depois'}});
+ assert.equal(calls[0].op,'saveImage');assert.equal(calls[0].value.mime,'image/png');assert.match(inserted[0],/tv-attachment:\/\/abcdef.png/);assert.doesNotMatch(inserted[0],/base64/);assert.match(inserted[0],/Antes/);assert.match(inserted[0],/Depois/);
+});

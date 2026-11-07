@@ -109,7 +109,9 @@ const BizuEditor=(()=>{
   selectionSave();const theme=themeById(state.theme),highlight=kind==='highlight';
   const bases=highlight?['#facc15','#4ade80','#22d3ee','#a78bfa','#fb7185','#fb923c']:['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#a855f7','#ec4899'];
   const colors=bases.map(x=>contrastColor(x,highlight?theme.text:theme.editor,!highlight));
-  const r=await openDialog(highlight?'Marca-texto':'Cor do texto','<label class="field">Cor<select name="color"><option value="">Sem cor</option>'+colors.map((x,i)=>'<option value="'+x+'">Cor '+(i+1)+' · '+x+'</option>').join('')+'</select></label>');
+  const dialog=openDialog(highlight?'Marca-texto':'Cor do texto','<div class="color-palette" role="group" aria-label="Paleta de cores">'+colors.map((color,i)=>'<button type="button" data-palette-color="'+color+'" style="background-color:'+color+'" title="Cor '+(i+1)+'" aria-label="Cor '+(i+1)+'"></button>').join('')+'</div><label class="field">Cor<select name="color"><option value="">Sem cor</option>'+colors.map((x,i)=>'<option value="'+x+'">Cor '+(i+1)+' · '+x+'</option>').join('')+'</select></label>');
+  for(const b of $$('[data-palette-color]'))b.onclick=()=>{$('#dialog select[name=color]').value=b.dataset.paletteColor;for(const swatch of $$('[data-palette-color]'))swatch.setAttribute('aria-pressed',String(swatch===b));};
+  const r=await dialog;
   if(r.id!=='ok')return;
   selectionRestore();
   if(r.values.color){
@@ -138,6 +140,7 @@ const BizuEditor=(()=>{
   if(!menu||!block||!/^\/[\p{L}\s]*$/u.test(block.textContent)){if(menu)menu.hidden=true;return;}
   const query=normalize(block.textContent.slice(1));const list=slashItems.filter(x=>normalize(x[1]).includes(query));
   if(!list.length){menu.hidden=true;return;}
+  if(menu.dataset.query!==query){slashIndex=0;menu.dataset.query=query;}
   menu.hidden=false;menu.innerHTML=list.map(([action,label],i)=>button('',label,label,'data-slash="'+action+'" role="option" aria-selected="'+(i===slashIndex)+'"')).join('');
   const rect=block.getBoundingClientRect();menu.style.left=Math.min(rect.left,window.innerWidth-220)+'px';menu.style.top=Math.min(rect.bottom,window.innerHeight-menu.offsetHeight-8)+'px';
   slashIndex=Math.max(0,Math.min(slashIndex,list.length-1));

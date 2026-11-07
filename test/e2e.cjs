@@ -279,9 +279,15 @@ async function step(name,run) {
       });
       await saved();const after=await call('getNote',noteId);
       assert.match(after.contentHtml,/Colagem limpa/);assert.doesNotMatch(after.contentHtml,/Calibri|11pt|color:\s*blue/);
+      const legacy='<font color="#ff0000">Nota antiga</font><div class="bizu"><span class="callout-label">BIZU</span><p><b>Regra</b></p></div><div class="pegadinha"><span class="callout-label">PEGADINHA</span><p>Detalhe</p></div><table><tr><td>Texto</td></tr></table><ul><li><span class="task-check">☑</span><s>Revisão</s></li></ul>'+original.contentHtml.match(/<img\b[^>]*>/)[0];
+      const legacyId=await call('createNote',{title:'Verificação de compatibilidade',contentHtml:legacy});
+      await page.evaluate(async id=>{await openNote(id);markDirty();await flushStable();},legacyId);
+      assert.equal((await call('getNote',legacyId)).contentHtml,legacy);
+      await page.evaluate(async id=>{await openNote(id);},noteId);
+      await call('purgeNote',legacyId);
       // Restore the previous rich note to keep the following export checks independent.
       await call('updateNote',noteId,{contentHtml:original.contentHtml});
-      await page.locator('#home').click();await page.locator('[data-open-note="'+noteId+'"]').first().click();
+      await page.evaluate(async id=>{await openNote(id);},noteId);
     });
     await step('Calendário, próximo compromisso e atualização',async()=>{
       await page.locator('[data-view=calendar]').click();

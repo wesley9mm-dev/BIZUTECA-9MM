@@ -12,6 +12,7 @@ function stem(word){
  if(/\d/.test(w)||w.length<3)return n;
  if(NUMWORDS[n]!==undefined)return String(NUMWORDS[n]);
  if(CANON[n])return CANON[n];
+ if(n==='leis')return 'lei';
  if(cache.has(n))return cache.get(n);
  // Restore the productive suffix before Snowball when the user omitted accents.
  w=w.replace(/(coes|ções|caes|cães|caos|cãos)$/,'ção').replace(/cao$/,'ção');

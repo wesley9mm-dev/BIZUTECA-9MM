@@ -3,8 +3,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {sanitizeMaterial}=require('./sanitize');
 
-function importTextFiles(lib, files, folderId = null) {
-  return lib._tx(() => {
+function importTextFiles(lib, files, folderId = null, onAnsi) {
+  const converted=[];
+  const count=lib._tx(() => {
     for (const file of files) {
       const ext = path.extname(file).toLowerCase();
       if (!['.txt', '.html', '.htm'].includes(ext)) {
@@ -21,7 +22,9 @@ function importTextFiles(lib, files, folderId = null) {
         const encoding = utf16le ? 'utf-16le' : utf16be ? 'utf-16be' : 'utf-8';
         html = new TextDecoder(encoding, {fatal:true}).decode(bytes);
       } catch {
-        throw Error('Codificação inválida em ' + path.basename(file) + '. Salve o arquivo em UTF-8.');
+        if (utf16le||utf16be||bytes.includes(0))throw Error('Codificação inválida em ' + path.basename(file) + '. Salve o arquivo em UTF-8.');
+        html=new TextDecoder('windows-1252').decode(bytes);
+        converted.push(path.basename(file));
       }
       if (html.includes('\0')) throw Error('Texto inválido: ' + path.basename(file));
       if (ext === '.txt') {
@@ -32,6 +35,8 @@ function importTextFiles(lib, files, folderId = null) {
     }
     return files.length;
   });
+  if(converted.length)onAnsi?.(converted);
+  return count;
 }
 
 module.exports = {importTextFiles};

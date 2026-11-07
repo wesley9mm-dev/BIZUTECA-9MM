@@ -193,7 +193,7 @@ async function importText(folderId=null,txtOnly=false){
     buttons:['Cancelar','Importar'],defaultId:1,cancelId:0});
   if(answer.response!==1)return null;
   if(txtOnly&&result.filePaths.some(file=>path.extname(file).toLowerCase()!=='.txt'))throw Error('Selecione apenas arquivos TXT.');
-  return importTextFiles(lib,result.filePaths,folderId);
+  return importTextFiles(lib,result.filePaths,folderId,files=>win?.webContents.send('backup-warning',files.length+' arquivo(s) ANSI convertido(s): '+files.join(', ')));
 }
 function imageData(src) {
   if (typeof src !== 'string' || src.length > 28000000) throw Error('Imagem inválida ou muito grande.');

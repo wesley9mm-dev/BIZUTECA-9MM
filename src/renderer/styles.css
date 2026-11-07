@@ -133,3 +133,5 @@ body[data-universe="true"][data-translucent="true"] :is(.topbar,.workspace) butt
 .workspace.focus-writing .editor-toolbar,.workspace.focus-writing .note-meta,.workspace.focus-writing #favorite-note,.workspace.focus-writing #note-options{display:none}
 .workspace.focus-writing .main{padding-left:max(24px,calc((100vw - 90ch)/2));padding-right:max(24px,calc((100vw - 90ch)/2))}
 @media(max-width:1100px){.editor-toolbar{overflow-x:auto;flex-wrap:nowrap}.editor-toolbar button{padding:5px 7px}.editor{padding:16px}}
+
+.dialog-actions{flex-wrap:wrap;max-height:55vh;overflow:auto}.dialog-actions button{flex-shrink:0;max-width:100%}

@@ -107,7 +107,7 @@ function retrieve(lib,text,opts={}){
  const T=known.length;
  let mode='all';
  const complete=rows.filter(r=>r.n===T);
- if(!statement&&groups.some(g=>g.exact&&!g.df))rows=[];
+ if(groups.some(g=>g.exact&&!g.df))rows=[];
  else if(T<=3&&complete.length)rows=complete;
  else if(!statement){
   // Relax the lowest-IDF requirement one at a time; never discard quoted groups.
@@ -127,12 +127,13 @@ function retrieve(lib,text,opts={}){
   if(N>=10&&missing.length>known.length)rows=rows.filter(r=>r.cov/total>=0.3&&r.high);
   mode='statement';
  }
+ rows=rows.filter(r=>groups.filter(g=>g.exact).every(g=>g.ids.has(r.id)));
  for(const r of rows)r.coverage=r.cov/(statement?Math.max(total,knownTotal):knownTotal);
  rows.sort((a,b)=>b.score-a.score||a.id-b.id);
  return {rows:rows.slice(0,Math.max(1,Math.min(200,Number(opts.limit)||30))),groups,missing,mode:rows.length?mode:'none'};
 }
 function rangesFor(text,groups){
- const wanted=new Set(groups.flatMap(g=>[g.st,...words(g.label).map(stem)]));
+ const wanted=new Set(groups.flatMap(g=>[...words(g.st),...words(g.label).map(stem)]));
  const ranges=[];
  for(const m of String(text).matchAll(/[\p{L}\p{N}]+/gu))if(wanted.has(stem(m[0])))ranges.push([m.index,m.index+m[0].length]);
  return ranges;

@@ -3,6 +3,8 @@ const { DatabaseSync } = require('node:sqlite');
 const { createHash, randomUUID } = require('node:crypto');
 const { norm, htmlToText } = require('./text');
 
+const {stemText}=require('./lang-pt');
+
 const now = () => new Date().toISOString();
 const n0 = (v) => (v === undefined ? null : v);
 
@@ -36,7 +38,7 @@ class Library {
   _schema() {
     try {
       this.db.exec(`CREATE VIRTUAL TABLE IF NOT EXISTS notes_fts USING fts5(
-        title, body, tags, path, tokenize = 'unicode61 remove_diacritics 2');
+        title, body, tags, path, stems, tokenize = 'unicode61 remove_diacritics 2');
         CREATE VIRTUAL TABLE IF NOT EXISTS notes_vocab USING fts5vocab(notes_fts, 'row');`);
     } catch (e) {
       throw new Error('Este SQLite não suporta FTS5, necessário para a pesquisa: ' + e.message);
@@ -80,6 +82,13 @@ class Library {
       CREATE INDEX IF NOT EXISTS idx_note_links_related ON note_links(related_note_id);
       INSERT OR IGNORE INTO meta(key, value) VALUES('schema_version', '1');
     `);
+    this.db.exec('CREATE TABLE IF NOT EXISTS biz_abbr(sigla TEXT PRIMARY KEY, extenso TEXT NOT NULL)');
+    const searchVersion=Number(this.db.prepare("SELECT value FROM meta WHERE key='search_schema'").get()?.value||0);
+    if(searchVersion<2)this._tx(()=>{
+      this.db.exec("DROP TABLE IF EXISTS notes_vocab; DROP TABLE IF EXISTS notes_fts; CREATE VIRTUAL TABLE notes_fts USING fts5(title,body,tags,path,stems,tokenize='unicode61 remove_diacritics 2'); CREATE VIRTUAL TABLE notes_vocab USING fts5vocab(notes_fts,'row');");
+      this.reindexAll();
+      this.db.prepare("INSERT OR REPLACE INTO meta(key,value) VALUES('search_schema','2')").run();
+    });
     const schemaVersion = Number(this.db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get()?.value || 1);
     if (schemaVersion < 5) this.db.prepare("UPDATE meta SET value = '5' WHERE key = 'schema_version'").run();
   }
@@ -494,6 +503,13 @@ class Library {
 
   noteCount() { return this.db.prepare('SELECT COUNT(*) AS c FROM notes WHERE deleted_at IS NULL AND archived = 0').get().c; }
 
+  listAbbreviations(){return this.db.prepare('SELECT sigla,extenso FROM biz_abbr ORDER BY sigla').all();}
+  saveAbbreviation(sigla,extenso){
+    sigla=norm(String(sigla??'')).trim();extenso=String(extenso??'').trim();
+    if(!/^[a-z0-9]{2,20}$/.test(sigla)||!extenso||extenso.length>250)throw Error('Informe uma sigla de 2 a 20 letras/números e sua descrição (até 250 caracteres).');
+    this.db.prepare('INSERT OR REPLACE INTO biz_abbr(sigla,extenso) VALUES(?,?)').run(sigla,extenso);
+  }
+  removeAbbreviation(sigla){this.db.prepare('DELETE FROM biz_abbr WHERE sigla=?').run(String(sigla));}
   // ---------- índice de busca ----------
   _unindex(id) { this.db.prepare('DELETE FROM notes_fts WHERE rowid = ?').run(id); this.vocabCache = null; }
 
@@ -503,8 +519,8 @@ class Library {
     this.vocabCache = null;
     if (!n || n.deleted_at) return;
     const path = n.folder_id != null ? this.folderPath(n.folder_id) : '';
-    this.db.prepare('INSERT INTO notes_fts(rowid, title, body, tags, path) VALUES(?,?,?,?,?)')
-      .run(id, n.title, n.content_text, this.noteTags(id).join(' '), path);
+    this.db.prepare('INSERT INTO notes_fts(rowid, title, body, tags, path, stems) VALUES(?,?,?,?,?,?)')
+      .run(id, n.title, n.content_text, this.noteTags(id).join(' '), path, stemText([n.title,n.content_text,this.noteTags(id).join(' '),path].join(' ')));
   }
 
   _reindexFolder(folderId) {

@@ -19,6 +19,10 @@ async function addBackupControls() {
     '<button id="apply-bizulanguage" class="outline">Acrescentar / atualizar BizuLanguage</button></section>'+
     '<section class="settings-section"><h2>Modelo de biblioteca TEC</h2><p>Adicione a estrutura de matérias e assuntos quando quiser.</p>'+
     '<button id="apply-tec" class="outline">Acrescentar modelo TEC</button></section>');
+  const abbreviations=await api('listAbbreviations');
+  $('#main').insertAdjacentHTML('beforeend','<section class="settings-section"><h2>Minhas siglas</h2><p>Acrescente equivalências para a pesquisa no seu caderno.</p><div id="abbr-list">'+abbreviations.map(x=>'<p>'+esc(x.sigla)+' — '+esc(x.extenso)+' <button data-abbr="'+esc(x.sigla)+'" class="outline small">Remover</button></p>').join('')+'</div><button id="add-abbr" class="outline">Adicionar ou editar sigla</button></section>');
+  $('#add-abbr').onclick=()=>run(async()=>{const r=await openDialog('Sigla de pesquisa','<label class="field">Sigla<input name="sigla" maxlength="20" required></label><label class="field">Significado<input name="extenso" maxlength="250" required></label>');if(r.id==='ok'){await api('saveAbbreviation',r.values.sigla,r.values.extenso);await settings();}});
+  for(const button of $('[data-abbr]'))button.onclick=()=>run(async()=>{await api('removeAbbreviation',button.dataset.abbr);await settings();});
   $('#automatic-backup').onchange=event=>run(()=>api('toggleAutomaticBackup',event.target.checked));
   $('#pick-backup-directory').onclick=()=>run(async()=>{if(await api('backupDirectory'))await settings();});
   $('#clear-backup-directory').onclick=()=>run(async()=>{await api('backupDirectory','clear');await settings();});

@@ -16,7 +16,7 @@ function htmlToText(html) {
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '')
     .replace(/[ \t]+\n/g,'\n');
-  return decodeHTMLStrict(text).replace(/\u00a0/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+  return decodeHTMLStrict(text).replace(/[☐☑]/g,' ').replace(/\u00a0/g,' ').replace(/\n{3,}/g,'\n\n').trim();
 }
 
 function levenshtein(a, b, max) {

@@ -56,6 +56,7 @@ function openLibrary(target,{seed=true,owner}={}) {
         }
       } finally { old.close(); }
     }
+    splash?.webContents.executeJavaScript("document.body.setAttribute('aria-label','Atualizando índice de pesquisa…')").catch(()=>{});
     next = new Library(file);
     next._tx(() => {
       storage.extendSchema(next);
@@ -288,6 +289,9 @@ async function useImage(kind, src) {
 async function action(op,args){
  if(allowed.has(op)){validateLibraryCall(op,args);if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
+ case 'listAbbreviations':return lib.listAbbreviations();
+ case 'saveAbbreviation':return lib.saveAbbreviation(args[0],args[1]);
+ case 'removeAbbreviation':return lib.removeAbbreviation(args[0]);
  case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length,blockedAttachments:storage.blockedAttachmentNames(lib.db)};
  case 'listMusic':return {tracks:music.list(dir,bundledMusic),personal:music.list(dir),options:setting('musicOptions')||{}};
  case 'addMusic':{

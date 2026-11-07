@@ -123,6 +123,7 @@ function mergeLibraries(target, incoming) {
   const map=new Map(),noteMap=new Map();
   let inserted=0,duplicates=0,folders=0,links=0,versions=0,reconciled=0,archived=0,eventCounts={};
   target._tx(()=>{
+    for(const row of incoming.listAbbreviations())target.db.prepare('INSERT OR IGNORE INTO biz_abbr(sigla,extenso) VALUES(?,?)').run(row.sigla,row.extenso);
     let remaining=incoming.listFolders(),depth=0;
     while(remaining.length&&depth++<100){
       const next=[];

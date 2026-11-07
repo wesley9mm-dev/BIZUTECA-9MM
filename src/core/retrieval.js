@@ -61,7 +61,7 @@ function retrieve(lib,text,opts={}){
   if(!g.hits.length&&!opts.incremental&&!g.exact&&g.raw?.length>=5&&!/\d/.test(g.raw)){
    const max=g.raw.length>=8?2:1;
    const candidates=lib.vocabulary().map(v=>({...v,dist:levenshtein(g.st,stem(v.term),max)}))
-    .filter(v=>v.dist<=max).sort((a,b)=>a.dist-b.dist||b.doc-a.doc).slice(0,3);
+    .filter(v=>v.dist<=max).sort((a,b)=>levenshtein(norm(g.raw),a.term,3)-levenshtein(norm(g.raw),b.term,3)||a.dist-b.dist||b.doc-a.doc).slice(0,3);
    if(candidates.length){
     // Keep only the closest spelling family; unrelated secondary corrections add noise.
     const best=candidates[0],rad=stem(best.term);
@@ -94,7 +94,7 @@ function retrieve(lib,text,opts={}){
  for(const g of known)for(const r of g.hits){
   const e=scores.get(r.id)||{id:r.id,score:0,cov:0,n:0,matched:[],high:false};
   const title=g.title.has(r.id);
-  e.score+=g.weight*(1+(title?0.6:0));
+  e.score+=g.weight*(1+(title?0.6:0))*(statement&&g.raw?.length>=5&&/(ar|er|ir)$/.test(g.raw)?1.5:1);
   e.cov+=g.weight;e.n++;e.matched.push(g);
   if(g.weight>=median)e.high=true;
   scores.set(r.id,e);

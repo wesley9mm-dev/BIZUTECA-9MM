@@ -266,7 +266,10 @@ async function step(name,run) {
       const original=await call('getNote',noteId);
       await page.locator('#editor').focus();
       await page.keyboard.press('Control+End');await page.keyboard.press('Enter');
-      await page.keyboard.type('#');await page.keyboard.press('Space');await page.keyboard.type('Título automático');
+      await page.keyboard.type('#');await page.keyboard.press('Space');
+      await page.keyboard.press('Control+z');
+      assert.match(await page.locator('#editor').innerText(),/#\s*$/,'Desfazer restaura o prefixo Markdown');
+      await page.keyboard.press('Space');await page.keyboard.type('Título automático');
       assert.ok(await page.locator('#editor h2').filter({hasText:'Título automático'}).count(),JSON.stringify({html:await page.locator('#editor').evaluate(e=>e.innerHTML.slice(-2200)),errors:pageErrors,focus:await page.evaluate(()=>({active:document.activeElement?.outerHTML.slice(0,200),selection:getSelection().anchorNode?.parentElement?.outerHTML.slice(0,200),editable:document.querySelector('#editor').isContentEditable,dialog:document.querySelector('#dialog').open}))}));
       await page.keyboard.press('Enter');await page.keyboard.press('Control+Alt+0');
       await page.keyboard.type('/');await page.locator('#slash-menu:not([hidden])').waitFor();

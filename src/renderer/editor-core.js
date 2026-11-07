@@ -190,9 +190,17 @@ const BizuEditor=(()=>{
   if(k==='backspace'&&block?.matches('.bizu,.pegadinha')&&p&&p===block.querySelector('p')&&(()=>{const sel=getSelection();if(!sel.rangeCount||!sel.isCollapsed)return false;const prefix=sel.getRangeAt(0).cloneRange();prefix.selectNodeContents(p);prefix.setEnd(sel.anchorNode,sel.anchorOffset);return !prefix.toString();})()){e.preventDefault();block.querySelector('.callout-label')?.remove();block.replaceWith(...block.childNodes);markDirty();return;}
   const current=editorTarget('p,div')||(editor.childElementCount===0?editor:null);const action=current?markdownAction(current.textContent.replace(/\u00a0/g,' ')+(k===' '?' ':'')):null;
   if((k===' '&&action)||(k==='enter'&&action==='rule')){
-   e.preventDefault();const range=document.createRange();range.selectNodeContents(current);const sel=getSelection();sel.removeAllRanges();sel.addRange(range);selectionSave();
-   // execCommand keeps the automatic conversion in Chromium's undo history.
-   document.execCommand('delete');applyAction(action);return;
+   e.preventDefault();
+   const parent=current===editor?editor:current.parentNode,index=current===editor?0:Array.prototype.indexOf.call(parent.childNodes,current);
+   const range=document.createRange();if(current===editor)range.selectNodeContents(editor);else range.selectNode(current);
+   const sel=getSelection();sel.removeAllRanges();sel.addRange(range);selectionSave();
+   const html={h2:'<h2><br></h2>',h3:'<h3><br></h3>',ul:'<ul><li><br></li></ul>',ol:'<ol><li><br></li></ol>',blockquote:'<blockquote><p><br></p></blockquote>',task:'<ul><li><span class="task-check">☐</span> <br></li></ul>',rule:'<hr><p><br></p>'}[action];
+   // One Chromium editing transaction: Undo restores the typed prefix as well.
+   insertHtml(html);
+   let target=parent.childNodes[index+(action==='rule'?1:0)];
+   if(target?.nodeType===Node.ELEMENT_NODE)target=target.querySelector('li,p')||target;
+   if(target){const caret=document.createRange();caret.selectNodeContents(target);caret.collapse(true);if(action==='task'&&target.firstChild)caret.setStartAfter(target.firstChild);sel.removeAllRanges();sel.addRange(caret);selectionSave();}
+   return;
   }
  }
  async function paste(e){

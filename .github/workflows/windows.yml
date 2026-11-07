@@ -27,6 +27,8 @@ jobs:
         run: npm install
       - name: Testar núcleo e compatibilidade
         run: npm test
+      - name: Verificar critérios de aceite da pesquisa
+        run: node scripts/aceite-pesquisa.js
       - name: Gerar executável portátil
         run: npm run dist
         env:

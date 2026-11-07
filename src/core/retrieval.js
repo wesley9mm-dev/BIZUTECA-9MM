@@ -4,7 +4,7 @@ const {words,strip,stem,stemText,STOP,ABBR,numericText}=require('./lang-pt');
 const phrase=s=>'"'+words(s).map(strip).join(' ')+'"';
 const EX='{title body tags path} : ', ST='stems : ';
 function groupsOf(lib,text){
- const pairs=[...ABBR,...lib.listAbbreviations().map(x=>[x.sigla,norm(x.extenso)])].sort((a,b)=>b[1].length-a[1].length);
+ const pairs=[...new Map([...ABBR,...lib.listAbbreviations().map(x=>[x.sigla,norm(x.extenso)])])].sort((a,b)=>b[1].length-a[1].length);
  const chunks=String(text).match(/"[^"]+"|[^"]+/g)||[];
  const out=[];let pos=0;
  for(const chunk of chunks){

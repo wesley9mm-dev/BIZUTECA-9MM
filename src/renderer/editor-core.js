@@ -219,7 +219,10 @@ const BizuEditor=(()=>{
   document.execCommand('styleWithCSS',false,true);lockLabels(editor);
   editor.onpaste=e=>run(()=>paste(e));editor.oninput=()=>{lockLabels(editor);markDirty();slashMenu();};
   editor.addEventListener('beforeinput',()=>clearNoteHighlights(editor),{signal});
-  editor.addEventListener('focus',()=>clearNoteHighlights(editor),{signal});
+  editor.addEventListener('focus',()=>{
+   clearNoteHighlights(editor);const sel=getSelection();
+   if(!editor.contains(sel.anchorNode)){const range=document.createRange();range.selectNodeContents(editor);range.collapse(false);sel.removeAllRanges();sel.addRange(range);}
+  },{signal});
   editor.addEventListener('keydown',keydown,{signal});
   $('#note-title').onkeydown=e=>{if(['Enter','ArrowDown'].includes(e.key)){e.preventDefault();editor.focus();}};
   for(const b of $$('.editor-toolbar button'))b.onmousedown=e=>e.preventDefault();
@@ -269,5 +272,6 @@ const BizuEditor=(()=>{
   if(action==='attach')$('#attach-file').click();
   if(action==='template')await noteFromTemplate();
  }
- return {buildToolbar,wireEditor,updateToolbarState,slashMenu,floatingBar,sanitize,cleanPaste,plainText,markdownAction,noteAction,callout,paste};
+ function dispose(){controller?.abort();cancelAnimationFrame(frame);}
+ return {dispose,buildToolbar,wireEditor,updateToolbarState,slashMenu,floatingBar,sanitize,cleanPaste,plainText,markdownAction,noteAction,callout,paste};
 })();

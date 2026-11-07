@@ -59,3 +59,29 @@ test('BUG-13 duplica os vínculos dos anexos',t=>{
  const copy=lib.duplicateNote(id);
  assert.equal(lib.db.prepare('SELECT COUNT(*) AS total FROM biz_files WHERE note_id=?').get(copy).total,1);
 });
+
+test('BUG-08 preserva formatação e remove conteúdo executável',()=>{
+ const {sanitizeExportHtml}=require('../src/core/export');
+ const html=sanitizeExportHtml('<p style="color:#c00;position:fixed">Texto <mark>marcado</mark></p><div class="bizu desconhecida">Dica</div><font color="#00f">azul</font><img src="x" onerror="alert(1)"><a href="javascript:alert(1)">link</a><svg><script>alert(1)</script></svg>');
+ assert.match(html,/style="color:#c00"/);
+ assert.match(html,/<mark>marcado<\/mark>/);
+ assert.match(html,/class="bizu"/);
+ assert.match(html,/color="#00f"/);
+ assert.doesNotMatch(html,/position|onerror|javascript:|alert\(1\)|<svg/);
+});
+test('BUG-09 converte entidades uma vez e descarta scripts e estilos',t=>{
+ const {dir,lib}=library(t);
+ assert.equal(htmlToText('<p>&aacute; &eacute; &#xE9; &ccedil;&atilde;o &amp;lt;</p>'),'á é é ção &lt;');
+ const file=path.join(dir,'material.html');
+ fs.writeFileSync(file,'<html><head><title>Oculto</title><style>p{color:red}</style></head><body><p>Texto</p><script>alert(1)</script><img src="x" onerror="alert(2)"></body></html>');
+ require('../src/core/text-import').importTextFiles(lib,[file]);
+ const note=lib.getNote(lib.listNotes()[0].id);
+ assert.equal(note.contentText,'Texto');
+ assert.doesNotMatch(note.contentHtml,/onerror|alert|Oculto|<script/);
+});
+test('BUG-10 importa texto do Windows sem perder acentos',t=>{
+ const {dir,lib}=library(t),file=path.join(dir,'regência.txt');
+ fs.writeFileSync(file,Buffer.from('Regência verbal','latin1'));
+ assert.equal(require('../src/core/text-import').importTextFiles(lib,[file]),1);
+ assert.equal(lib.getNote(lib.listNotes()[0].id).contentText,'Regência verbal');
+});

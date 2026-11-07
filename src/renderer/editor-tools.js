@@ -43,7 +43,8 @@ function editorTarget(selector) {
   return $('#editor')?.contains(target)?target:null;
 }
 function clearNoteHighlights(editor) {
-  for(const mark of editor.querySelectorAll('.found-text'))mark.replaceWith(...mark.childNodes);
+  const marks=editor.querySelectorAll('.found-text');if(!marks.length)return;
+  for(const mark of marks)mark.replaceWith(...mark.childNodes);
   editor.normalize();
 }
 function changeTable(kind) {

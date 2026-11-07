@@ -165,6 +165,7 @@ function installPackage(mode,file){
       storage.validateDatabase(path.join(staging,'biblioteca.db'),pack.images,()=>{});
       fs.renameSync(staging,staged);
       const next = openLibrary(staged);
+      next.lib.reindexAll();
       try { remember(staged); }
       catch (error) { next.lib.close(); unlock(next.lock); throw error; }
       const previousDirectory = dir, previousLib = lib, previousLock = lockPath;
@@ -175,6 +176,7 @@ function installPackage(mode,file){
       return {restored:true,safety,previousDirectory,directory:dir};
     }
     incoming = new Library(temp);
+    incoming.reindexAll();
     storage.extendSchema(incoming);
     const safety = autoBackup();
     // Install assets first, so no committed note can reference an unavailable file.

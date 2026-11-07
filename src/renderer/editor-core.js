@@ -1,5 +1,6 @@
 'use strict';
 const BizuEditor=(()=>{
+ const escapeText=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
  let controller,frame,slashIndex=0,lastHighlight;
  const button=(id,label,text,attr='')=>'<button type="button" '+(id?'id="'+id+'"':'')+' title="'+label+'" aria-label="'+label+'" '+attr+'>'+text+'</button>';
  const cmd=(command,label,text)=>button('',label,text,'data-command="'+command+'"');
@@ -48,7 +49,7 @@ const BizuEditor=(()=>{
   return doc.innerHTML.replace(/(?:&nbsp;|\u00a0){2,}/g,' ').replace(/(<p>(?:<br\s*\/?>|\s)*<\/p>)(?:\s*<p>(?:<br\s*\/?>|\s)*<\/p>)+/g,'$1');
  }
  function plainText(text){
-  return String(text).replace(/\r\n?/g,'\n').replace(/([^\n.!?:;])\n(?=[a-zà-ÿ])/g,'$1 ').split('\n').map(s=>'<p>'+esc(s||'')+'</p>').join('');
+  return String(text).replace(/\r\n?/g,'\n').replace(/([^\n.!?:;])\n(?=[a-zà-ÿ])/g,'$1 ').split('\n').map(s=>'<p>'+escapeText(s||'')+'</p>').join('');
  }
  function markdownAction(text){
   return ({'# ':'h2','## ':'h3','- ':'ul','* ':'ul','1. ':'ol','> ':'blockquote','[] ':'task','---':'rule'})[text]||null;

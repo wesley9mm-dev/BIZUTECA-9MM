@@ -10,7 +10,7 @@ test('clean paste removes Word fonts and colors, keeps list/table/strong and spa
 test('renderer and process share an HTML/CSS/image allowlist',t=>{
  const w=setup(t);
  for(const html of ['<p onclick="evil()" style="color:#123456;font-family:Calibri">Texto<script>evil()</script></p>','<img src="tv-attachment://abc123.png" alt="Foto"><img src="file:///secret">','<a href="javascript:alert(1)">Link</a><span class="task-check extra">☐</span>']){
-  const a=w.document.createElement('template'),b=w.document.createElement('template');a.innerHTML=w.editorTest.sanitize(html);b.innerHTML=sanitizeMaterial(html);assert.equal(a.innerHTML,b.innerHTML);
+  const a=w.document.createElement('template'),b=w.document.createElement('template');a.innerHTML=w.editorTest.sanitize(html);b.innerHTML=sanitizeMaterial(html);for(const root of [a,b])for(const el of root.content.querySelectorAll('[style]'))el.setAttribute('style',el.style.cssText);assert.equal(a.innerHTML,b.innerHTML);
  }
 });
 test('markdown mapping and clean PDF plain text',t=>{
@@ -22,4 +22,12 @@ test('old note structures and attachment images survive sanitization and export'
  const w=setup(t),html='<font color="#ff0000">Antiga</font><div class="bizu"><span class="callout-label">BIZU</span><p><b>Texto</b></p></div><div class="pegadinha"><p>Detalhe</p></div><table><tbody><tr><td>Célula</td></tr></tbody></table><ul><li><span class="task-check">☑</span><s>Feita</s></li></ul><img src="tv-attachment://abcdef.png" alt="Imagem">';
  const normalized=w.editorTest.sanitize(html),again=w.editorTest.sanitize(normalized);assert.equal(again,normalized);
  for(const token of ['font','bizu','pegadinha','table','task-check','<s>','tv-attachment://'])assert.ok(sanitizeMaterial(html).includes(token),token);
+});
+
+test('image files take priority when clipboard also includes Word HTML',async t=>{
+ const w=setup(t),editor=w.document.createElement('article'),inserted=[];
+ w.$=()=>editor;w.selectionSave=()=>{};w.insertImage=async file=>inserted.push(file);w.insertHtml=s=>inserted.push(s);
+ const file={name:'clipboard.png'};
+ await w.editorTest.paste({preventDefault(){},currentTarget:editor,clipboardData:{getData:type=>type==='text/html'?'<p>Imagem do Word</p>':'Imagem do Word',items:[{kind:'file',type:'image/png',getAsFile:()=>file}]}});
+ assert.deepEqual(inserted,[file]);
 });

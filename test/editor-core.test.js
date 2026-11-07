@@ -5,6 +5,7 @@ function setup(t){const dom=new JSDOM('<!doctype html>',{runScripts:'outside-onl
 test('clean paste removes Word fonts and colors, keeps list/table/strong and spans',t=>{
  const w=setup(t),e=w.editorTest,html='<div style="font-family:Calibri;font-size:11pt;color:blue;margin-left:20px"><strong>Título</strong></div><ul><li>Item</li></ul><table style="width:600px"><tr><td style="color:red;width:80px" colspan="2"><b>Célula</b></td></tr></table>';
  const clean=e.cleanPaste(html);assert.doesNotMatch(clean,/font-family|font-size|color:|width:|margin-left/);assert.match(clean,/<strong>Título<\/strong>/);assert.match(clean,/<li>Item<\/li>/);assert.match(clean,/colspan="2"/);
+ const own=e.clipboardHtml('<span style="color:#ff0000"><b>Texto interno</b></span>');assert.match(own,/data-bizuteca/);assert.match(e.cleanPaste(own),/color/);assert.match(e.cleanPaste(own),/<b>Texto interno<\/b>/);
  assert.match(e.cleanPaste('<div class="bizu"><span style="color:#ff0000">Bizu</span></div>'),/color/);
 });
 test('renderer and process share an HTML/CSS/image allowlist',t=>{

@@ -33,6 +33,13 @@ const BizuEditor=(()=>{
   }
   return doc.innerHTML;
  }
+ function clipboardHtml(html){
+  const holder=document.createElement('template');holder.innerHTML=sanitize(html);
+  const first=holder.content.firstElementChild;
+  if(first)first.setAttribute('data-bizuteca','true');
+  else{const span=document.createElement('span');span.setAttribute('data-bizuteca','true');span.append(...holder.content.childNodes);holder.content.append(span);}
+  return holder.innerHTML;
+ }
  function cleanPaste(html){
   const doc=document.createElement('template');doc.innerHTML=sanitize(html);
   const internal=/data-bizuteca\b/.test(html)||!!doc.content.querySelector('.bizu,.pegadinha');
@@ -232,7 +239,7 @@ const BizuEditor=(()=>{
   lockLabels(editor);
  }
  function wireEditor(editor,note){
-  controller?.abort();controller=new AbortController();const signal=controller.signal;
+  controller?.abort();controller=new AbortController();lastAutomatic=null;const signal=controller.signal;
   document.execCommand('styleWithCSS',false,true);lockLabels(editor);
   editor.onpaste=e=>{const pending=paste(e);run(()=>pending);};editor.oninput=event=>{
    const sel=getSelection();
@@ -247,6 +254,12 @@ const BizuEditor=(()=>{
    }
    lockLabels(editor);markDirty();slashMenu();
   };
+  for(const type of ['copy','cut'])editor.addEventListener(type,event=>{
+   const sel=getSelection();if(!event.clipboardData||!sel.rangeCount||sel.isCollapsed||!editor.contains(sel.getRangeAt(0).commonAncestorContainer))return;
+   const holder=document.createElement('div');holder.append(sel.getRangeAt(0).cloneContents());
+   event.clipboardData.setData('text/html',clipboardHtml(holder.innerHTML));event.clipboardData.setData('text/plain',sel.toString());event.preventDefault();
+   if(type==='cut'&&editor.isContentEditable){document.execCommand('delete');selectionSave();markDirty();}
+  },{signal});
   editor.addEventListener('beforeinput',()=>clearNoteHighlights(editor),{signal});
   editor.addEventListener('focus',()=>{
    clearNoteHighlights(editor);const sel=getSelection();
@@ -302,5 +315,5 @@ const BizuEditor=(()=>{
   if(action==='template')await noteFromTemplate();
  }
  function dispose(){controller?.abort();cancelAnimationFrame(frame);}
- return {dispose,buildToolbar,wireEditor,updateToolbarState,slashMenu,floatingBar,sanitize,cleanPaste,plainText,markdownAction,noteAction,callout,paste};
+ return {dispose,buildToolbar,wireEditor,updateToolbarState,slashMenu,floatingBar,sanitize,clipboardHtml,cleanPaste,plainText,markdownAction,noteAction,callout,paste};
 })();

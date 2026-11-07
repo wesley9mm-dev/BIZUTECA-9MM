@@ -2,6 +2,7 @@
 const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,ClipboardItem,shell,nativeImage,screen}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const runtime=require('./core/runtime');
+const {validateLibraryCall,validateExport}=require('./core/validate-ipc');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
 const appData=app.getPath('appData');
 const runtimePaths=runtime.configureRuntime(app,portableBase);
@@ -174,7 +175,7 @@ async function changeData(mode){if(!['move','open','new'].includes(mode))throw E
  if(mode==='new'&&fs.readdirSync(target).length)throw Error('Escolha ou crie uma pasta vazia para a nova biblioteca.');
  if(mode==='move'){const pack=storage.decodePackage(storage.encodePackage(lib,dir));copyAssets(pack.images,target);await music.copyLibrary(dir,target,name=>{throw Error('A pasta de destino contém uma música diferente com o mesmo nome: '+name);});storage.atomicWrite(path.join(target,'biblioteca.db'),pack.database);}
  const next=openLibrary(target,{seed:mode!=='new'});try{remember(target);}catch(e){next.lib.close();unlock(next.lock);throw e;}lib.close();unlock(lockPath);lib=next.lib;lockPath=next.lock;dir=target;trackBackup();return {directory:dir};}
-async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
+async function exportMaterial(kind,ids){validateExport(kind,ids);const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
  const out=await dialog.showSaveDialog(win,{title:'Exportar material',defaultPath:'meus-resumos.'+kind,filters:[{name:kind.toUpperCase(),extensions:[kind]}]});if(out.canceled)return null;
  const html=makeHtmlExport(prepared);
  if(kind==='html'){storage.atomicWrite(out.filePath,html);return out.filePath;}
@@ -226,7 +227,7 @@ async function useImage(kind, src) {
   return output;
 }
 async function action(op,args){
- if(allowed.has(op)){if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
+ if(allowed.has(op)){validateLibraryCall(op,args);if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
  case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length};
  case 'listMusic':return {tracks:music.list(dir,bundledMusic),personal:music.list(dir),options:setting('musicOptions')||{}};

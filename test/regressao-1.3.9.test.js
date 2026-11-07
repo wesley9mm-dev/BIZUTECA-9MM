@@ -190,7 +190,10 @@ test('BUG-20 recusa exportação inválida antes de acessar o caderno',async()=>
  const source=fs.readFileSync(path.join(__dirname,'../src/main.js'),'utf8');
  const start=source.indexOf('async function exportMaterial('),end=source.indexOf('\nasync function ',start+1);
  let accesses=0;
- const validate=()=>{throw Error('Formato de exportação inválido.');};
+ const {validateExport:validate,validateLibraryCall}=require('../src/core/validate-ipc');
+ assert.throws(()=>validateLibraryCall('updateNote',[1,{unexpected:true}]),/Argumentos inválidos/);
+ assert.throws(()=>validateLibraryCall('setFolderFavorite',['1',true]),/Argumentos inválidos/);
+ validateLibraryCall('listNotes',[{archived:true,limit:100000}]);
  const fn=new Function('lib','validateExport',source.slice(start,end)+';return exportMaterial')({getNote(){accesses++;return null;}},validate);
  await assert.rejects(fn('exe',[1]),/Formato de exportação inválido/);
  assert.equal(accesses,0);

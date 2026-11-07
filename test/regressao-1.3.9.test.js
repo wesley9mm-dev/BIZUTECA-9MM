@@ -198,3 +198,27 @@ test('BUG-20 recusa exportação inválida antes de acessar o caderno',async()=>
  await assert.rejects(fn('exe',[1]),/Formato de exportação inválido/);
  assert.equal(accesses,0);
 });
+
+test('BUG-01 lista anexos legados bloqueados sem modificar as linhas',t=>{
+ const {lib}=library(t);
+ const id=lib.createNote({title:'Legada'});
+ const insert=lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)');
+ insert.run(id,'planilha.lnk','antigo.lnk','application/octet-stream');
+ insert.run(id,'prova.pdf','valido.pdf','application/pdf');
+ assert.deepEqual(storage.blockedAttachmentNames(lib.db),['planilha.lnk']);
+ assert.equal(lib.db.prepare('SELECT COUNT(*) AS total FROM biz_files').get().total,2);
+});
+test('BUG-12 inventário só inclui backups reconhecidos e exclusão recusa caminhos externos',t=>{
+ const {dir}=library(t),local=path.join(dir,'backups');
+ fs.mkdirSync(local);
+ const name=backups.backupName();
+ fs.writeFileSync(path.join(local,name),'backup');
+ fs.writeFileSync(path.join(local,'pessoal.b9mm'),'arquivo pessoal');
+ fs.writeFileSync(path.join(dir,'fora.b9mm'),'fora');
+ assert.deepEqual(backups.listLocalBackups(dir).map(({name,size})=>[name,size]),[[name,6]]);
+ assert.throws(()=>backups.removeLocalBackup(dir,'../fora.b9mm'),/Backup inválido/);
+ assert.throws(()=>backups.removeLocalBackup(dir,'pessoal.b9mm'),/Backup inválido/);
+ assert.equal(backups.removeLocalBackup(dir,name),true);
+ assert.ok(fs.existsSync(path.join(dir,'fora.b9mm')));
+ assert.ok(fs.existsSync(path.join(local,'pessoal.b9mm')));
+});

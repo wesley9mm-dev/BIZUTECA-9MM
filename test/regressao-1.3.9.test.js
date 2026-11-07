@@ -130,10 +130,20 @@ test('BUG-18 aplica uma única propriedade CSS de título válida',()=>{
  assert.doesNotMatch(renderer,/--heading,t\.heading/);
 });
 test('BUG-19 permite procurar palavras curtas na busca interna',()=>{
- const tools=fs.readFileSync(path.join(__dirname,'../src/renderer/editor-tools.js'),'utf8');
- assert.match(tools,/highlightEditor\(value\.split\(\/\\s\+\/\),false,1\)/);
+ const editor={},NodeFilter={SHOW_TEXT:4};
+ let called=0;
+ const document={createTreeWalker:(root,kind)=>{
+   assert.equal(root,editor);
+   assert.equal(kind,NodeFilter.SHOW_TEXT);
+   called++;
+   return {nextNode:()=>false};
+ }};
+ const highlight=rendererFunction('highlightEditor',{$:()=>editor,normalize:s=>s,document,NodeFilter});
+ highlight(['de'],false);
+ assert.equal(called,1);
+ highlight(['de']);
+ assert.equal(called,1);
 });
-
 test('BUG-07 encaminha a navegação para as anotações arquivadas',async()=>{
  const calls=[];
  const navigate=rendererFunction('navigate',{flush(){},$(){},applyTheme(){},themeById(){},state:{},showArchived:()=>calls.push('arquivadas'),home:()=>calls.push('início')});

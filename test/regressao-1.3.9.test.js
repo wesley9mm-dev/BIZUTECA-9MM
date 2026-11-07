@@ -37,7 +37,7 @@ test('BUG-02 preserva o backup mais recente mesmo com nome legado',t=>{
 });
 test('BUG-03 exporta nota mesmo sem a imagem física',t=>{
  const {dir,lib}=library(t);
- lib.createNote({title:'Com imagem',contentHtml:'<img src="tv-attachment://ausente.png">'});
+ lib.createNote({title:'Com imagem',contentHtml:'<img src="tv-attachment://aaaaaaaa-1111-2222.png">'});
  const pack=storage.decodePackage(storage.encodePackage(lib,dir));
  assert.ok(pack.database.length);
  assert.ok(fs.existsSync(backups.writeBackup(lib,dir,{automatic:true})));

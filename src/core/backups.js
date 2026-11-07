@@ -40,7 +40,7 @@ function writeBackup(lib, directory, options = {}) {
   fs.mkdirSync(dest,{recursive:true});
   const name = backupName(options.now, options.automatic ? 'auto' : options.prefix);
   const file = path.join(dest,name);
-  const raw = storage.encodePackage(lib,directory);
+  const raw = storage.encodePackage(lib,directory,options.onMissing);
   storage.atomicWrite(file,raw);
   storage.decodePackage(fs.readFileSync(file));
   if (options.additional) {

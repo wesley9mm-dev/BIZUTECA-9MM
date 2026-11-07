@@ -54,8 +54,12 @@ function openLibrary(target,{seed=true}={}) {
 function remember(target){const relative=path.relative(base,target);const value=!relative.startsWith('..')&&!path.isAbsolute(relative)?{relative:relative||'.'}:{absolute:target};storage.atomicWrite(pointer,JSON.stringify(value,null,2));}
 function setting(k,value){if(value!==undefined){lib.db.prepare('INSERT INTO biz_settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(k,JSON.stringify(value));return value;}const row=lib.db.prepare('SELECT value FROM biz_settings WHERE key=?').get(k);if(!row)return null;return JSON.parse(row.value);}
 const backupName = () => backups.backupName();
+function warnMissing(missing){
+  const names=missing.map(({file,titles})=>file+' ('+titles.join(', ')+')');
+  win?.webContents.send('backup-warning',missing.length+' anexo(s) ausente(s): '+names.join('; '));
+}
 function autoBackup(options={}) {
-  return backups.writeBackup(lib,dir,options);
+  return backups.writeBackup(lib,dir,{...options,onMissing:warnMissing});
 }
 function trackBackup() {
   backupChanges = lib.db.prepare('SELECT total_changes() AS n').get().n;
@@ -80,7 +84,7 @@ function scheduledBackup() {
 }
 async function chooseDir(){const result=await dialog.showOpenDialog(win,{title:'Escolher pasta de dados',properties:['openDirectory','createDirectory']});return result.canceled?null:result.filePaths[0];}
 function copyAssets(images,target){const dest=path.join(target,'anexos');fs.mkdirSync(dest,{recursive:true});for(const image of images){const f=path.join(dest,image.name);if(fs.existsSync(f)){if(storage.hash(fs.readFileSync(f))!==storage.hash(image.bytes))throw Error('Já existe um anexo diferente com o mesmo nome. Use restauração em uma pasta separada.');}else storage.atomicWrite(f,image.bytes);}}
-async function exportPackage(){const out=await dialog.showSaveDialog(win,{title:'Exportar biblioteca completa',defaultPath:backupName(),filters:[{name:'Biblioteca BIZUTECA (notas, pastas, versões e anexos)',extensions:['b9mm']}]});if(out.canceled)return null;storage.atomicWrite(out.filePath,storage.encodePackage(lib,dir));return out.filePath;}
+async function exportPackage(){const out=await dialog.showSaveDialog(win,{title:'Exportar biblioteca completa',defaultPath:backupName(),filters:[{name:'Biblioteca BIZUTECA (notas, pastas, versões e anexos)',extensions:['b9mm']}]});if(out.canceled)return null;let missing;storage.atomicWrite(out.filePath,storage.encodePackage(lib,dir,list=>{missing=list;}));if(missing)warnMissing(missing);return out.filePath;}
 async function importPackage(mode) {
   if (!['merge','replace'].includes(mode)) throw Error('Operação de importação inválida.');
   const picked = await dialog.showOpenDialog(win,{
@@ -95,7 +99,8 @@ async function importPackage(mode) {
   let incoming;
   try {
     storage.atomicWrite(temp,pack.database);
-    storage.validateDatabase(temp,pack.images);
+    let missing;
+    storage.validateDatabase(temp,pack.images,list=>{missing=list;});
     if (mode === 'replace') {
       const answer = await dialog.showMessageBox(win,{
         type:'warning',buttons:['Cancelar','Restaurar biblioteca'],defaultId:0,cancelId:0,
@@ -108,7 +113,7 @@ async function importPackage(mode) {
       const staging = fs.mkdtempSync(path.join(path.dirname(dir),'.bizuteca-restauracao-'));
       copyAssets(pack.images,staging);
       storage.atomicWrite(path.join(staging,'biblioteca.db'),pack.database);
-      storage.validateDatabase(path.join(staging,'biblioteca.db'),pack.images);
+      storage.validateDatabase(path.join(staging,'biblioteca.db'),pack.images,()=>{});
       fs.renameSync(staging,staged);
       const next = openLibrary(staged);
       try { remember(staged); }
@@ -117,6 +122,7 @@ async function importPackage(mode) {
       lib = next.lib; lockPath = next.lock; dir = staged;
       trackBackup();
       try { previousLib.close(); } finally { unlock(previousLock); }
+      if(missing)warnMissing(missing);
       return {restored:true,safety,previousDirectory,directory:dir};
     }
     incoming = new Library(temp);
@@ -133,7 +139,9 @@ async function importPackage(mode) {
           if (storage.hash(fs.readFileSync(dest)) !== storage.hash(asset.bytes)) throw Error('Existe um anexo diferente com o mesmo nome: '+asset.name);
         } else { storage.atomicWrite(dest,asset.bytes); created.push(dest); }
       }
-      return {...storage.mergeLibraries(lib,incoming),safety};
+      const result=storage.mergeLibraries(lib,incoming);
+      if(missing)warnMissing(missing);
+      return {...result,safety};
     } catch (error) {
       for (const dest of created) { try { fs.unlinkSync(dest); } catch {} }
       throw error;

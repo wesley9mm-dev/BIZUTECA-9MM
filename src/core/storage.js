@@ -23,7 +23,7 @@ function assertDirectory(dir) {
   const p = path.join(dir, '.bizuteca-write-' + crypto.randomUUID());
   fs.writeFileSync(p, 'ok', {flag:'wx'}); fs.unlinkSync(p);
 }
-function encodePackage(lib, dir) {
+function encodePackage(lib, dir, onMissing) {
   const snapshot = path.join(os.tmpdir(), 'bizuteca-snapshot-' + crypto.randomUUID() + '.db');
   let db;
   try { lib.db.prepare('VACUUM INTO ?').run(snapshot); db = fs.readFileSync(snapshot); }
@@ -34,7 +34,8 @@ function encodePackage(lib, dir) {
     if(!safeName(name)) continue;
     const b=fs.readFileSync(path.join(assetDir,name)); images.push({name, data:b.toString('base64'),sha256:hash(b)});
   }
-  validateAttachments(lib.db, new Set(images.map(image => image.name)));
+  const missing=validateAttachments(lib.db,new Set(images.map(image=>image.name)),true);
+  if(missing.length)onMissing?.(missing);
   const payload = Buffer.from(JSON.stringify({format:'bizuteca-9mm',version:1,createdAt:new Date().toISOString(),database:db.toString('base64'),sha256:hash(db),images}));
   if (payload.length > 512 * 1024 * 1024) throw Error('A biblioteca excede o tamanho aceito para um pacote.');
   return Buffer.concat([MAGIC, zlib.deflateSync(payload)]);
@@ -74,20 +75,25 @@ function extendSchema(lib) {
   events.ensureEvents(lib.db);
   lib.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('biz_events_schema','1')").run();
 }
-function validateAttachments(db, available) {
-  const sources = db.prepare('SELECT content_html AS html FROM notes UNION ALL SELECT content_html AS html FROM note_versions').iterate();
-  for (const {html} of sources) {
-    for (const match of String(html).matchAll(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi)) {
-      if (!available.has(match[1])) throw Error('Imagem ausente no pacote: ' + match[1]);
-    }
+function validateAttachments(db, available, allowMissing=false) {
+  const missing=new Map();
+  function check(file,title){
+    if(!safeName(file))throw Error('Anexo inválido: '+file);
+    if(available.has(file))return;
+    if(!allowMissing)throw Error('Imagem ou anexo ausente no pacote: '+file);
+    if(!missing.has(file))missing.set(file,new Set());
+    missing.get(file).add(title);
   }
-  if (db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='biz_files'").get()) {
-    for (const {file} of db.prepare('SELECT file FROM biz_files').iterate()) {
-      if (!safeName(file) || !available.has(file)) throw Error('Anexo ausente ou inválido: ' + file);
-    }
+  const sources=db.prepare('SELECT title,content_html AS html FROM notes UNION ALL SELECT title,content_html AS html FROM note_versions').iterate();
+  for(const {title,html} of sources){
+    for(const match of String(html).matchAll(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi))check(match[1],title);
   }
+  if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='biz_files'").get()){
+    for(const {file,title} of db.prepare('SELECT f.file,COALESCE(n.title,\'Anotação ausente\') AS title FROM biz_files f LEFT JOIN notes n ON n.id=f.note_id').iterate())check(file,title);
+  }
+  return Array.from(missing,([file,titles])=>({file,titles:[...titles]}));
 }
-function validateDatabase(file, assets) {
+function validateDatabase(file, assets, onMissing) {
   const db = new DatabaseSync(file, {readOnly:true});
   try {
     db.exec('PRAGMA trusted_schema=OFF');
@@ -104,7 +110,10 @@ function validateDatabase(file, assets) {
         seen.add(cursor); cursor = parents.get(cursor);
       }
     }
-    if (assets) validateAttachments(db, new Set(assets.map(asset=>asset.name)));
+    if(assets){
+      const missing=validateAttachments(db,new Set(assets.map(asset=>asset.name)),Boolean(onMissing));
+      if(missing.length)onMissing(missing);
+    }
     return true;
   } finally { db.close(); }
 }

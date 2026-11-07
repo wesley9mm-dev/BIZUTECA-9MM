@@ -120,24 +120,71 @@ function validateDatabase(file, assets, onMissing) {
   } finally { db.close(); }
 }
 function mergeLibraries(target, incoming) {
-  const map=new Map();let inserted=0,duplicates=0,eventCounts={};
+  const map=new Map(),noteMap=new Map();
+  let inserted=0,duplicates=0,folders=0,links=0,versions=0,reconciled=0,archived=0,eventCounts={};
   target._tx(()=>{
-    let remaining=incoming.listFolders();let guard=0;
-    while(remaining.length&&guard++<100){const next=[];for(const f of remaining){if(f.parentId!=null&&!map.has(f.parentId)){next.push(f);continue;}const parent=f.parentId==null?null:map.get(f.parentId);const found=target.db.prepare('SELECT id FROM folders WHERE parent_id IS ? AND name=? AND deleted_at IS NULL').get(parent,f.name);map.set(f.id,found?.id??target.createFolder({name:f.name,parentId:parent}));}if(next.length===remaining.length)throw Error('Pastas com hierarquia inválida.');remaining=next;}
-    if(remaining.length)throw Error('Hierarquia extensa demais.');
-    const notes=incoming.db.prepare('SELECT id FROM notes WHERE deleted_at IS NULL').all();const noteMap=new Map();
-    for(const r of notes){const n=incoming.getNote(r.id),folder=n.folderId==null?null:map.get(n.folderId)??null;
-      const same=target.db.prepare('SELECT id FROM notes WHERE folder_id IS ? AND title=? AND content_html=? AND deleted_at IS NULL').get(folder,n.title,n.contentHtml);
-      if(same){duplicates++;noteMap.set(n.id,same.id);continue;}
-      const id=target.createNote({title:n.title,contentHtml:n.contentHtml,folderId:folder,tags:n.tags,favorite:n.favorite});noteMap.set(n.id,id);if(n.archived)target.archiveNote(id,true);
-      for(const v of incoming.listVersions(n.id)){const full=incoming.getVersion(v.id);target.db.prepare('INSERT INTO note_versions(note_id,title,content_html,saved_at) VALUES(?,?,?,?)').run(id,full.title,full.contentHtml,full.savedAt);}
-      inserted++;
+    let remaining=incoming.listFolders(),depth=0;
+    while(remaining.length&&depth++<100){
+      const next=[];
+      for(const folder of remaining){
+        if(folder.parentId!=null&&!map.has(folder.parentId)){next.push(folder);continue;}
+        const parent=folder.parentId==null?null:map.get(folder.parentId);
+        const found=target.db.prepare('SELECT id,favorite FROM folders WHERE parent_id IS ? AND name=? AND deleted_at IS NULL').get(parent,folder.name);
+        const id=found?.id??target.createFolder({name:folder.name,parentId:parent});
+        if(!found)folders++;
+        if(folder.favorite&&!found?.favorite)target.setFolderFavorite(id,true);
+        map.set(folder.id,id);
+      }
+      if(next.length===remaining.length)throw Error('Pastas com hierarquia inválida.');
+      remaining=next;
     }
-    for(const s of incoming.listSynonyms())target.addSynonym(s.a,s.b);
-    const table=incoming.db.prepare("SELECT name FROM sqlite_master WHERE name='biz_files'").get();
-    if(table)for(const f of incoming.db.prepare('SELECT * FROM biz_files').all()){const nid=noteMap.get(f.note_id);if(nid&&!target.db.prepare('SELECT id FROM biz_files WHERE note_id=? AND file=?').get(nid,f.file))target.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(nid,f.name,f.file,f.mime);}
+    if(remaining.length)throw Error('Hierarquia extensa demais.');
+    const hasTable=name=>Boolean(incoming.db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(name));
+    const hasFiles=hasTable('biz_files');
+    const addFile=target.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) SELECT ?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM biz_files WHERE note_id=? AND file=?)');
+    const addVersion=target.db.prepare('INSERT INTO note_versions(note_id,title,content_html,saved_at) SELECT ?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM note_versions WHERE note_id=? AND title IS ? AND content_html IS ? AND saved_at=?)');
+    for(const {id:sourceId} of incoming.db.prepare('SELECT id FROM notes WHERE deleted_at IS NULL ORDER BY id').iterate()){
+      const note=incoming.getNote(sourceId),folder=note.folderId==null?null:map.get(note.folderId)??null;
+      const same=target.db.prepare('SELECT id,favorite FROM notes WHERE folder_id IS ? AND title=? AND content_html=? AND deleted_at IS NULL ORDER BY id LIMIT 1').get(folder,note.title,note.contentHtml);
+      const id=same?.id??target.createNote({title:note.title,contentHtml:note.contentHtml,folderId:folder,tags:note.tags,favorite:note.favorite});
+      noteMap.set(sourceId,id);
+      let changed=false;
+      if(same){
+        duplicates++;
+        if(note.favorite&&!same.favorite){target.db.prepare('UPDATE notes SET favorite=1 WHERE id=?').run(id);changed=true;}
+        const oldTags=target.noteTags(id),tags=[...new Set([...oldTags,...note.tags])];
+        if(tags.length!==oldTags.length){target.setTags(id,tags);changed=true;}
+      }else{
+        inserted++;
+        if(note.archived){target.archiveNote(id,true);archived++;}
+      }
+      for(const v of incoming.db.prepare('SELECT title,content_html,saved_at FROM note_versions WHERE note_id=? ORDER BY saved_at,id').iterate(sourceId)){
+        const count=addVersion.run(id,v.title,v.content_html,v.saved_at,id,v.title,v.content_html,v.saved_at).changes;
+        versions+=count;
+        if(count)changed=true;
+      }
+      if(hasFiles)for(const f of incoming.db.prepare('SELECT name,file,mime FROM biz_files WHERE note_id=?').iterate(sourceId)){
+        if(addFile.run(id,f.name,f.file,f.mime,id,f.file).changes)changed=true;
+      }
+      if(same&&changed)reconciled++;
+    }
+    if(hasTable('note_links')){
+      const insert=target.db.prepare('INSERT OR IGNORE INTO note_links(note_id,related_note_id,created_at) VALUES(?,?,?)');
+      for(const link of incoming.db.prepare('SELECT note_id,related_note_id,created_at FROM note_links').iterate()){
+        const x=noteMap.get(link.note_id),y=noteMap.get(link.related_note_id);
+        if(x&&y&&x!==y)links+=insert.run(Math.min(x,y),Math.max(x,y),link.created_at).changes;
+      }
+    }
+    if(hasTable('feedback')){
+      const insert=target.db.prepare('INSERT INTO feedback(note_id,terms,value,at) SELECT ?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM feedback WHERE note_id=? AND terms=? AND value=? AND at=?)');
+      for(const f of incoming.db.prepare('SELECT note_id,terms,value,at FROM feedback').iterate()){
+        const id=noteMap.get(f.note_id);
+        if(id)insert.run(id,f.terms,f.value,f.at,id,f.terms,f.value,f.at);
+      }
+    }
+    for(const synonym of incoming.listSynonyms())target.addSynonym(synonym.a,synonym.b);
     eventCounts=events.mergeEvents(target.db,incoming.db);
   });
-  return {inserted,duplicates,...eventCounts};
+  return {inserted,duplicates,folders,links,versions,reconciled,archived,...eventCounts};
 }
 module.exports={atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName,ALLOWED_EXTENSIONS};

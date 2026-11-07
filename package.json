@@ -38,5 +38,9 @@
       "artifactName": "BIZUTECA 9MM.exe",
       "requestExecutionLevel": "user"
     }
+  },
+  "dependencies": {
+    "sanitize-html": "2.18.0",
+    "entities": "6.0.1"
   }
 }

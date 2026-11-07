@@ -8,7 +8,9 @@ const { DatabaseSync } = require('node:sqlite');
 const events = require('./events');
 const MAGIC = Buffer.from('BIZUTECA9MM1\n');
 const hash = b => crypto.createHash('sha256').update(b).digest('hex');
+const ALLOWED_EXTENSIONS=['pdf','png','jpg','jpeg','gif','webp','bmp','txt'];
 const safeName = n => typeof n === 'string' && /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]{1,12}$/.test(n)
+  && ALLOWED_EXTENSIONS.includes(n.split('.').pop().toLowerCase())
   && !/^(?:CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])\./i.test(n);
 function atomicWrite(file, data) {
   const temp = file + '.' + crypto.randomUUID() + '.tmp';
@@ -55,7 +57,7 @@ function decodePackage(raw) {
   if(database.subarray(0,16).toString('binary')!=='SQLite format 3\0')throw Error('Banco de dados inválido.');
   if(doc.sha256&&hash(database)!==doc.sha256)throw Error('O pacote está corrompido.');
   const names=new Set();
-  const images=doc.images.map(i=>{if(!i||!safeName(i.name)||typeof i.data!=='string'||names.has(i.name.toLowerCase()))throw Error('Anexo inválido no pacote.');names.add(i.name.toLowerCase());const bytes=Buffer.from(i.data,'base64');if(i.sha256&&hash(bytes)!==i.sha256)throw Error('Anexo corrompido: '+i.name);return {name:i.name,bytes};});
+  const images=doc.images.map(i=>{if(!i||!safeName(i.name)||typeof i.data!=='string'||names.has(i.name.toLowerCase()))throw Error('Anexo inválido no pacote: '+String(i?.name??'sem nome'));names.add(i.name.toLowerCase());const bytes=Buffer.from(i.data,'base64');if(i.sha256&&hash(bytes)!==i.sha256)throw Error('Anexo corrompido: '+i.name);return {name:i.name,bytes};});
   return {database,images};
 }
 function seedTec(lib, data) {
@@ -138,4 +140,4 @@ function mergeLibraries(target, incoming) {
   });
   return {inserted,duplicates,...eventCounts};
 }
-module.exports={atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName};
+module.exports={atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName,ALLOWED_EXTENSIONS};

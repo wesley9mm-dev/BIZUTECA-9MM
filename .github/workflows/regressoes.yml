@@ -1,0 +1,19 @@
+name: Regressões da versão 1.3.9
+on:
+  push:
+    branches: ['correcoes/v1.3.10']
+jobs:
+  regressao:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        timezone: [America/Sao_Paulo, UTC, Asia/Tokyo]
+    env:
+      TZ: ${{ matrix.timezone }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm test

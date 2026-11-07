@@ -64,6 +64,7 @@ async function step(name,run) {
     await step('Reprodutor abre em silêncio e permite tocar, pausar e ajustar o volume',async()=>{
       await page.locator('#music-player summary').click();
       await page.locator('#music-play:not([disabled])').waitFor();
+      assert.equal(await page.locator('#music-volume').inputValue(),'10');
       await page.locator('#music-personal').click();
       assert.equal(await page.locator('#music-list li').count(),2);
       const personalTrack=path.join(data,'Minha faixa.mp3');
@@ -84,7 +85,7 @@ async function step(name,run) {
         const audio=document.querySelector('#music-audio');
         return !audio.paused&&audio.currentTime>0;
       });
-      assert.equal((await call('listMusic')).tracks.length,3);
+      assert.equal((await call('listMusic')).personal.length,3);
       await page.locator('#music-play').click();
       assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.paused),true);
       await page.locator('#music-volume').fill('35');
@@ -377,6 +378,41 @@ async function step(name,run) {
       await page.getByText('2 anotação(ões) importada(s).',{exact:true}).waitFor();
       const notes=(await call('listNotes')).filter(note=>note.folderId===child);
       assert.deepEqual(notes.map(note=>note.title).sort(),['Concordância','Regência']);
+    });
+    await step('Biblioteca vazia separada e música empacotada',async()=>{
+      const fresh=path.join(previous,'Outra biblioteca');
+      fs.mkdirSync(fresh);
+      await application.evaluate(({dialog},directory)=>{
+        dialog.showOpenDialog=async()=>({canceled:false,filePaths:[directory]});
+      },fresh);
+      await page.locator('[data-view=settings]').click();
+      await page.locator('#new-data').click();
+      await button('Confirmar').click();
+      await page.getByText('Biblioteca vazia criada. A anterior foi preservada.',{exact:true}).waitFor();
+      assert.equal((await call('init')).directory,fresh);
+      assert.deepEqual(await call('listFolders'),[]);
+      assert.deepEqual(await call('listNotes'),[]);
+      assert.ok(fs.existsSync(path.join(previous,'biblioteca.db')));
+      assert.ok(fs.existsSync(path.join(fresh,'biblioteca.db')));
+      const tracks=await call('listMusic');
+      assert.equal(tracks.tracks.length,1);
+      assert.match(tracks.tracks[0],/Pulse of Gaia/);
+      assert.deepEqual(tracks.personal,[]);
+      await page.locator('#music-player summary').click();
+      await page.locator('#music-play').click();
+      await page.waitForFunction(()=>{
+        const audio=document.querySelector('#music-audio');
+        return !audio.paused&&Number.isFinite(audio.duration)&&audio.duration>0;
+      });
+      assert.equal(await page.locator('#music-audio').evaluate(audio=>audio.volume),0.1);
+      await page.locator('#music-player summary').click();
+      await application.evaluate(({dialog},directory)=>{
+        dialog.showOpenDialog=async()=>({canceled:false,filePaths:[directory]});
+      },previous);
+      await page.locator('[data-view=settings]').click();
+      await page.locator('#switch-data').click();
+      await page.getByText('Local de dados atualizado. A biblioteca anterior foi preservada.',{exact:true}).waitFor();
+      assert.equal((await call('getNote',personal)).contentText,'Meu texto');
     });
   } catch(error) {
     console.error(error);

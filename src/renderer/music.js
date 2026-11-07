@@ -87,7 +87,7 @@ window.BizMusic=(()=>{
     stop();
     collection=result;
     personalOnly=result.options.personalOnly===true;
-    volume.value=result.options.volume??20;
+    volume.value=result.options.volume??10;
     autoplay.checked=result.options.autoplay===true;
     random.checked=result.options.randomStart!==false;
     adjustVolume();

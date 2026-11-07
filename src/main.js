@@ -25,13 +25,14 @@ const test=process.env.BIZUTECA_TEST_DATA;
 const allowed=new Set(['listFolders','createFolder','renameFolder','setFolderFavorite','moveFolder','reorderFolders','folderPath','deleteFolder','restoreFolder','purgeFolder','createNote','getNote','updateNote','moveNote','setNoteFavorite','archiveNote','duplicateNote','deleteNote','restoreNote','purgeNote','listTrash','emptyTrash','listNotes','listTags','listVersions','getVersion','restoreVersion','setTags','listSynonyms','addSynonym','removeSynonym']);
 function lock(target){const file=path.join(target,'.bizuteca.lock');if(fs.existsSync(file)){let stale=false;try{const info=JSON.parse(fs.readFileSync(file,'utf8'));try{process.kill(info.pid,0);}catch(e){if(e.code==='ESRCH')stale=true;}}catch{}if(stale)fs.unlinkSync(file);else throw Error('Esta biblioteca já está aberta ou possui um bloqueio de outra sessão. Feche o outro programa antes de continuar.');}fs.writeFileSync(file,JSON.stringify({pid:process.pid}),{flag:'wx'});return file;}
 function unlock(file){if(file)try{fs.unlinkSync(file);}catch{}}
-function openLibrary(target) {
+function openLibrary(target,{seed=true}={}) {
   storage.assertDirectory(target);
   const nextLock = lock(target);
   const file = path.join(target,'biblioteca.db');
   let next;
   try {
     const existing = fs.existsSync(file);
+    if (existing&&!seed)throw Error('A pasta já contém uma biblioteca.');
     if (existing) {
       const old = new DatabaseSync(file,{readOnly:true});
       try {
@@ -45,7 +46,7 @@ function openLibrary(target) {
     next = new Library(file);
     next._tx(() => {
       storage.extendSchema(next);
-      if (!existing) bizulanguage.install(next);
+      if (!existing&&seed) bizulanguage.install(next);
     });
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
@@ -141,9 +142,10 @@ async function importPackage(mode) {
     for (const suffix of ['','-wal','-shm']) { try { fs.unlinkSync(temp+suffix); } catch {} }
   }
 }
-async function changeData(mode){const target=await chooseDir();if(!target||path.resolve(target)===path.resolve(dir))return null;storage.assertDirectory(target);const exists=fs.existsSync(path.join(target,'biblioteca.db'));if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
+async function changeData(mode){if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');const target=await chooseDir();if(!target||path.resolve(target)===path.resolve(dir))return null;storage.assertDirectory(target);const exists=fs.existsSync(path.join(target,'biblioteca.db'));if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
+ if(mode==='new'&&fs.readdirSync(target).length)throw Error('Escolha ou crie uma pasta vazia para a nova biblioteca.');
  if(mode==='move'){const pack=storage.decodePackage(storage.encodePackage(lib,dir));copyAssets(pack.images,target);storage.atomicWrite(path.join(target,'biblioteca.db'),pack.database);}
- const next=openLibrary(target);try{remember(target);}catch(e){next.lib.close();unlock(next.lock);throw e;}lib.close();unlock(lockPath);lib=next.lib;lockPath=next.lock;dir=target;trackBackup();return {directory:dir};}
+ const next=openLibrary(target,{seed:mode!=='new'});try{remember(target);}catch(e){next.lib.close();unlock(next.lock);throw e;}lib.close();unlock(lockPath);lib=next.lib;lockPath=next.lock;dir=target;trackBackup();return {directory:dir};}
 async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
  const out=await dialog.showSaveDialog(win,{title:'Exportar material',defaultPath:'meus-resumos.'+kind,filters:[{name:kind.toUpperCase(),extensions:[kind]}]});if(out.canceled)return null;
  const html=makeHtmlExport(prepared);
@@ -208,7 +210,7 @@ async function action(op,args){
  }
  case 'saveMusicOptions':{
    const value=args[0]||{};
-   const volume=Number.isFinite(value.volume)?Math.max(0,Math.min(100,Math.round(value.volume))):20;
+   const volume=Number.isFinite(value.volume)?Math.max(0,Math.min(100,Math.round(value.volume))):10;
    return setting('musicOptions',{volume,autoplay:value.autoplay===true,randomStart:value.randomStart!==false,personalOnly:value.personalOnly===true});
  }
  case 'savePreferences':return setting('preferences',args[0]);

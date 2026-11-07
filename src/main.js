@@ -404,6 +404,7 @@ app.whenReady().then(async()=>{
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));
  win.on('close',e=>{if(!closing){e.preventDefault();win.webContents.send('prepare-close');}});ipcMain.on('ready-close',event=>{if(event.sender===win.webContents){closing=true;win.close();}});
+ win.on('closed',()=>{splash?.destroy();splash=null;});
  const display = (event,success) => {
    if (event && (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)) return;
    clearTimeout(startupTimeout);

@@ -2,6 +2,7 @@
 const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,ClipboardItem,shell,nativeImage,screen}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const runtime=require('./core/runtime');
+const {lock,unlock,recover}=require('./core/lock');
 const {validateLibraryCall,validateExport}=require('./core/validate-ipc');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
 const appData=app.getPath('appData');
@@ -25,11 +26,9 @@ protocol.registerSchemesAsPrivileged([{scheme:'biz-music',privileges:{standard:t
 let win,lib,dir,pointer,base,closing=false,maintenance=false,lockPath,splash,backupTimer,backupChanges=0;
 const test=process.env.BIZUTECA_TEST_DATA;
 const allowed=new Set(['listFolders','createFolder','renameFolder','setFolderFavorite','moveFolder','reorderFolders','folderPath','deleteFolder','restoreFolder','purgeFolder','createNote','getNote','updateNote','moveNote','setNoteFavorite','archiveNote','duplicateNote','deleteNote','restoreNote','purgeNote','listTrash','emptyTrash','listNotes','listTags','listVersions','getVersion','restoreVersion','setTags','listSynonyms','addSynonym','removeSynonym']);
-function lock(target){const file=path.join(target,'.bizuteca.lock');if(fs.existsSync(file)){let stale=false;try{const info=JSON.parse(fs.readFileSync(file,'utf8'));try{process.kill(info.pid,0);}catch(e){if(e.code==='ESRCH')stale=true;}}catch{}if(stale)fs.unlinkSync(file);else throw Error('Esta biblioteca já está aberta ou possui um bloqueio de outra sessão. Feche o outro programa antes de continuar.');}fs.writeFileSync(file,JSON.stringify({pid:process.pid}),{flag:'wx'});return file;}
-function unlock(file){if(file)try{fs.unlinkSync(file);}catch{}}
-function openLibrary(target,{seed=true}={}) {
+function openLibrary(target,{seed=true,owner}={}) {
   storage.assertDirectory(target);
-  const nextLock = lock(target);
+  const nextLock = owner??lock(target);
   const file = path.join(target,'biblioteca.db');
   let next, repair=false;
   try {
@@ -69,6 +68,29 @@ function openLibrary(target,{seed=true}={}) {
     });
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
+}
+async function withLockRecovery(open){
+ for(;;){
+  try{return await open();}
+  catch(error){
+   if(error.code!=='BIZ_LOCKED')throw error;
+   const buttons=['Cancelar','Tentar novamente'];
+   if(error.recovery.canRemove)buttons.push('Remover bloqueio e abrir');
+   const answer=await dialog.showMessageBox({
+    type:'warning',buttons,defaultId:1,cancelId:0,
+    message:'A biblioteca está bloqueada por outra sessão.',
+    detail:'Feche o Bizuteca em outros computadores antes de tentar novamente.'
+   });
+   if(answer.response===0)return null;
+   if(answer.response!==2)continue;
+   const confirmed=await dialog.showMessageBox({
+    type:'warning',buttons:['Cancelar','Remover bloqueio'],defaultId:0,cancelId:0,
+    message:'Remover o bloqueio desta biblioteca?',
+    detail:'Confirme somente se nenhuma outra sessão estiver usando esta biblioteca. Duas sessões simultâneas podem causar perda de dados.'
+   });
+   if(confirmed.response===1)recover(error.recovery);
+  }
+ }
 }
 function remember(target){const relative=path.relative(base,target);const value=!relative.startsWith('..')&&!path.isAbsolute(relative)?{relative:relative||'.'}:{absolute:target};storage.atomicWrite(pointer,JSON.stringify(value,null,2));}
 function setting(k,value){if(value!==undefined){lib.db.prepare('INSERT INTO biz_settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(k,JSON.stringify(value));return value;}const row=lib.db.prepare('SELECT value FROM biz_settings WHERE key=?').get(k);if(!row)return null;return JSON.parse(row.value);}
@@ -171,10 +193,41 @@ async function importPackage(mode) {
     for (const suffix of ['','-wal','-shm']) { try { fs.unlinkSync(temp+suffix); } catch {} }
   }
 }
-async function changeData(mode){if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');const target=await chooseDir();if(!target||path.resolve(target)===path.resolve(dir))return null;storage.assertDirectory(target);const exists=fs.existsSync(path.join(target,'biblioteca.db'));if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
+async function changeData(mode){
+ if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');
+ const target=await chooseDir();
+ if(!target||path.resolve(target)===path.resolve(dir))return null;
+ return withLockRecovery(()=>changeDataAt(target,mode));
+}
+async function changeDataAt(target,mode){
+ storage.assertDirectory(target);
+ const file=path.join(target,'biblioteca.db');
  if(mode==='new'&&fs.readdirSync(target).length)throw Error('Escolha ou crie uma pasta vazia para a nova biblioteca.');
- if(mode==='move'){const pack=storage.decodePackage(storage.encodePackage(lib,dir));copyAssets(pack.images,target);await music.copyLibrary(dir,target,name=>{throw Error('A pasta de destino contém uma música diferente com o mesmo nome: '+name);});storage.atomicWrite(path.join(target,'biblioteca.db'),pack.database);}
- const next=openLibrary(target,{seed:mode!=='new'});try{remember(target);}catch(e){next.lib.close();unlock(next.lock);throw e;}lib.close();unlock(lockPath);lib=next.lib;lockPath=next.lock;dir=target;trackBackup();return {directory:dir};}
+ const owner=lock(target);
+ let next;
+ try{
+   const exists=fs.existsSync(file);
+   if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');
+   if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
+   if(mode==='move'){
+     const pack=storage.decodePackage(storage.encodePackage(lib,dir));
+     copyAssets(pack.images,target);
+     await music.copyLibrary(dir,target,name=>{throw Error('A pasta de destino contém uma música diferente com o mesmo nome: '+name);});
+     storage.atomicWrite(file,pack.database);
+   }
+   next=openLibrary(target,{seed:mode!=='new',owner});
+   remember(target);
+ }catch(error){
+   next?.lib.close();
+   unlock(owner);
+   throw error;
+ }
+ lib.close();
+ unlock(lockPath);
+ lib=next.lib;lockPath=next.lock;dir=target;
+ trackBackup();
+ return {directory:dir};
+}
 async function exportMaterial(kind,ids){validateExport(kind,ids);const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
  const out=await dialog.showSaveDialog(win,{title:'Exportar material',defaultPath:'meus-resumos.'+kind,filters:[{name:kind.toUpperCase(),extensions:[kind]}]});if(out.canceled)return null;
  const html=makeHtmlExport(prepared);
@@ -333,7 +386,7 @@ app.whenReady().then(async()=>{
    dir=fs.existsSync(path.join(selected,'biblioteca.db'))?selected:runtime.dataDirectory(selected,previous);
    if(previous&&!fs.existsSync(path.join(dir,'biblioteca.db')))throw Error('A pasta escolhida aponta para uma biblioteca que não foi encontrada.');
  }
- try{const opened=openLibrary(dir);lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
+ try{const opened=await withLockRecovery(()=>openLibrary(dir));if(!opened){app.quit();return;}lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
  protocol.handle('biz-music',req=>music.response(dir,req,bundledMusic).catch(()=>new Response(null,{status:404})));
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);

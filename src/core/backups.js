@@ -51,4 +51,30 @@ function writeBackup(lib, directory, options = {}) {
   if (options.automatic) retainAutomatic(dest,name);
   return file;
 }
-module.exports = { backupName, retainAutomatic, writeBackup };
+const managedName=/^(?:auto|BIZUTECA|antes-calendario|antes-indice-v2)-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}-\d{3}-[0-9a-f]{8}\.b9mm$/;
+function backupDirectory(directory){
+ const local=path.join(directory,'backups');
+ const stat=fs.lstatSync(local,{throwIfNoEntry:false});
+ if(stat&&!stat.isDirectory())throw Error('A pasta de backups local não é um diretório comum.');
+ return stat?local:null;
+}
+function listLocalBackups(directory){
+ const local=backupDirectory(directory);
+ if(!local)return [];
+ return fs.readdirSync(local).filter(name=>managedName.test(name)).flatMap(name=>{
+  const stat=fs.lstatSync(path.join(local,name),{throwIfNoEntry:false});
+  return stat?.isFile()?[{name,size:stat.size,mtime:stat.mtimeMs}]:[];
+ }).sort((a,b)=>b.mtime-a.mtime||a.name.localeCompare(b.name));
+}
+function removeLocalBackup(directory,name,expected){
+ if(typeof name!=='string'||!managedName.test(name))throw Error('Backup inválido.');
+ const local=backupDirectory(directory);
+ if(!local)return false;
+ const file=path.join(local,name);
+ const stat=fs.lstatSync(file,{throwIfNoEntry:false});
+ if(!stat?.isFile())return false;
+ if(expected&&(expected.size!==stat.size||expected.mtime!==stat.mtimeMs))throw Error('O backup mudou. Abra a lista novamente.');
+ fs.unlinkSync(file);
+ return true;
+}
+module.exports = {backupName,retainAutomatic,writeBackup,listLocalBackups,removeLocalBackup};

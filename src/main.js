@@ -229,7 +229,7 @@ async function useImage(kind, src) {
 async function action(op,args){
  if(allowed.has(op)){validateLibraryCall(op,args);if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
- case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length};
+ case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length,blockedAttachments:storage.blockedAttachmentNames(lib.db)};
  case 'listMusic':return {tracks:music.list(dir,bundledMusic),personal:music.list(dir),options:setting('musicOptions')||{}};
  case 'addMusic':{
    const result=await dialog.showOpenDialog(win,{title:'Adicionar músicas locais',properties:['openFile','multiSelections'],filters:[{name:'Músicas MP3',extensions:['mp3']}]});
@@ -251,6 +251,12 @@ async function action(op,args){
  case 'copy':await clipboard.writeText(String(args[0]||''));return true;
  case 'exportLibrary':return exportPackage();
  case 'backup':return autoBackup({additional:setting('backupDirectory')});
+ case 'localBackups':return backups.listLocalBackups(dir);
+ case 'removeLocalBackup':{
+   const [name,size,mtime]=args;
+   if(!Number.isFinite(size)||!Number.isFinite(mtime))throw Error('Backup inválido.');
+   return backups.removeLocalBackup(dir,name,{size,mtime});
+ }
  case 'backupSettings':return {automatic:setting('automaticBackup')!==false,additional:setting('backupDirectory')};
  case 'toggleAutomaticBackup':return setting('automaticBackup',!!args[0]);
  case 'backupDirectory':{

@@ -187,4 +187,8 @@ function mergeLibraries(target, incoming) {
   });
   return {inserted,duplicates,folders,links,versions,reconciled,archived,...eventCounts};
 }
-module.exports={atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName,ALLOWED_EXTENSIONS};
+function blockedAttachmentNames(db){
+ const rows=db.prepare('SELECT name,file FROM biz_files ORDER BY name').all();
+ return [...new Set(rows.filter(row=>!safeName(row.file)).map(row=>row.name||row.file))];
+}
+module.exports={blockedAttachmentNames,atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName,ALLOWED_EXTENSIONS};

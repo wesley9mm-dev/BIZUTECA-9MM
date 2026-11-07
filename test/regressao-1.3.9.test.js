@@ -85,3 +85,25 @@ test('BUG-10 importa texto do Windows sem perder acentos',t=>{
  assert.equal(require('../src/core/text-import').importTextFiles(lib,[file]),1);
  assert.equal(lib.getNote(lib.listNotes()[0].id).contentText,'Regência verbal');
 });
+
+test('BUG-05 concilia pasta favorita, etiquetas, versões e vínculos sem duplicar',t=>{
+ const {lib:target}=library(t),{lib:incoming}=library(t);
+ const f=incoming.createFolder({name:'Matéria'}),tf=target.createFolder({name:'Matéria'});
+ incoming.setFolderFavorite(f,true);
+ const a=incoming.createNote({folderId:f,title:'A',contentHtml:'A atual'});
+ const b=incoming.createNote({folderId:f,title:'B',contentHtml:'B atual',tags:['nova']});
+ const tb=target.createNote({folderId:tf,title:'B',contentHtml:'B atual',tags:['antiga']});
+ incoming.linkNotes(a,b);
+ const add=incoming.db.prepare('INSERT INTO note_versions(note_id,title,content_html,saved_at) VALUES(?,?,?,?)');
+ add.run(a,'A','v1','2026-11-01T10:00:00.000Z');
+ add.run(a,'A','v2','2026-11-02T10:00:00.000Z');
+ storage.mergeLibraries(target,incoming);
+ const ta=target.listNotes().find(n=>n.title==='A').id;
+ assert.equal(target.listFolders()[0].favorite,true);
+ assert.deepEqual(target.noteTags(tb).sort(),['antiga','nova']);
+ assert.deepEqual(target.listVersions(ta).map(v=>target.getVersion(v.id).contentHtml),['v2','v1']);
+ assert.equal(target.listRelatedNotes(ta)[0].id,tb);
+ assert.equal(storage.mergeLibraries(target,incoming).inserted,0);
+ assert.equal(target.listVersions(ta).length,2);
+ assert.equal(target.listRelatedNotes(ta).length,1);
+});

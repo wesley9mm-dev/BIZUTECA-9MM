@@ -1,7 +1,7 @@
 'use strict';
 const BizuEditor=(()=>{
  const escapeText=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
- let controller,frame,slashIndex=0,lastHighlight;
+ let controller,frame,slashIndex=0,lastHighlight,lastAutomatic;
  const button=(id,label,text,attr='')=>'<button type="button" '+(id?'id="'+id+'"':'')+' title="'+label+'" aria-label="'+label+'" '+attr+'>'+text+'</button>';
  const cmd=(command,label,text)=>button('',label,text,'data-command="'+command+'"');
  function buildToolbar(){
@@ -201,6 +201,7 @@ const BizuEditor=(()=>{
    const sel=getSelection();sel.removeAllRanges();sel.addRange(range);selectionSave();
    const html={h2:'<h2><br></h2>',h3:'<h3><br></h3>',ul:'<ul><li><br></li></ul>',ol:'<ol><li><br></li></ol>',blockquote:'<blockquote><p><br></p></blockquote>',task:'<ul><li><span class="task-check">☐</span> <br></li></ul>',rule:'<hr><p><br></p>'}[action];
    // One Chromium editing transaction: Undo restores the typed prefix as well.
+   lastAutomatic={parent,index,action,prefix:current.textContent};
    insertHtml(html);
    let target=parent.childNodes[index+(action==='rule'?1:0)];
    if(target?.nodeType===Node.ELEMENT_NODE)target=target.querySelector('li,p')||target;
@@ -233,7 +234,19 @@ const BizuEditor=(()=>{
  function wireEditor(editor,note){
   controller?.abort();controller=new AbortController();const signal=controller.signal;
   document.execCommand('styleWithCSS',false,true);lockLabels(editor);
-  editor.onpaste=e=>{const pending=paste(e);run(()=>pending);};editor.oninput=()=>{lockLabels(editor);markDirty();slashMenu();};
+  editor.onpaste=e=>{const pending=paste(e);run(()=>pending);};editor.oninput=event=>{
+   const sel=getSelection();
+   if(event.inputType==='historyUndo'&&lastAutomatic&&sel.rangeCount&&sel.toString().trim()===lastAutomatic.prefix.trim()){
+    const restored=sel.getRangeAt(0).cloneRange();restored.collapse(false);sel.removeAllRanges();sel.addRange(restored);selectionSave();
+   }
+   if(event.inputType==='historyRedo'&&lastAutomatic&&editor.contains(lastAutomatic.parent)){
+    let target=lastAutomatic.parent.childNodes[lastAutomatic.index];
+    if(target?.nodeType===Node.ELEMENT_NODE&&!target.textContent.trim()){
+     target=target.querySelector('li,p')||target;const caret=document.createRange();caret.selectNodeContents(target);caret.collapse(true);sel.removeAllRanges();sel.addRange(caret);selectionSave();
+    }
+   }
+   lockLabels(editor);markDirty();slashMenu();
+  };
   editor.addEventListener('beforeinput',()=>clearNoteHighlights(editor),{signal});
   editor.addEventListener('focus',()=>{
    clearNoteHighlights(editor);const sel=getSelection();

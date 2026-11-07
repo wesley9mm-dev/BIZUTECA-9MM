@@ -32,13 +32,14 @@ function openLibrary(target,{seed=true,owner}={}) {
   storage.assertDirectory(target);
   const nextLock = owner??lock(target);
   const file = path.join(target,'biblioteca.db');
-  let next, repair=false;
+  let next, repair=false,searchMigration=false;
   try {
     const existing = fs.existsSync(file);
     if (existing&&!seed)throw Error('A pasta já contém uma biblioteca.');
     if (existing) {
       const old = new DatabaseSync(file,{readOnly:true});
       try {
+        searchMigration=Number(old.prepare("SELECT value FROM meta WHERE key='search_schema'").get()?.value||0)<2;
         const needsMigration = !old.prepare("SELECT value FROM meta WHERE key='biz_events_schema'").get();
         repair=!old.prepare("SELECT value FROM meta WHERE key='text_index_v2'").get();
         if(repair&&!needsMigration){
@@ -56,6 +57,7 @@ function openLibrary(target,{seed=true,owner}={}) {
         }
       } finally { old.close(); }
     }
+    if(searchMigration)splash?.webContents.executeJavaScript("(()=>{const p=document.createElement('p');p.id='search-upgrade';p.textContent='Atualizando índice de pesquisa…';p.style.cssText='position:fixed;bottom:12%;width:100%;text-align:center;color:#c6d5c8;font:13px Segoe UI';document.body.append(p);})()").catch(()=>{});
     next = new Library(file);
     next._tx(() => {
       storage.extendSchema(next);
@@ -68,6 +70,7 @@ function openLibrary(target,{seed=true,owner}={}) {
       }
       if(repair||!existing)next.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('text_index_v2','1')").run();
     });
+    if(searchMigration)splash?.webContents.executeJavaScript("document.getElementById('search-upgrade')?.remove()").catch(()=>{});
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
 }
@@ -164,6 +167,7 @@ function installPackage(mode,file){
       storage.validateDatabase(path.join(staging,'biblioteca.db'),pack.images,()=>{});
       fs.renameSync(staging,staged);
       const next = openLibrary(staged);
+      next.lib.reindexAll();
       try { remember(staged); }
       catch (error) { next.lib.close(); unlock(next.lock); throw error; }
       const previousDirectory = dir, previousLib = lib, previousLock = lockPath;
@@ -174,6 +178,7 @@ function installPackage(mode,file){
       return {restored:true,safety,previousDirectory,directory:dir};
     }
     incoming = new Library(temp);
+    incoming.reindexAll();
     storage.extendSchema(incoming);
     const safety = autoBackup();
     // Install assets first, so no committed note can reference an unavailable file.
@@ -286,8 +291,12 @@ async function useImage(kind, src) {
   return output;
 }
 async function action(op,args){
- if(allowed.has(op)){validateLibraryCall(op,args);if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
+ if(allowed.has(op)){validateLibraryCall(op,args);if(op==='updateNote'&&args[1]?.contentHtml!==undefined){const html=args[1].contentHtml;if(typeof html!=='string'||Buffer.byteLength(html,'utf8')>5*1024*1024)throw Error('A anotação pode ter até 5 MB de HTML.');if(html!==lib.getNote(args[0])?.contentHtml)args[1]={...args[1],contentHtml:require('./core/sanitize').sanitizeMaterial(html)};}if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
+ case 'pasteFormatted':win.webContents.paste();return true;
+ case 'listAbbreviations':return lib.listAbbreviations();
+ case 'saveAbbreviation':return lib.saveAbbreviation(args[0],args[1]);
+ case 'removeAbbreviation':return lib.removeAbbreviation(args[0]);
  case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length,blockedAttachments:storage.blockedAttachmentNames(lib.db)};
  case 'listMusic':return {tracks:music.list(dir,bundledMusic),personal:music.list(dir),options:setting('musicOptions')||{}};
  case 'addMusic':{
@@ -397,9 +406,19 @@ app.whenReady().then(async()=>{
  try{const opened=await withLockRecovery(()=>openLibrary(dir));if(!opened){app.quit();return;}lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
  protocol.handle('biz-music',req=>music.response(dir,req,bundledMusic).catch(()=>new Response(null,{status:404})));
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
- win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);
+ win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:true,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
  ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance.active)throw busy();const modal=['importLibrary','changeData','exportLibrary','importText','attach','addMusic','backupDirectory'];if(modal.includes(op))return maintenance.reserve(()=>action(op,args));const work=['backup','applyTecModel','applyBizuLanguage'];return work.includes(op)?maintenance.work(()=>action(op,args)):action(op,args);});
+ try{win.webContents.session.setSpellCheckerLanguages(['pt-BR']);}catch(error){console.warn('Corretor pt-BR indisponível: '+error.message);}
+ win.webContents.on('context-menu',(_event,params)=>{
+  if(!params.isEditable||params.mediaType==='image')return;
+  const menu=[];
+  if(params.misspelledWord){for(const suggestion of params.dictionarySuggestions.slice(0,6))menu.push({label:suggestion,click:()=>win.webContents.replaceMisspelling(suggestion)});
+   menu.push({label:'Adicionar ao dicionário',click:()=>win.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)},{type:'separator'});
+  }
+  menu.push({role:'cut',label:'Recortar'},{role:'copy',label:'Copiar'},{role:'paste',label:'Colar'},{label:'Colar sem formatação',click:()=>win.webContents.pasteAndMatchStyle()},{role:'selectAll',label:'Selecionar tudo'});
+  require('electron').Menu.buildFromTemplate(menu).popup({window:win});
+ });
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));

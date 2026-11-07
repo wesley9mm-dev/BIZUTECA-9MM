@@ -117,13 +117,10 @@ test('BUG-14 realça acentos e mantém HTML escapado',()=>{
  const snippet=rendererFunction('snippetHtml',{esc:s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')});
  assert.equal(snippet('A regência exige preposição < exemplo',['regencia','preposicao']),'A <mark>regência</mark> exige <mark>preposição</mark> &lt; exemplo');
 });
-test('BUG-17 prioriza HTML ao colar uma seleção que também contém imagem',async()=>{
- const inserted=[];
- const onPaste=rendererFunction('onPaste',{selectionSave(){},insertHtml:html=>inserted.push(html),insertImage:()=>inserted.push('imagem'),run:fn=>fn()});
- await onPaste({preventDefault(){},currentTarget:{dataset:{}},clipboardData:{
-   items:[{type:'image/png',getAsFile:()=>({})}],getData:type=>type==='text/html'?'<p>Texto</p>':'Texto'
- }});
- assert.deepEqual(inserted,['<p>Texto</p>']);
+test('BUG-17 encaminha a colagem ao editor modular sem perder o evento',async()=>{
+ const event={clipboardData:{getData:()=>'<p>Texto</p>'}};let received;
+ const onPaste=rendererFunction('onPaste',{BizuEditor:{paste:e=>{received=e;}}});
+ await onPaste(event);assert.equal(received,event);
 });
 test('BUG-18 aplica uma única propriedade CSS de título válida',()=>{
  assert.match(renderer,/setProperty\('--heading',/);

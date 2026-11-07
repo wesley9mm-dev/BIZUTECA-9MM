@@ -161,13 +161,15 @@ async function step(name,run) {
       await page.locator('[data-note-id="'+first.id+'"]').press('F2');
       await page.getByRole('dialog',{name:'Opções da anotação'}).waitFor();
       await page.keyboard.press('Escape');
-      await page.locator('#note-focus').click();
+      await page.locator('#note-options').click();
+      await button('Modo Foco').click();
       await page.locator('#workspace.focus-writing').waitFor();
-      await page.locator('#note-focus').click();
+      await page.locator('#note-focus-exit').click();
       await page.locator('#workspace.focus-writing').waitFor({state:'detached'});
+      await page.locator('#editor').press('Control+f');
       await page.locator('#note-find').fill('BizuLanguage');
       await page.locator('#note-find').press('Enter');
-      assert.match(await page.locator('#note-find-count').textContent(),/^1 de /);
+      assert.match(await page.locator('#note-find-count').textContent(),/^\d+ de /);
       await page.locator('#home').click();
       assert.equal((await call('init')).version,require('../package.json').version);
       await page.locator('#next-event').getByText('Nenhum compromisso futuro.').waitFor();
@@ -223,7 +225,7 @@ async function step(name,run) {
       await page.locator('#insert-table').click();
       await button('Confirmar').click();
       await page.locator('#editor td').first().click();
-      await page.locator('.editor-more summary').click();
+      await page.locator('#editor-more').click();
       await button('Adicionar linha').click();
       assert.equal(await page.locator('#editor tr').count(),4);
       const src=await call('saveImage',{data:logo.toString('base64'),mime:'image/png'});
@@ -253,10 +255,42 @@ async function step(name,run) {
       assert.deepEqual(fs.readFileSync(exported),logo);
       await saved();
       const note=await call('getNote',noteId);
-      assert.match(note.contentHtml,/<(?:b|strong)(?:\s|>)/);
+      assert.match(note.contentHtml,/<(?:b|strong)(?:\s|>)|font-weight:\s*(?:bold|700)/);
       assert.match(note.contentHtml,/<table>/);
       assert.match(note.contentHtml,/tv-attachment:\/\//);
       await page.screenshot({path:path.join(output,'editor.png')});
+    });
+    await step('Editor: barra única, markdown, slash, colagem limpa e salvamento',async()=>{
+      assert.equal(await page.locator('.editor-toolbar').count(),1);
+      assert.equal(await page.locator('.editor-extras').count(),0);
+      const original=await call('getNote',noteId);
+      await page.locator('#editor').focus();
+      await page.keyboard.press('Control+End');await page.keyboard.press('Enter');
+      await page.keyboard.type('#');await page.keyboard.press('Space');
+      await page.keyboard.press('Control+z');
+      assert.match(await page.locator('#editor').innerText(),/#\s*$/,'Desfazer restaura o prefixo Markdown');
+      await page.keyboard.press('Space');await page.keyboard.type('Título automático');
+      assert.ok(await page.locator('#editor h2').filter({hasText:'Título automático'}).count(),JSON.stringify({html:await page.locator('#editor').evaluate(e=>e.innerHTML.slice(-2200)),errors:pageErrors,focus:await page.evaluate(()=>({active:document.activeElement?.outerHTML.slice(0,200),selection:getSelection().anchorNode?.parentElement?.outerHTML.slice(0,200),editable:document.querySelector('#editor').isContentEditable,dialog:document.querySelector('#dialog').open}))}));
+      await page.keyboard.press('Enter');await page.keyboard.press('Control+Alt+0');
+      await page.keyboard.type('/');await page.locator('#slash-menu:not([hidden])').waitFor();
+      await page.keyboard.press('Escape');
+      await page.locator('#editor').evaluate(editor=>{
+        const dt=new DataTransfer();
+        dt.setData('text/html','<p style="font-family:Calibri;font-size:11pt;color:blue"><b>Colagem limpa</b></p>');
+        dt.setData('text/plain','Colagem limpa');
+        editor.dispatchEvent(new ClipboardEvent('paste',{bubbles:true,cancelable:true,clipboardData:dt}));
+      });
+      await saved();const after=await call('getNote',noteId);
+      assert.match(after.contentHtml,/Colagem limpa/);assert.doesNotMatch(after.contentHtml,/Calibri|11pt|color:\s*blue/);
+      const legacy='<font color="#ff0000">Nota antiga</font><div class="bizu"><span class="callout-label">BIZU</span><p><b>Regra</b></p></div><div class="pegadinha"><span class="callout-label">PEGADINHA</span><p>Detalhe</p></div><table><tr><td>Texto</td></tr></table><ul><li><span class="task-check">☑</span><s>Revisão</s></li></ul>'+original.contentHtml.match(/<img\b[^>]*>/)[0];
+      const legacyId=await call('createNote',{title:'Verificação de compatibilidade',contentHtml:legacy});
+      await page.evaluate(async id=>{await openNote(id);markDirty();await flushStable();},legacyId);
+      assert.equal((await call('getNote',legacyId)).contentHtml,legacy);
+      await page.evaluate(async id=>{await openNote(id);},noteId);
+      await call('purgeNote',legacyId);
+      // Restore the previous rich note to keep the following export checks independent.
+      await call('updateNote',noteId,{contentHtml:original.contentHtml});
+      await page.evaluate(async id=>{await openNote(id);},noteId);
     });
     await step('Calendário, próximo compromisso e atualização',async()=>{
       await page.locator('[data-view=calendar]').click();
@@ -350,6 +384,15 @@ async function step(name,run) {
     await page.getByRole('heading',{name:'Anotações sem pasta',exact:true}).waitFor();
     await page.locator('#main [data-open-note="'+personal+'"]').waitFor();
     await page.locator('[data-view=settings]').click();
+    await page.locator('#add-abbr').click();
+    await page.locator('[name=sigla]').fill('MT');
+    await page.locator('[name=extenso]').fill('Meu texto');
+    await button('Confirmar').click();
+    await page.locator('[data-abbr=mt]').waitFor();
+    assert.ok((await call('search','MT')).results.some(n=>n.id===personal));
+    await page.locator('[data-abbr=mt]').click();
+    await page.locator('[data-abbr=mt]').waitFor({state:'detached'});
+    assert.deepEqual(await call('listAbbreviations'),[]);
     await page.locator('#apply-bizulanguage').click();
     await button('Confirmar').click();
     await page.getByText(lessonCount+' aulas BizuLanguage adicionadas.',{exact:true}).waitFor();

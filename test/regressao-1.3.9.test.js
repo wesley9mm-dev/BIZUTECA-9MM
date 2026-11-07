@@ -107,3 +107,29 @@ test('BUG-05 concilia pasta favorita, etiquetas, versões e vínculos sem duplic
  assert.equal(target.listVersions(ta).length,2);
  assert.equal(target.listRelatedNotes(ta).length,1);
 });
+
+const renderer=fs.readFileSync(path.join(__dirname,'../src/renderer/app.js'),'utf8');
+function rendererFunction(name,context){
+ const source=renderer.split('\n').find(line=>line.startsWith('function '+name+'(')||line.startsWith('async function '+name+'('));
+ return new Function(...Object.keys(context),source+';return '+name)(...Object.values(context));
+}
+test('BUG-14 realça acentos e mantém HTML escapado',()=>{
+ const snippet=rendererFunction('snippetHtml',{esc:s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')});
+ assert.equal(snippet('A regência exige preposição < exemplo',['regencia','preposicao']),'A <mark>regência</mark> exige <mark>preposição</mark> &lt; exemplo');
+});
+test('BUG-17 prioriza HTML ao colar uma seleção que também contém imagem',async()=>{
+ const inserted=[];
+ const onPaste=rendererFunction('onPaste',{selectionSave(){},insertHtml:html=>inserted.push(html),insertImage:()=>inserted.push('imagem'),run:fn=>fn()});
+ await onPaste({preventDefault(){},currentTarget:{dataset:{}},clipboardData:{
+   items:[{type:'image/png',getAsFile:()=>({})}],getData:type=>type==='text/html'?'<p>Texto</p>':'Texto'
+ }});
+ assert.deepEqual(inserted,['<p>Texto</p>']);
+});
+test('BUG-18 aplica uma única propriedade CSS de título válida',()=>{
+ assert.match(renderer,/setProperty\('--heading',/);
+ assert.doesNotMatch(renderer,/--heading,t\.heading/);
+});
+test('BUG-19 permite procurar palavras curtas na busca interna',()=>{
+ const tools=fs.readFileSync(path.join(__dirname,'../src/renderer/editor-tools.js'),'utf8');
+ assert.match(tools,/highlightEditor\(value\.split\(\/\\s\+\/\),false,1\)/);
+});

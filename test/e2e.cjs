@@ -414,6 +414,51 @@ async function step(name,run) {
       await page.getByText('Local de dados atualizado. A biblioteca anterior foi preservada.',{exact:true}).waitFor();
       assert.equal((await call('getNote',personal)).contentText,'Meu texto');
     });
+    await step('O calendário responde durante a escolha do arquivo',async()=>{
+      await application.evaluate(({dialog})=>{
+        const original=dialog.showOpenDialog;
+        dialog.showOpenDialog=()=>{
+          dialog.showOpenDialog=original;
+          return new Promise(resolve=>{globalThis.bizCancelTestDialog=()=>resolve({canceled:true});});
+        };
+      });
+      const pending=call('importText',null,true);
+      for(let i=0;i<100;i++){
+        if(await application.evaluate(()=>Boolean(globalThis.bizCancelTestDialog)))break;
+        await new Promise(resolve=>setTimeout(resolve,25));
+      }
+      try{assert.ok(Array.isArray(await call('listEvents')));}
+      finally{
+        await application.evaluate(()=>{
+          globalThis.bizCancelTestDialog?.();
+          delete globalThis.bizCancelTestDialog;
+        });
+      }
+      assert.equal(await pending,null);
+    });
+    await step('Oferece recuperação confirmada para bloqueio antigo de origem incerta',async()=>{
+      const target=fs.mkdtempSync(path.join(os.tmpdir(),'biz-bloqueio-legado-'));
+      const old=new Library(path.join(target,'biblioteca.db'));
+      require('../src/core/storage').extendSchema(old);
+      const note=old.createNote({title:'Nota sob bloqueio'});
+      old.close();
+      fs.writeFileSync(path.join(target,'.bizuteca.lock'),JSON.stringify({pid:1234}));
+      await application.evaluate(({dialog},directory)=>{
+        const original=dialog.showMessageBox;
+        dialog.showOpenDialog=async()=>({canceled:false,filePaths:[directory]});
+        dialog.showMessageBox=async options=>{
+          if(options.buttons.includes('Remover bloqueio e abrir'))return {response:2};
+          if(options.buttons.includes('Remover bloqueio')){
+            dialog.showMessageBox=original;
+            return {response:1};
+          }
+          throw Error('Diálogo de recuperação não reconhecido.');
+        };
+      },target);
+      const result=await call('changeData','open');
+      assert.equal(result.directory,target);
+      assert.equal((await call('getNote',note)).title,'Nota sob bloqueio');
+    });
     if(process.env.BIZUTECA_VERIFY_LEGACY==='1'){
       await application.close();
       application=null;

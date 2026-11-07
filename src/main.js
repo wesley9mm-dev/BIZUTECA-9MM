@@ -2,6 +2,8 @@
 const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,ClipboardItem,shell,nativeImage,screen}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const runtime=require('./core/runtime');
+const {createMaintenance,busy}=require('./core/maintenance');
+const maintenance=createMaintenance();
 const {lock,unlock,recover}=require('./core/lock');
 const {validateLibraryCall,validateExport}=require('./core/validate-ipc');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
@@ -23,7 +25,7 @@ const {makeHtmlExport}=require('./core/export');
 // Prioritize predictable rendering on older integrated GPUs and removable drives.
 app.disableHardwareAcceleration();
 protocol.registerSchemesAsPrivileged([{scheme:'biz-music',privileges:{standard:true,secure:true,stream:true}},{scheme:'tv-attachment',privileges:{standard:true,secure:true,supportFetchAPI:true}},{scheme:'biz-file',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
-let win,lib,dir,pointer,base,closing=false,maintenance=false,lockPath,splash,backupTimer,backupChanges=0;
+let win,lib,dir,pointer,base,closing=false,lockPath,splash,backupTimer,backupChanges=0;
 const test=process.env.BIZUTECA_TEST_DATA;
 const allowed=new Set(['listFolders','createFolder','renameFolder','setFolderFavorite','moveFolder','reorderFolders','folderPath','deleteFolder','restoreFolder','purgeFolder','createNote','getNote','updateNote','moveNote','setNoteFavorite','archiveNote','duplicateNote','deleteNote','restoreNote','purgeNote','listTrash','emptyTrash','listNotes','listTags','listVersions','getVersion','restoreVersion','setTags','listSynonyms','addSynonym','removeSynonym']);
 function openLibrary(target,{seed=true,owner}={}) {
@@ -106,7 +108,7 @@ function trackBackup() {
   backupChanges = lib.db.prepare('SELECT total_changes() AS n').get().n;
 }
 function scheduledBackup() {
-  if (!lib || maintenance || setting('automaticBackup') === false) return;
+  if (!lib || maintenance.active || setting('automaticBackup') === false) return;
   const changes = lib.db.prepare('SELECT total_changes() AS n').get().n;
   if (changes === backupChanges) return;
   try {
@@ -126,7 +128,7 @@ function scheduledBackup() {
 }
 async function chooseDir(){const result=await dialog.showOpenDialog(win,{title:'Escolher pasta de dados',properties:['openDirectory','createDirectory']});return result.canceled?null:result.filePaths[0];}
 function copyAssets(images,target){const dest=path.join(target,'anexos');fs.mkdirSync(dest,{recursive:true});for(const image of images){if(!storage.safeName(image.name))throw Error('Anexo inválido: '+image.name);const f=path.join(dest,image.name);if(fs.existsSync(f)){if(storage.hash(fs.readFileSync(f))!==storage.hash(image.bytes))throw Error('Já existe um anexo diferente com o mesmo nome. Use restauração em uma pasta separada.');}else storage.atomicWrite(f,image.bytes);}}
-async function exportPackage(){const out=await dialog.showSaveDialog(win,{title:'Exportar biblioteca completa',defaultPath:backupName(),filters:[{name:'Biblioteca BIZUTECA (notas, pastas, versões e anexos)',extensions:['b9mm']}]});if(out.canceled)return null;let missing;storage.atomicWrite(out.filePath,storage.encodePackage(lib,dir,list=>{missing=list;}));if(missing)warnMissing(missing);return out.filePath;}
+async function exportPackage(){const out=await dialog.showSaveDialog(win,{title:'Exportar biblioteca completa',defaultPath:backupName(),filters:[{name:'Biblioteca BIZUTECA (notas, pastas, versões e anexos)',extensions:['b9mm']}]});if(out.canceled)return null;return maintenance.work(()=>{let missing;storage.atomicWrite(out.filePath,storage.encodePackage(lib,dir,list=>{missing=list;}));if(missing)warnMissing(missing);return out.filePath;});}
 async function importPackage(mode) {
   if (!['merge','replace'].includes(mode)) throw Error('Operação de importação inválida.');
   const picked = await dialog.showOpenDialog(win,{
@@ -134,7 +136,17 @@ async function importPackage(mode) {
     filters:[{name:'Bibliotecas Bizuteca',extensions:['b9mm','bizuteca','tvbackup']}]
   });
   if (picked.canceled) return null;
-  const file = picked.filePaths[0];
+  if(mode==='replace'){
+    const answer = await dialog.showMessageBox(win,{
+      type:'warning',buttons:['Cancelar','Restaurar biblioteca'],defaultId:0,cancelId:0,
+      message:'Abrir a biblioteca deste backup?',
+      detail:'O conjunto restaurado será preparado em uma pasta separada. Sua biblioteca atual ficará disponível para recuperação.'
+    });
+    if (answer.response !== 1) return null;
+  }
+  return maintenance.work(()=>installPackage(mode,picked.filePaths[0]));
+}
+function installPackage(mode,file){
   if (fs.statSync(file).size > 512 * 1024 * 1024) throw Error('Pacote maior que 512 MB.');
   const pack = storage.decodePackage(fs.readFileSync(file));
   const temp = path.join(runtimePaths.sessionDirectory,'import-'+crypto.randomUUID()+'.db');
@@ -144,12 +156,6 @@ async function importPackage(mode) {
     let missing;
     storage.validateDatabase(temp,pack.images,list=>{missing=list;});
     if (mode === 'replace') {
-      const answer = await dialog.showMessageBox(win,{
-        type:'warning',buttons:['Cancelar','Restaurar biblioteca'],defaultId:0,cancelId:0,
-        message:'Abrir a biblioteca deste backup?',
-        detail:'O conjunto restaurado será preparado em uma pasta separada. Sua biblioteca atual ficará disponível para recuperação.'
-      });
-      if (answer.response !== 1) return null;
       const safety = autoBackup();
       const staged = path.join(path.dirname(dir),'biblioteca-restaurada-'+crypto.randomUUID().slice(0,8));
       const staging = fs.mkdtempSync(path.join(path.dirname(dir),'.bizuteca-restauracao-'));
@@ -197,7 +203,7 @@ async function changeData(mode){
  if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');
  const target=await chooseDir();
  if(!target||path.resolve(target)===path.resolve(dir))return null;
- return withLockRecovery(()=>changeDataAt(target,mode));
+ return withLockRecovery(()=>maintenance.work(()=>changeDataAt(target,mode)));
 }
 async function changeDataAt(target,mode){
  storage.assertDirectory(target);
@@ -248,7 +254,7 @@ async function importText(folderId=null,txtOnly=false){
     buttons:['Cancelar','Importar'],defaultId:1,cancelId:0});
   if(answer.response!==1)return null;
   if(txtOnly&&result.filePaths.some(file=>path.extname(file).toLowerCase()!=='.txt'))throw Error('Selecione apenas arquivos TXT.');
-  return importTextFiles(lib,result.filePaths,folderId,files=>win?.webContents.send('backup-warning',files.length+' arquivo(s) ANSI convertido(s): '+files.join(', ')));
+  return maintenance.work(()=>importTextFiles(lib,result.filePaths,folderId,files=>win?.webContents.send('backup-warning',files.length+' arquivo(s) ANSI convertido(s): '+files.join(', '))));
 }
 function imageData(src) {
   if (typeof src !== 'string' || src.length > 28000000) throw Error('Imagem inválida ou muito grande.');
@@ -391,7 +397,7 @@ app.whenReady().then(async()=>{
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
- ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage','importText'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
+ ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance.active)throw busy();const modal=['importLibrary','changeData','exportLibrary','importText','attach','addMusic','backupDirectory'];if(modal.includes(op))return maintenance.reserve(()=>action(op,args));const work=['backup','applyTecModel','applyBizuLanguage'];return work.includes(op)?maintenance.work(()=>action(op,args)):action(op,args);});
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));

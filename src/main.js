@@ -2,6 +2,10 @@
 const {app,BrowserWindow,ipcMain,dialog,protocol,clipboard,ClipboardItem,shell,nativeImage,screen}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const runtime=require('./core/runtime');
+const {createMaintenance,busy}=require('./core/maintenance');
+const maintenance=createMaintenance();
+const {lock,unlock,recover}=require('./core/lock');
+const {validateLibraryCall,validateExport}=require('./core/validate-ipc');
 const portableBase=process.env.BIZUTECA_TEST_DATA||process.env.PORTABLE_EXECUTABLE_DIR||(app.isPackaged?path.dirname(app.getPath('exe')):path.resolve(__dirname,'..'));
 const appData=app.getPath('appData');
 const runtimePaths=runtime.configureRuntime(app,portableBase);
@@ -10,6 +14,7 @@ const {search}=require('./core/search');
 const {consult}=require('./core/assistant');
 const storage=require('./core/storage');
 const {importTextFiles}=require('./core/text-import');
+const {htmlToText}=require('./core/text');
 const events=require('./core/events');
 const music=require('./core/music');
 const bundledMusic=path.join(__dirname,'assets','musicas');
@@ -20,16 +25,14 @@ const {makeHtmlExport}=require('./core/export');
 // Prioritize predictable rendering on older integrated GPUs and removable drives.
 app.disableHardwareAcceleration();
 protocol.registerSchemesAsPrivileged([{scheme:'biz-music',privileges:{standard:true,secure:true,stream:true}},{scheme:'tv-attachment',privileges:{standard:true,secure:true,supportFetchAPI:true}},{scheme:'biz-file',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
-let win,lib,dir,pointer,base,closing=false,maintenance=false,lockPath,splash,backupTimer,backupChanges=0;
+let win,lib,dir,pointer,base,closing=false,lockPath,splash,backupTimer,backupChanges=0;
 const test=process.env.BIZUTECA_TEST_DATA;
 const allowed=new Set(['listFolders','createFolder','renameFolder','setFolderFavorite','moveFolder','reorderFolders','folderPath','deleteFolder','restoreFolder','purgeFolder','createNote','getNote','updateNote','moveNote','setNoteFavorite','archiveNote','duplicateNote','deleteNote','restoreNote','purgeNote','listTrash','emptyTrash','listNotes','listTags','listVersions','getVersion','restoreVersion','setTags','listSynonyms','addSynonym','removeSynonym']);
-function lock(target){const file=path.join(target,'.bizuteca.lock');if(fs.existsSync(file)){let stale=false;try{const info=JSON.parse(fs.readFileSync(file,'utf8'));try{process.kill(info.pid,0);}catch(e){if(e.code==='ESRCH')stale=true;}}catch{}if(stale)fs.unlinkSync(file);else throw Error('Esta biblioteca já está aberta ou possui um bloqueio de outra sessão. Feche o outro programa antes de continuar.');}fs.writeFileSync(file,JSON.stringify({pid:process.pid}),{flag:'wx'});return file;}
-function unlock(file){if(file)try{fs.unlinkSync(file);}catch{}}
-function openLibrary(target,{seed=true}={}) {
+function openLibrary(target,{seed=true,owner}={}) {
   storage.assertDirectory(target);
-  const nextLock = lock(target);
+  const nextLock = owner??lock(target);
   const file = path.join(target,'biblioteca.db');
-  let next;
+  let next, repair=false;
   try {
     const existing = fs.existsSync(file);
     if (existing&&!seed)throw Error('A pasta já contém uma biblioteca.');
@@ -37,6 +40,16 @@ function openLibrary(target,{seed=true}={}) {
       const old = new DatabaseSync(file,{readOnly:true});
       try {
         const needsMigration = !old.prepare("SELECT value FROM meta WHERE key='biz_events_schema'").get();
+        repair=!old.prepare("SELECT value FROM meta WHERE key='text_index_v2'").get();
+        if(repair&&!needsMigration){
+          try{
+            storage.validateDatabase(file);
+            backups.writeBackup({db:old},target,{prefix:'antes-indice-v2'});
+          }catch(error){
+            repair=false;
+            console.warn('Migração de índice adiada: '+error.message);
+          }
+        }
         if (needsMigration) {
           storage.validateDatabase(file);
           backups.writeBackup({db:old}, target, {prefix:'antes-calendario'});
@@ -47,21 +60,55 @@ function openLibrary(target,{seed=true}={}) {
     next._tx(() => {
       storage.extendSchema(next);
       if (!existing&&seed) bizulanguage.install(next);
+      if(repair){
+        const update=next.db.prepare('UPDATE notes SET content_text=? WHERE id=?');
+        for(const note of next.db.prepare('SELECT id,content_html FROM notes').iterate())update.run(htmlToText(note.content_html),note.id);
+        next.db.exec('DELETE FROM biz_files WHERE NOT EXISTS (SELECT 1 FROM notes WHERE notes.id=biz_files.note_id)');
+        next.reindexAll();
+      }
+      if(repair||!existing)next.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('text_index_v2','1')").run();
     });
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
 }
+async function withLockRecovery(open){
+ for(;;){
+  try{return await open();}
+  catch(error){
+   if(error.code!=='BIZ_LOCKED')throw error;
+   const buttons=['Cancelar','Tentar novamente'];
+   if(error.recovery.canRemove)buttons.push('Remover bloqueio e abrir');
+   const answer=await dialog.showMessageBox({
+    type:'warning',buttons,defaultId:1,cancelId:0,
+    message:'A biblioteca está bloqueada por outra sessão.',
+    detail:'Feche o Bizuteca em outros computadores antes de tentar novamente.'
+   });
+   if(answer.response===0)return null;
+   if(answer.response!==2)continue;
+   const confirmed=await dialog.showMessageBox({
+    type:'warning',buttons:['Cancelar','Remover bloqueio'],defaultId:0,cancelId:0,
+    message:'Remover o bloqueio desta biblioteca?',
+    detail:'Confirme somente se nenhuma outra sessão estiver usando esta biblioteca. Duas sessões simultâneas podem causar perda de dados.'
+   });
+   if(confirmed.response===1)recover(error.recovery);
+  }
+ }
+}
 function remember(target){const relative=path.relative(base,target);const value=!relative.startsWith('..')&&!path.isAbsolute(relative)?{relative:relative||'.'}:{absolute:target};storage.atomicWrite(pointer,JSON.stringify(value,null,2));}
 function setting(k,value){if(value!==undefined){lib.db.prepare('INSERT INTO biz_settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(k,JSON.stringify(value));return value;}const row=lib.db.prepare('SELECT value FROM biz_settings WHERE key=?').get(k);if(!row)return null;return JSON.parse(row.value);}
 const backupName = () => backups.backupName();
+function warnMissing(missing){
+  const names=missing.map(({file,titles})=>file+' ('+titles.join(', ')+')');
+  win?.webContents.send('backup-warning',missing.length+' anexo(s) ausente(s): '+names.join('; '));
+}
 function autoBackup(options={}) {
-  return backups.writeBackup(lib,dir,options);
+  return backups.writeBackup(lib,dir,{...options,onMissing:warnMissing});
 }
 function trackBackup() {
   backupChanges = lib.db.prepare('SELECT total_changes() AS n').get().n;
 }
 function scheduledBackup() {
-  if (!lib || maintenance || setting('automaticBackup') === false) return;
+  if (!lib || maintenance.active || setting('automaticBackup') === false) return;
   const changes = lib.db.prepare('SELECT total_changes() AS n').get().n;
   if (changes === backupChanges) return;
   try {
@@ -71,15 +118,17 @@ function scheduledBackup() {
     if (additional) {
       const name = path.basename(local);
       if (!fs.statSync(additional).isDirectory()) throw Error('A unidade de backup adicional está indisponível.');
+      if (!fs.existsSync(local)) throw Error('O backup local recém-criado não foi encontrado para a cópia adicional.');
       storage.atomicWrite(path.join(additional,name),fs.readFileSync(local));
+      backups.retainAutomatic(additional,name);
     }
   } catch (error) {
     win?.webContents.send('backup-warning','Backup automático: '+error.message);
   }
 }
 async function chooseDir(){const result=await dialog.showOpenDialog(win,{title:'Escolher pasta de dados',properties:['openDirectory','createDirectory']});return result.canceled?null:result.filePaths[0];}
-function copyAssets(images,target){const dest=path.join(target,'anexos');fs.mkdirSync(dest,{recursive:true});for(const image of images){const f=path.join(dest,image.name);if(fs.existsSync(f)){if(storage.hash(fs.readFileSync(f))!==storage.hash(image.bytes))throw Error('Já existe um anexo diferente com o mesmo nome. Use restauração em uma pasta separada.');}else storage.atomicWrite(f,image.bytes);}}
-async function exportPackage(){const out=await dialog.showSaveDialog(win,{title:'Exportar biblioteca completa',defaultPath:backupName(),filters:[{name:'Biblioteca BIZUTECA (notas, pastas, versões e anexos)',extensions:['b9mm']}]});if(out.canceled)return null;storage.atomicWrite(out.filePath,storage.encodePackage(lib,dir));return out.filePath;}
+function copyAssets(images,target){const dest=path.join(target,'anexos');fs.mkdirSync(dest,{recursive:true});for(const image of images){if(!storage.safeName(image.name))throw Error('Anexo inválido: '+image.name);const f=path.join(dest,image.name);if(fs.existsSync(f)){if(storage.hash(fs.readFileSync(f))!==storage.hash(image.bytes))throw Error('Já existe um anexo diferente com o mesmo nome. Use restauração em uma pasta separada.');}else storage.atomicWrite(f,image.bytes);}}
+async function exportPackage(){const out=await dialog.showSaveDialog(win,{title:'Exportar biblioteca completa',defaultPath:backupName(),filters:[{name:'Biblioteca BIZUTECA (notas, pastas, versões e anexos)',extensions:['b9mm']}]});if(out.canceled)return null;return maintenance.work(()=>{let missing;storage.atomicWrite(out.filePath,storage.encodePackage(lib,dir,list=>{missing=list;}));if(missing)warnMissing(missing);return out.filePath;});}
 async function importPackage(mode) {
   if (!['merge','replace'].includes(mode)) throw Error('Operação de importação inválida.');
   const picked = await dialog.showOpenDialog(win,{
@@ -87,27 +136,32 @@ async function importPackage(mode) {
     filters:[{name:'Bibliotecas Bizuteca',extensions:['b9mm','bizuteca','tvbackup']}]
   });
   if (picked.canceled) return null;
-  const file = picked.filePaths[0];
+  if(mode==='replace'){
+    const answer = await dialog.showMessageBox(win,{
+      type:'warning',buttons:['Cancelar','Restaurar biblioteca'],defaultId:0,cancelId:0,
+      message:'Abrir a biblioteca deste backup?',
+      detail:'O conjunto restaurado será preparado em uma pasta separada. Sua biblioteca atual ficará disponível para recuperação.'
+    });
+    if (answer.response !== 1) return null;
+  }
+  return maintenance.work(()=>installPackage(mode,picked.filePaths[0]));
+}
+function installPackage(mode,file){
   if (fs.statSync(file).size > 512 * 1024 * 1024) throw Error('Pacote maior que 512 MB.');
   const pack = storage.decodePackage(fs.readFileSync(file));
   const temp = path.join(runtimePaths.sessionDirectory,'import-'+crypto.randomUUID()+'.db');
   let incoming;
   try {
     storage.atomicWrite(temp,pack.database);
-    storage.validateDatabase(temp,pack.images);
+    let missing;
+    storage.validateDatabase(temp,pack.images,list=>{missing=list;});
     if (mode === 'replace') {
-      const answer = await dialog.showMessageBox(win,{
-        type:'warning',buttons:['Cancelar','Restaurar biblioteca'],defaultId:0,cancelId:0,
-        message:'Abrir a biblioteca deste backup?',
-        detail:'O conjunto restaurado será preparado em uma pasta separada. Sua biblioteca atual ficará disponível para recuperação.'
-      });
-      if (answer.response !== 1) return null;
       const safety = autoBackup();
       const staged = path.join(path.dirname(dir),'biblioteca-restaurada-'+crypto.randomUUID().slice(0,8));
       const staging = fs.mkdtempSync(path.join(path.dirname(dir),'.bizuteca-restauracao-'));
       copyAssets(pack.images,staging);
       storage.atomicWrite(path.join(staging,'biblioteca.db'),pack.database);
-      storage.validateDatabase(path.join(staging,'biblioteca.db'),pack.images);
+      storage.validateDatabase(path.join(staging,'biblioteca.db'),pack.images,()=>{});
       fs.renameSync(staging,staged);
       const next = openLibrary(staged);
       try { remember(staged); }
@@ -116,6 +170,7 @@ async function importPackage(mode) {
       lib = next.lib; lockPath = next.lock; dir = staged;
       trackBackup();
       try { previousLib.close(); } finally { unlock(previousLock); }
+      if(missing)warnMissing(missing);
       return {restored:true,safety,previousDirectory,directory:dir};
     }
     incoming = new Library(temp);
@@ -132,7 +187,9 @@ async function importPackage(mode) {
           if (storage.hash(fs.readFileSync(dest)) !== storage.hash(asset.bytes)) throw Error('Existe um anexo diferente com o mesmo nome: '+asset.name);
         } else { storage.atomicWrite(dest,asset.bytes); created.push(dest); }
       }
-      return {...storage.mergeLibraries(lib,incoming),safety};
+      const result=storage.mergeLibraries(lib,incoming);
+      if(missing)warnMissing(missing);
+      return {...result,safety};
     } catch (error) {
       for (const dest of created) { try { fs.unlinkSync(dest); } catch {} }
       throw error;
@@ -142,21 +199,52 @@ async function importPackage(mode) {
     for (const suffix of ['','-wal','-shm']) { try { fs.unlinkSync(temp+suffix); } catch {} }
   }
 }
-async function changeData(mode){if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');const target=await chooseDir();if(!target||path.resolve(target)===path.resolve(dir))return null;storage.assertDirectory(target);const exists=fs.existsSync(path.join(target,'biblioteca.db'));if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
+async function changeData(mode){
+ if(!['move','open','new'].includes(mode))throw Error('Operação de biblioteca inválida.');
+ const target=await chooseDir();
+ if(!target||path.resolve(target)===path.resolve(dir))return null;
+ return withLockRecovery(()=>maintenance.work(()=>changeDataAt(target,mode)));
+}
+async function changeDataAt(target,mode){
+ storage.assertDirectory(target);
+ const file=path.join(target,'biblioteca.db');
  if(mode==='new'&&fs.readdirSync(target).length)throw Error('Escolha ou crie uma pasta vazia para a nova biblioteca.');
- if(mode==='move'){const pack=storage.decodePackage(storage.encodePackage(lib,dir));copyAssets(pack.images,target);storage.atomicWrite(path.join(target,'biblioteca.db'),pack.database);}
- const next=openLibrary(target,{seed:mode!=='new'});try{remember(target);}catch(e){next.lib.close();unlock(next.lock);throw e;}lib.close();unlock(lockPath);lib=next.lib;lockPath=next.lock;dir=target;trackBackup();return {directory:dir};}
-async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
+ const owner=lock(target);
+ let next;
+ try{
+   const exists=fs.existsSync(file);
+   if(mode==='move'&&exists)throw Error('A pasta já contém uma biblioteca. Escolha “Abrir outra biblioteca” ou uma pasta vazia.');
+   if(mode==='open'&&!exists)throw Error('Não há biblioteca.db nessa pasta. Use “Copiar biblioteca para outra pasta” para criar uma cópia.');
+   if(mode==='move'){
+     const pack=storage.decodePackage(storage.encodePackage(lib,dir));
+     copyAssets(pack.images,target);
+     await music.copyLibrary(dir,target,name=>{throw Error('A pasta de destino contém uma música diferente com o mesmo nome: '+name);});
+     storage.atomicWrite(file,pack.database);
+   }
+   next=openLibrary(target,{seed:mode!=='new',owner});
+   remember(target);
+ }catch(error){
+   next?.lib.close();
+   unlock(owner);
+   throw error;
+ }
+ lib.close();
+ unlock(lockPath);
+ lib=next.lib;lockPath=next.lock;dir=target;
+ trackBackup();
+ return {directory:dir};
+}
+async function exportMaterial(kind,ids){validateExport(kind,ids);const notes=ids.map(id=>lib.getNote(Number(id))).filter(n=>n&&!n.deletedAt);if(!notes.length)throw Error('Selecione uma anotação.');const prepared=notes.map(n=>({...n,contentHtml:n.contentHtml.replace(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi,(_,name)=>{try{const mime=({'png':'png','jpg':'jpeg','jpeg':'jpeg','webp':'webp','gif':'gif','bmp':'bmp'})[name.split('.').pop()];return 'data:image/'+mime+';base64,'+fs.readFileSync(path.join(dir,'anexos',name)).toString('base64');}catch{return '';}})}));
  const out=await dialog.showSaveDialog(win,{title:'Exportar material',defaultPath:'meus-resumos.'+kind,filters:[{name:kind.toUpperCase(),extensions:[kind]}]});if(out.canceled)return null;
  const html=makeHtmlExport(prepared);
  if(kind==='html'){storage.atomicWrite(out.filePath,html);return out.filePath;}
  if(kind==='txt'){storage.atomicWrite(out.filePath,notes.map(n=>n.title+'\n\n'+n.contentText).join('\n\n----------------\n\n'));return out.filePath;}
  const printWin=new BrowserWindow({show:false,webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false}});try{await printWin.loadURL('data:text/html;charset=utf-8,'+encodeURIComponent(html));await printWin.webContents.executeJavaScript('Promise.all(Array.from(document.images).map(i=>i.decode().catch(()=>{})))');const pdf=await printWin.webContents.printToPDF({pageSize:'A4',printBackground:true,preferCSSPageSize:true});storage.atomicWrite(out.filePath,pdf);return out.filePath;}finally{printWin.destroy();}
 }
-async function attach(noteId){if(!lib.getNote(Number(noteId)))throw Error('Anotação não encontrada.');const result=await dialog.showOpenDialog(win,{title:'Anexar PDF, imagem ou texto',properties:['openFile','multiSelections'],filters:[{name:'Materiais de estudo',extensions:['pdf','png','jpg','jpeg','webp','gif','txt']}]});if(result.canceled)return null;const assets=path.join(dir,'anexos');fs.mkdirSync(assets,{recursive:true});let count=0;
- for(const file of result.filePaths){if(fs.statSync(file).size>50*1024*1024)throw Error('Cada anexo pode ter até 50 MB.');const ext=path.extname(file).slice(1).toLowerCase();if(!/^(pdf|png|jpg|jpeg|gif|webp|txt)$/.test(ext))throw Error('Tipo de anexo não permitido.');const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(assets,name),fs.readFileSync(file));lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(Number(noteId),path.basename(file),name,ext);count++;}return count;}
+async function attach(noteId){if(!lib.getNote(Number(noteId)))throw Error('Anotação não encontrada.');const result=await dialog.showOpenDialog(win,{title:'Anexar PDF, imagem ou texto',properties:['openFile','multiSelections'],filters:[{name:'Materiais de estudo',extensions:storage.ALLOWED_EXTENSIONS}]});if(result.canceled)return null;const assets=path.join(dir,'anexos');fs.mkdirSync(assets,{recursive:true});let count=0;
+ for(const file of result.filePaths){if(fs.statSync(file).size>50*1024*1024)throw Error('Cada anexo pode ter até 50 MB.');const ext=path.extname(file).slice(1).toLowerCase();if(!storage.ALLOWED_EXTENSIONS.includes(ext))throw Error('Tipo de anexo não permitido.');const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(assets,name),fs.readFileSync(file));lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(Number(noteId),path.basename(file),name,ext);count++;}return count;}
 async function importText(folderId=null,txtOnly=false){
-  const result=await dialog.showOpenDialog(win,{title:txtOnly?'Importar TXT como anotação':'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:txtOnly?['txt']:['txt','md','html','htm']}]});
+  const result=await dialog.showOpenDialog(win,{title:txtOnly?'Importar TXT como anotação':'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:txtOnly?['txt']:['txt','html','htm']}]});
   if(result.canceled)return null;
   const folder=folderId==null?null:lib.listFolders().find(item=>item.id===folderId);
   if(folderId!=null&&!folder)throw Error('A pasta de destino não está disponível.');
@@ -166,7 +254,7 @@ async function importText(folderId=null,txtOnly=false){
     buttons:['Cancelar','Importar'],defaultId:1,cancelId:0});
   if(answer.response!==1)return null;
   if(txtOnly&&result.filePaths.some(file=>path.extname(file).toLowerCase()!=='.txt'))throw Error('Selecione apenas arquivos TXT.');
-  return importTextFiles(lib,result.filePaths,folderId);
+  return maintenance.work(()=>importTextFiles(lib,result.filePaths,folderId,files=>win?.webContents.send('backup-warning',files.length+' arquivo(s) ANSI convertido(s): '+files.join(', '))));
 }
 function imageData(src) {
   if (typeof src !== 'string' || src.length > 28000000) throw Error('Imagem inválida ou muito grande.');
@@ -198,14 +286,16 @@ async function useImage(kind, src) {
   return output;
 }
 async function action(op,args){
- if(allowed.has(op)){if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
+ if(allowed.has(op)){validateLibraryCall(op,args);if(op==='purgeFolder'||op==='purgeNote'||op==='emptyTrash')autoBackup();return lib[op](...args);}
  switch(op){
- case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length};
+ case 'init':return {directory:dir,version:app.getVersion(),settings:setting('preferences')||{},themes:setting('customThemes')||[],folderCount:lib.listFolders().length,blockedAttachments:storage.blockedAttachmentNames(lib.db)};
  case 'listMusic':return {tracks:music.list(dir,bundledMusic),personal:music.list(dir),options:setting('musicOptions')||{}};
  case 'addMusic':{
    const result=await dialog.showOpenDialog(win,{title:'Adicionar músicas locais',properties:['openFile','multiSelections'],filters:[{name:'Músicas MP3',extensions:['mp3']}]});
    if(result.canceled)return null;
-   await music.add(dir,result.filePaths);
+   const conflicts=[];
+   await music.add(dir,result.filePaths,name=>conflicts.push(name));
+   if(conflicts.length)win?.webContents.send('backup-warning','Músicas ignoradas por nome repetido: '+conflicts.join(', '));
    return {tracks:music.list(dir,bundledMusic),personal:music.list(dir)};
  }
  case 'saveMusicOptions':{
@@ -220,6 +310,12 @@ async function action(op,args){
  case 'copy':await clipboard.writeText(String(args[0]||''));return true;
  case 'exportLibrary':return exportPackage();
  case 'backup':return autoBackup({additional:setting('backupDirectory')});
+ case 'localBackups':return backups.listLocalBackups(dir);
+ case 'removeLocalBackup':{
+   const [name,size,mtime]=args;
+   if(!Number.isFinite(size)||!Number.isFinite(mtime))throw Error('Backup inválido.');
+   return backups.removeLocalBackup(dir,name,{size,mtime});
+ }
  case 'backupSettings':return {automatic:setting('automaticBackup')!==false,additional:setting('backupDirectory')};
  case 'toggleAutomaticBackup':return setting('automaticBackup',!!args[0]);
  case 'backupDirectory':{
@@ -263,7 +359,7 @@ async function action(op,args){
  case 'importText':return importText(args[0],args[1]===true);
  case 'attach':return attach(args[0]);
  case 'files':return lib.db.prepare('SELECT id,note_id AS noteId,name,file,mime FROM biz_files WHERE note_id=?').all(Number(args[0]));
- case 'openFile':{const f=lib.db.prepare('SELECT * FROM biz_files WHERE id=?').get(Number(args[0]));if(!f||!storage.safeName(f.file))throw Error('Anexo não encontrado.');return shell.openPath(path.join(dir,'anexos',f.file));}
+ case 'openFile':{const f=lib.db.prepare('SELECT * FROM biz_files WHERE id=?').get(Number(args[0]));if(!f||!storage.safeName(f.file))throw Error('Anexo não encontrado ou bloqueado.');const root=fs.realpathSync(path.join(dir,'anexos'));const file=fs.realpathSync(path.join(root,f.file));const rel=path.relative(root,file);if(!storage.safeName(rel)||!fs.statSync(file).isFile())throw Error('Anexo fora da pasta autorizada.');return shell.openPath(file);}
  case 'deleteFile':lib.db.prepare('DELETE FROM biz_files WHERE id=?').run(Number(args[0]));return true;
  case 'saveImage':{const image=args[0];const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[image.mime];if(!ext||typeof image.data!=='string'||image.data.length>28000000)throw Error('Imagem inválida ou maior que 20 MB.');const folder=path.join(dir,'anexos');fs.mkdirSync(folder,{recursive:true});const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(folder,name),Buffer.from(image.data,'base64'));return 'tv-attachment://'+name;}
  case 'exportTheme':{const out=await dialog.showSaveDialog(win,{title:'Exportar tema',defaultPath:'tema-bizuteca.json',filters:[{name:'Tema JSON',extensions:['json']}]});if(out.canceled)return null;storage.atomicWrite(out.filePath,JSON.stringify(args[0],null,2));return out.filePath;}
@@ -296,12 +392,12 @@ app.whenReady().then(async()=>{
    dir=fs.existsSync(path.join(selected,'biblioteca.db'))?selected:runtime.dataDirectory(selected,previous);
    if(previous&&!fs.existsSync(path.join(dir,'biblioteca.db')))throw Error('A pasta escolhida aponta para uma biblioteca que não foi encontrada.');
  }
- try{const opened=openLibrary(dir);lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
+ try{const opened=await withLockRecovery(()=>openLibrary(dir));if(!opened){app.quit();return;}lib=opened.lib;lockPath=opened.lock;remember(dir);trackBackup();}catch(e){dialog.showErrorBox('Não foi possível abrir o caderno',String(e.message));app.quit();return;}
  protocol.handle('biz-music',req=>music.response(dir,req,bundledMusic).catch(()=>new Response(null,{status:404})));
  protocol.handle('tv-attachment',async req=>{const name=new URL(req.url).hostname;if(!/^[a-f0-9-]+\.(png|jpe?g|gif|webp|bmp)$/i.test(name))return new Response('',{status:404});try{const bytes=fs.readFileSync(path.join(dir,'anexos',name));const ext=name.split('.').pop();return new Response(bytes,{headers:{'Content-Type':'image/'+({jpg:'jpeg'}[ext]||ext),'X-Content-Type-Options':'nosniff'}});}catch{return new Response('',{status:404});}});
  win=new BrowserWindow({width:1550,height:940,minWidth:860,minHeight:570,show:false,backgroundColor:'#08170f',title:'BIZUTECA 9MM',icon:path.join(__dirname,'assets','bizuteca.ico'),webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true,spellcheck:false,autoplayPolicy:'no-user-gesture-required'}});win.setMenuBarVisibility(false);
  const html=path.join(__dirname,'renderer','index.html');const trusted=()=>win&&!win.isDestroyed();
- ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance)throw Error('Aguarde a operação de dados em andamento.');const long=['importLibrary','changeData','exportLibrary','backup','applyTecModel','applyBizuLanguage','importText'];if(long.includes(op))maintenance=true;try{return await action(op,args);}finally{if(long.includes(op))maintenance=false;}});
+ ipcMain.handle('biz',async(event,op,args=[])=>{if(!trusted()||event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame)throw Error('Origem inválida.');if(maintenance.active)throw busy();const modal=['importLibrary','changeData','exportLibrary','importText','attach','addMusic','backupDirectory'];if(modal.includes(op))return maintenance.reserve(()=>action(op,args));const work=['backup','applyTecModel','applyBizuLanguage'];return work.includes(op)?maintenance.work(()=>action(op,args)):action(op,args);});
  win.webContents.session.setPermissionRequestHandler((_wc,_permission,callback)=>callback(false));
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));

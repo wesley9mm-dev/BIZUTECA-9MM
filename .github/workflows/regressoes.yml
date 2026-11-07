@@ -1,0 +1,45 @@
+name: Regressões da versão 1.3.9
+on:
+  push:
+    branches: ['correcoes/v1.3.10']
+jobs:
+  regressao:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        timezone: [America/Sao_Paulo, UTC, Asia/Tokyo]
+    env:
+      TZ: ${{ matrix.timezone }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install
+      - run: npm test
+      - name: Executar o roteiro completo de reprodução
+        if: matrix.timezone == 'America/Sao_Paulo'
+        run: node test/verify-repro.cjs
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install
+      - run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Testar aplicativo empacotado
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -LiteralPath 'dist/win-unpacked' -Filter '*.exe' -File | Select-Object -First 1
+          if (-not $exe) { throw 'Aplicação empacotada não encontrada.' }
+          $env:BIZUTECA_E2E_EXECUTABLE = $exe.FullName
+          $env:BIZUTECA_VERIFY_LEGACY = '1'
+          npm run test:e2e
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

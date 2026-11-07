@@ -43,6 +43,9 @@ class Library {
     }
     this.db.exec(`
       CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY, value TEXT);
+      CREATE TABLE IF NOT EXISTS biz_files(
+        id INTEGER PRIMARY KEY,note_id INTEGER NOT NULL,name TEXT NOT NULL,file TEXT NOT NULL,mime TEXT NOT NULL
+      );
       CREATE TABLE IF NOT EXISTS folders(
         id INTEGER PRIMARY KEY, parent_id INTEGER REFERENCES folders(id),
         name TEXT NOT NULL, position INTEGER NOT NULL DEFAULT 0,
@@ -252,7 +255,11 @@ class Library {
   duplicateNote(id) {
     const n = this.getNote(id);
     if (!n) throw new Error('Anotação inexistente.');
-    return this.createNote({ title: `${n.title} (cópia)`, contentHtml: n.contentHtml, folderId: n.folderId, tags: n.tags });
+    return this._tx(() => {
+      const copy=this.createNote({ title: `${n.title} (cópia)`, contentHtml: n.contentHtml, folderId: n.folderId, tags: n.tags });
+      this.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) SELECT ?,name,file,mime FROM biz_files WHERE note_id=?').run(copy,id);
+      return copy;
+    });
   }
 
   listRelatedNotes(id) {
@@ -295,6 +302,7 @@ class Library {
   }
 
   _purgeNoteRows(id) {
+    this.db.prepare('DELETE FROM biz_files WHERE note_id = ?').run(id);
     this.db.prepare('DELETE FROM note_links WHERE note_id = ? OR related_note_id = ?').run(id, id);
     this.db.prepare('DELETE FROM note_tags WHERE note_id = ?').run(id);
     this.db.prepare('DELETE FROM note_versions WHERE note_id = ?').run(id);

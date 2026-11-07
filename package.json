@@ -1,7 +1,7 @@
 {
   "name": "bizuteca-9mm",
   "productName": "BIZUTECA 9MM",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "Caderno portátil de resumos, anotações e bizus com consulta offline ao seu material",
   "author": "Wesley",
   "license": "UNLICENSED",
@@ -38,5 +38,9 @@
       "artifactName": "BIZUTECA 9MM.exe",
       "requestExecutionLevel": "user"
     }
+  },
+  "dependencies": {
+    "sanitize-html": "2.18.0",
+    "entities": "6.0.1"
   }
 }

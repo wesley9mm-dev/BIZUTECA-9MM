@@ -16,9 +16,9 @@ test('importação em lote preserva acentos e desfaz o lote quando um arquivo fa
   const first = path.join(dir,'regência.txt');
   const second = path.join(dir,'sintaxe.txt');
   fs.writeFileSync(first,Buffer.concat([Buffer.from([255,254]),Buffer.from('Ação < B\r\nCrase','utf16le')]));
-  fs.writeFileSync(second,Buffer.from([255]));
+  fs.writeFileSync(second,Buffer.from([0,1,2]));
   lib.createNote({title:'Nota anterior'});
-  assert.throws(() => importTextFiles(lib,[first,second]), /Codificação inválida/);
+  assert.throws(() => importTextFiles(lib,[first,second]), /Texto inválido/);
   assert.equal(lib.noteCount(),1);
   fs.writeFileSync(second,'Sujeito');
   assert.equal(importTextFiles(lib,[first,second]),2);

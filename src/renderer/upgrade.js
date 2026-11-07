@@ -134,7 +134,12 @@ function setSidebarWidth(value=state.prefs.sideWidth) {
 async function nextEventCard() {
   const card=$('#next-event');
   if (!card) return;
-  const events=await api('listEvents');
+  let events;
+  try { events=await api('listEvents'); }
+  catch(error){
+    if(String(error.message).includes('Aguarde a operação de dados em andamento.'))return;
+    throw error;
+  }
   if (!card.isConnected) return;
   const now=new Date(), next=BizDates.nextEvent(events,now);
   const days=next?BizDates.daysBetween(BizDates.key(now),next.day):0;

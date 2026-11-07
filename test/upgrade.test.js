@@ -71,7 +71,7 @@ test('.b9mm round-trip preserves the calendar, old notes and attachments', t => 
   const restored=path.join(src.dir,'restaurada.db');
   fs.writeFileSync(restored,pack.database);
   assert.equal(storage.validateDatabase(restored,pack.images),true);
-  assert.throws(()=>storage.validateDatabase(restored,[]),/Imagem ausente/);
+  assert.throws(()=>storage.validateDatabase(restored,[]),/Imagem ou anexo ausente/);
   const copy=new Library(restored);
   try {
     const prior=dest.db.createNote({title:'Anotação anterior'});

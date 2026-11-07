@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -35,6 +37,7 @@ jobs:
           $exe = Get-ChildItem -LiteralPath 'dist/win-unpacked' -Filter '*.exe' -File | Select-Object -First 1
           if (-not $exe) { throw 'Aplicação empacotada não encontrada.' }
           $env:BIZUTECA_E2E_EXECUTABLE = $exe.FullName
+          $env:BIZUTECA_VERIFY_LEGACY = '1'
           npm run test:e2e
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Abrir o executável portátil final e conferir a interface
@@ -78,5 +81,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Criação de bibliotecas vazias, faixa Pulse of Gaia embutida e volume padrão de 10%."
+          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Correções de segurança, backups, importação e estabilidade. Consulte o CHANGELOG para a lista completa."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

@@ -8,7 +8,9 @@ const { DatabaseSync } = require('node:sqlite');
 const events = require('./events');
 const MAGIC = Buffer.from('BIZUTECA9MM1\n');
 const hash = b => crypto.createHash('sha256').update(b).digest('hex');
+const ALLOWED_EXTENSIONS=['pdf','png','jpg','jpeg','gif','webp','bmp','txt'];
 const safeName = n => typeof n === 'string' && /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]{1,12}$/.test(n)
+  && ALLOWED_EXTENSIONS.includes(n.split('.').pop().toLowerCase())
   && !/^(?:CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])\./i.test(n);
 function atomicWrite(file, data) {
   const temp = file + '.' + crypto.randomUUID() + '.tmp';
@@ -23,7 +25,7 @@ function assertDirectory(dir) {
   const p = path.join(dir, '.bizuteca-write-' + crypto.randomUUID());
   fs.writeFileSync(p, 'ok', {flag:'wx'}); fs.unlinkSync(p);
 }
-function encodePackage(lib, dir) {
+function encodePackage(lib, dir, onMissing) {
   const snapshot = path.join(os.tmpdir(), 'bizuteca-snapshot-' + crypto.randomUUID() + '.db');
   let db;
   try { lib.db.prepare('VACUUM INTO ?').run(snapshot); db = fs.readFileSync(snapshot); }
@@ -34,7 +36,8 @@ function encodePackage(lib, dir) {
     if(!safeName(name)) continue;
     const b=fs.readFileSync(path.join(assetDir,name)); images.push({name, data:b.toString('base64'),sha256:hash(b)});
   }
-  validateAttachments(lib.db, new Set(images.map(image => image.name)));
+  const missing=validateAttachments(lib.db,new Set(images.map(image=>image.name)),true);
+  if(missing.length)onMissing?.(missing);
   const payload = Buffer.from(JSON.stringify({format:'bizuteca-9mm',version:1,createdAt:new Date().toISOString(),database:db.toString('base64'),sha256:hash(db),images}));
   if (payload.length > 512 * 1024 * 1024) throw Error('A biblioteca excede o tamanho aceito para um pacote.');
   return Buffer.concat([MAGIC, zlib.deflateSync(payload)]);
@@ -54,7 +57,7 @@ function decodePackage(raw) {
   if(database.subarray(0,16).toString('binary')!=='SQLite format 3\0')throw Error('Banco de dados inválido.');
   if(doc.sha256&&hash(database)!==doc.sha256)throw Error('O pacote está corrompido.');
   const names=new Set();
-  const images=doc.images.map(i=>{if(!i||!safeName(i.name)||typeof i.data!=='string'||names.has(i.name.toLowerCase()))throw Error('Anexo inválido no pacote.');names.add(i.name.toLowerCase());const bytes=Buffer.from(i.data,'base64');if(i.sha256&&hash(bytes)!==i.sha256)throw Error('Anexo corrompido: '+i.name);return {name:i.name,bytes};});
+  const images=doc.images.map(i=>{if(!i||!safeName(i.name)||typeof i.data!=='string'||names.has(i.name.toLowerCase()))throw Error('Anexo inválido no pacote: '+String(i?.name??'sem nome'));names.add(i.name.toLowerCase());const bytes=Buffer.from(i.data,'base64');if(i.sha256&&hash(bytes)!==i.sha256)throw Error('Anexo corrompido: '+i.name);return {name:i.name,bytes};});
   return {database,images};
 }
 function seedTec(lib, data) {
@@ -74,20 +77,25 @@ function extendSchema(lib) {
   events.ensureEvents(lib.db);
   lib.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('biz_events_schema','1')").run();
 }
-function validateAttachments(db, available) {
-  const sources = db.prepare('SELECT content_html AS html FROM notes UNION ALL SELECT content_html AS html FROM note_versions').iterate();
-  for (const {html} of sources) {
-    for (const match of String(html).matchAll(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi)) {
-      if (!available.has(match[1])) throw Error('Imagem ausente no pacote: ' + match[1]);
-    }
+function validateAttachments(db, available, allowMissing=false) {
+  const missing=new Map();
+  function check(file,title){
+    if(!safeName(file))throw Error('Anexo inválido: '+file);
+    if(available.has(file))return;
+    if(!allowMissing)throw Error('Imagem ou anexo ausente no pacote: '+file);
+    if(!missing.has(file))missing.set(file,new Set());
+    missing.get(file).add(title);
   }
-  if (db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='biz_files'").get()) {
-    for (const {file} of db.prepare('SELECT file FROM biz_files').iterate()) {
-      if (!safeName(file) || !available.has(file)) throw Error('Anexo ausente ou inválido: ' + file);
-    }
+  const sources=db.prepare('SELECT title,content_html AS html FROM notes UNION ALL SELECT title,content_html AS html FROM note_versions').iterate();
+  for(const {title,html} of sources){
+    for(const match of String(html).matchAll(/tv-attachment:\/\/([a-f0-9-]+\.(?:png|jpe?g|gif|webp|bmp))/gi))check(match[1],title);
   }
+  if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='biz_files'").get()){
+    for(const {file,title} of db.prepare('SELECT f.file,COALESCE(n.title,\'Anotação ausente\') AS title FROM biz_files f LEFT JOIN notes n ON n.id=f.note_id').iterate())check(file,title);
+  }
+  return Array.from(missing,([file,titles])=>({file,titles:[...titles]}));
 }
-function validateDatabase(file, assets) {
+function validateDatabase(file, assets, onMissing) {
   const db = new DatabaseSync(file, {readOnly:true});
   try {
     db.exec('PRAGMA trusted_schema=OFF');
@@ -104,29 +112,83 @@ function validateDatabase(file, assets) {
         seen.add(cursor); cursor = parents.get(cursor);
       }
     }
-    if (assets) validateAttachments(db, new Set(assets.map(asset=>asset.name)));
+    if(assets){
+      const missing=validateAttachments(db,new Set(assets.map(asset=>asset.name)),Boolean(onMissing));
+      if(missing.length)onMissing(missing);
+    }
     return true;
   } finally { db.close(); }
 }
 function mergeLibraries(target, incoming) {
-  const map=new Map();let inserted=0,duplicates=0,eventCounts={};
+  const map=new Map(),noteMap=new Map();
+  let inserted=0,duplicates=0,folders=0,links=0,versions=0,reconciled=0,archived=0,eventCounts={};
   target._tx(()=>{
-    let remaining=incoming.listFolders();let guard=0;
-    while(remaining.length&&guard++<100){const next=[];for(const f of remaining){if(f.parentId!=null&&!map.has(f.parentId)){next.push(f);continue;}const parent=f.parentId==null?null:map.get(f.parentId);const found=target.db.prepare('SELECT id FROM folders WHERE parent_id IS ? AND name=? AND deleted_at IS NULL').get(parent,f.name);map.set(f.id,found?.id??target.createFolder({name:f.name,parentId:parent}));}if(next.length===remaining.length)throw Error('Pastas com hierarquia inválida.');remaining=next;}
-    if(remaining.length)throw Error('Hierarquia extensa demais.');
-    const notes=incoming.db.prepare('SELECT id FROM notes WHERE deleted_at IS NULL').all();const noteMap=new Map();
-    for(const r of notes){const n=incoming.getNote(r.id),folder=n.folderId==null?null:map.get(n.folderId)??null;
-      const same=target.db.prepare('SELECT id FROM notes WHERE folder_id IS ? AND title=? AND content_html=? AND deleted_at IS NULL').get(folder,n.title,n.contentHtml);
-      if(same){duplicates++;noteMap.set(n.id,same.id);continue;}
-      const id=target.createNote({title:n.title,contentHtml:n.contentHtml,folderId:folder,tags:n.tags,favorite:n.favorite});noteMap.set(n.id,id);if(n.archived)target.archiveNote(id,true);
-      for(const v of incoming.listVersions(n.id)){const full=incoming.getVersion(v.id);target.db.prepare('INSERT INTO note_versions(note_id,title,content_html,saved_at) VALUES(?,?,?,?)').run(id,full.title,full.contentHtml,full.savedAt);}
-      inserted++;
+    let remaining=incoming.listFolders(),depth=0;
+    while(remaining.length&&depth++<100){
+      const next=[];
+      for(const folder of remaining){
+        if(folder.parentId!=null&&!map.has(folder.parentId)){next.push(folder);continue;}
+        const parent=folder.parentId==null?null:map.get(folder.parentId);
+        const found=target.db.prepare('SELECT id,favorite FROM folders WHERE parent_id IS ? AND name=? AND deleted_at IS NULL').get(parent,folder.name);
+        const id=found?.id??target.createFolder({name:folder.name,parentId:parent});
+        if(!found)folders++;
+        if(folder.favorite&&!found?.favorite)target.setFolderFavorite(id,true);
+        map.set(folder.id,id);
+      }
+      if(next.length===remaining.length)throw Error('Pastas com hierarquia inválida.');
+      remaining=next;
     }
-    for(const s of incoming.listSynonyms())target.addSynonym(s.a,s.b);
-    const table=incoming.db.prepare("SELECT name FROM sqlite_master WHERE name='biz_files'").get();
-    if(table)for(const f of incoming.db.prepare('SELECT * FROM biz_files').all()){const nid=noteMap.get(f.note_id);if(nid&&!target.db.prepare('SELECT id FROM biz_files WHERE note_id=? AND file=?').get(nid,f.file))target.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(nid,f.name,f.file,f.mime);}
+    if(remaining.length)throw Error('Hierarquia extensa demais.');
+    const hasTable=name=>Boolean(incoming.db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(name));
+    const hasFiles=hasTable('biz_files');
+    const addFile=target.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) SELECT ?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM biz_files WHERE note_id=? AND file=?)');
+    const addVersion=target.db.prepare('INSERT INTO note_versions(note_id,title,content_html,saved_at) SELECT ?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM note_versions WHERE note_id=? AND title IS ? AND content_html IS ? AND saved_at=?)');
+    for(const {id:sourceId} of incoming.db.prepare('SELECT id FROM notes WHERE deleted_at IS NULL ORDER BY id').iterate()){
+      const note=incoming.getNote(sourceId),folder=note.folderId==null?null:map.get(note.folderId)??null;
+      const same=target.db.prepare('SELECT id,favorite FROM notes WHERE folder_id IS ? AND title=? AND content_html=? AND deleted_at IS NULL ORDER BY id LIMIT 1').get(folder,note.title,note.contentHtml);
+      const id=same?.id??target.createNote({title:note.title,contentHtml:note.contentHtml,folderId:folder,tags:note.tags,favorite:note.favorite});
+      noteMap.set(sourceId,id);
+      let changed=false;
+      if(same){
+        duplicates++;
+        if(note.favorite&&!same.favorite){target.db.prepare('UPDATE notes SET favorite=1 WHERE id=?').run(id);changed=true;}
+        const oldTags=target.noteTags(id),tags=[...new Set([...oldTags,...note.tags])];
+        if(tags.length!==oldTags.length){target.setTags(id,tags);changed=true;}
+      }else{
+        inserted++;
+        if(note.archived){target.archiveNote(id,true);archived++;}
+      }
+      for(const v of incoming.db.prepare('SELECT title,content_html,saved_at FROM note_versions WHERE note_id=? ORDER BY saved_at,id').iterate(sourceId)){
+        const count=addVersion.run(id,v.title,v.content_html,v.saved_at,id,v.title,v.content_html,v.saved_at).changes;
+        versions+=count;
+        if(count)changed=true;
+      }
+      if(hasFiles)for(const f of incoming.db.prepare('SELECT name,file,mime FROM biz_files WHERE note_id=?').iterate(sourceId)){
+        if(addFile.run(id,f.name,f.file,f.mime,id,f.file).changes)changed=true;
+      }
+      if(same&&changed)reconciled++;
+    }
+    if(hasTable('note_links')){
+      const insert=target.db.prepare('INSERT OR IGNORE INTO note_links(note_id,related_note_id,created_at) VALUES(?,?,?)');
+      for(const link of incoming.db.prepare('SELECT note_id,related_note_id,created_at FROM note_links').iterate()){
+        const x=noteMap.get(link.note_id),y=noteMap.get(link.related_note_id);
+        if(x&&y&&x!==y)links+=insert.run(Math.min(x,y),Math.max(x,y),link.created_at).changes;
+      }
+    }
+    if(hasTable('feedback')){
+      const insert=target.db.prepare('INSERT INTO feedback(note_id,terms,value,at) SELECT ?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM feedback WHERE note_id=? AND terms=? AND value=? AND at=?)');
+      for(const f of incoming.db.prepare('SELECT note_id,terms,value,at FROM feedback').iterate()){
+        const id=noteMap.get(f.note_id);
+        if(id)insert.run(id,f.terms,f.value,f.at,id,f.terms,f.value,f.at);
+      }
+    }
+    for(const synonym of incoming.listSynonyms())target.addSynonym(synonym.a,synonym.b);
     eventCounts=events.mergeEvents(target.db,incoming.db);
   });
-  return {inserted,duplicates,...eventCounts};
+  return {inserted,duplicates,folders,links,versions,reconciled,archived,...eventCounts};
 }
-module.exports={atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName};
+function blockedAttachmentNames(db){
+ const rows=db.prepare('SELECT name,file FROM biz_files ORDER BY name').all();
+ return [...new Set(rows.filter(row=>!safeName(row.file)).map(row=>row.name||row.file))];
+}
+module.exports={blockedAttachmentNames,atomicWrite,assertDirectory,encodePackage,decodePackage,seedTec,extendSchema,validateDatabase,mergeLibraries,hash,safeName,ALLOWED_EXTENSIONS};

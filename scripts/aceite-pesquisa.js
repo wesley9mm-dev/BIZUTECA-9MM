@@ -17,3 +17,10 @@ measure('search palavra',30,()=>search(lib,'licitar'));
 measure('search enunciado',400,()=>search(lib,'O prazo para o Presidente vetar projeto de lei é de'));
 measure('consult enunciado',150,()=>consult(lib,{mode:'statement',text:'O prazo para o Presidente vetar projeto de lei é de'}));
 const start=performance.now();lib.reindexAll();console.log('reindexAll',performance.now()-start);assert.ok(performance.now()-start<10000);lib.close();
+
+const fs=require('node:fs');
+const fixture=new Function('require','process','console',fs.readFileSync('scripts/bench-pesquisa.js','utf8')+'\nreturn {lib,Q};')(require,{env:process.env,cwd:()=>process.cwd(),argv:[]},{log(){}});
+try{for(const [,text,expected]of fixture.Q.filter(q=>!q[2].length)){
+ const result=consult(fixture.lib,{text,mode:'statement'});
+ assert.ok(result.results.every(r=>r.coverage<=0.5),'assunto ausente não deve ter alta cobertura');
+}}finally{fixture.lib.close();}

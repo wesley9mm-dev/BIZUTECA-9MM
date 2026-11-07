@@ -83,5 +83,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Tela de abertura visível por pelo menos 4 segundos."
+          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Pesquisa ampliada em português, siglas e números. Editor com barra única, colagem limpa e atalhos de escrita. Compatibilidade do formato .b9mm preservada."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

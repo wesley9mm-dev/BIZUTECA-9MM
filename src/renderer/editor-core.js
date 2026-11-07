@@ -185,7 +185,7 @@ const BizuEditor=(()=>{
   const p=editorTarget('p');
   if(k==='enter'&&block&&p&&!p.textContent.trim()&&p===block.lastElementChild){e.preventDefault();p.remove();exitBlock(block);return;}
   if(k==='backspace'&&block?.matches('.bizu,.pegadinha')&&p&&p===block.querySelector('p')&&getSelection().anchorOffset===0){e.preventDefault();block.querySelector('.callout-label')?.remove();block.replaceWith(...block.childNodes);markDirty();return;}
-  const current=editorTarget('p,div')||(editor.childElementCount===0?editor:null);const action=current?markdownAction(current.textContent+(k===' '?' ':'')):null;
+  const current=editorTarget('p,div')||(editor.childElementCount===0?editor:null);const action=current?markdownAction(current.textContent.replace(/\u00a0/g,' ')+(k===' '?' ':'')):null;
   if((k===' '&&action)||(k==='enter'&&action==='rule')){
    e.preventDefault();const range=document.createRange();range.selectNodeContents(current);const sel=getSelection();sel.removeAllRanges();sel.addRange(range);selectionSave();
    // execCommand keeps the automatic conversion in Chromium's undo history.

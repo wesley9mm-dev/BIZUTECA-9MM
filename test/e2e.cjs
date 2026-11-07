@@ -267,7 +267,7 @@ async function step(name,run) {
       await page.locator('#editor').focus();
       await page.keyboard.press('Control+End');await page.keyboard.press('Enter');
       await page.keyboard.type('#');await page.keyboard.press('Space');await page.keyboard.type('Título automático');
-      assert.ok(await page.locator('#editor h2').filter({hasText:'Título automático'}).count());
+      assert.ok(await page.locator('#editor h2').filter({hasText:'Título automático'}).count(),await page.locator('#editor').evaluate(e=>e.innerHTML.slice(-2200)));
       await page.keyboard.press('Enter');await page.keyboard.press('Control+Alt+0');
       await page.keyboard.type('/');await page.locator('#slash-menu:not([hidden])').waitFor();
       await page.keyboard.press('Escape');

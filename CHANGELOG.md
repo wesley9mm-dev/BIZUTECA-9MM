@@ -1,5 +1,11 @@
 # Histórico de alterações
 
+## 1.3.12
+
+- Pesquisa em português com flexões, siglas, números por extenso, frases e correção de digitação. Modo automático para temas e enunciados, com dicionário pessoal de siglas.
+- Editor com barra única, busca na nota, Modo Foco, leitura, menu de blocos e novos atalhos. Colagem limpa de textos, listas, tabelas e imagens.
+- Melhorias no salvamento, compatibilidade de imagens e consistência da formatação entre editor e exportação. Formato .b9mm preservado.
+
 ## 1.3.11
 
 - Otimização de inicialização.

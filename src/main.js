@@ -32,13 +32,14 @@ function openLibrary(target,{seed=true,owner}={}) {
   storage.assertDirectory(target);
   const nextLock = owner??lock(target);
   const file = path.join(target,'biblioteca.db');
-  let next, repair=false;
+  let next, repair=false,searchMigration=false;
   try {
     const existing = fs.existsSync(file);
     if (existing&&!seed)throw Error('A pasta já contém uma biblioteca.');
     if (existing) {
       const old = new DatabaseSync(file,{readOnly:true});
       try {
+        searchMigration=Number(old.prepare("SELECT value FROM meta WHERE key='search_schema'").get()?.value||0)<2;
         const needsMigration = !old.prepare("SELECT value FROM meta WHERE key='biz_events_schema'").get();
         repair=!old.prepare("SELECT value FROM meta WHERE key='text_index_v2'").get();
         if(repair&&!needsMigration){
@@ -56,7 +57,7 @@ function openLibrary(target,{seed=true,owner}={}) {
         }
       } finally { old.close(); }
     }
-    splash?.webContents.executeJavaScript("document.body.setAttribute('aria-label','Atualizando índice de pesquisa…')").catch(()=>{});
+    if(searchMigration)splash?.webContents.executeJavaScript("(()=>{const p=document.createElement('p');p.id='search-upgrade';p.textContent='Atualizando índice de pesquisa…';p.style.cssText='position:fixed;bottom:12%;width:100%;text-align:center;color:#c6d5c8;font:13px Segoe UI';document.body.append(p);})()").catch(()=>{});
     next = new Library(file);
     next._tx(() => {
       storage.extendSchema(next);
@@ -69,6 +70,7 @@ function openLibrary(target,{seed=true,owner}={}) {
       }
       if(repair||!existing)next.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('text_index_v2','1')").run();
     });
+    if(searchMigration)splash?.webContents.executeJavaScript("document.getElementById('search-upgrade')?.remove()").catch(()=>{});
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
 }

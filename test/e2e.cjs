@@ -384,6 +384,15 @@ async function step(name,run) {
     await page.getByRole('heading',{name:'Anotações sem pasta',exact:true}).waitFor();
     await page.locator('#main [data-open-note="'+personal+'"]').waitFor();
     await page.locator('[data-view=settings]').click();
+    await page.locator('#add-abbr').click();
+    await page.locator('[name=sigla]').fill('MT');
+    await page.locator('[name=extenso]').fill('Meu texto');
+    await button('Confirmar').click();
+    await page.locator('[data-abbr=mt]').waitFor();
+    assert.ok((await call('search','MT')).results.some(n=>n.id===personal));
+    await page.locator('[data-abbr=mt]').click();
+    await page.locator('[data-abbr=mt]').waitFor({state:'detached'});
+    assert.deepEqual(await call('listAbbreviations'),[]);
     await page.locator('#apply-bizulanguage').click();
     await button('Confirmar').click();
     await page.getByText(lessonCount+' aulas BizuLanguage adicionadas.',{exact:true}).waitFor();

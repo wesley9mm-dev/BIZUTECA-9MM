@@ -56,6 +56,8 @@ jobs:
           $package = Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json
           $lessons = node -p "require('./src/core/bizulanguage').lessonCount"
           if ($LASTEXITCODE -ne 0 -or $result.version -ne $package.version -or $result.notes -ne [int]$lessons) { throw 'Abertura do portátil inconsistente.' }
+          if ($null -eq $result.splashElapsedMs -or $result.splashElapsedMs -lt 4000) { throw 'A tela de abertura durou menos de 4 segundos.' }
+          Write-Host "Tela de abertura: $($result.splashElapsedMs) ms"
           Wait-Process -Id $process.Id -Timeout 10 -ErrorAction SilentlyContinue
           $hash = (Get-FileHash -LiteralPath 'dist/BIZUTECA 9MM.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  BIZUTECA 9MM.exe" | Set-Content -LiteralPath 'dist/SHA256.txt' -Encoding ascii
@@ -81,5 +83,5 @@ jobs:
         run: |
           $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
           $tag = "v$version-rc.$env:GITHUB_RUN_ID.$env:GITHUB_RUN_ATTEMPT"
-          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Correções de segurança, backups, importação e estabilidade. Consulte o CHANGELOG para a lista completa."
+          gh release create $tag 'dist/BIZUTECA 9MM.exe' dist/SHA256.txt --repo "$env:GITHUB_REPOSITORY" --target "$env:GITHUB_SHA" --prerelease --title "Bizuteca 9MM $version" --notes "Tela de abertura visível por pelo menos 4 segundos."
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

@@ -30,7 +30,8 @@ async function launch(libraryBase=data) {
   const deadline=Date.now()+30000;
   while(Date.now()<deadline){
     page=application.windows().find(candidate=>candidate.url().endsWith('/index.html'));
-    if(page)break;
+    if(page&&await application.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().some(window=>window.isVisible()&&window.webContents.getURL().endsWith('/index.html'))))break;
+    page=null;
     await new Promise(resolve=>setTimeout(resolve,100));
   }
   assert.ok(page,'Janela principal não carregou');

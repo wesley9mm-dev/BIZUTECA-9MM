@@ -373,6 +373,8 @@ app.whenReady().then(async()=>{
  splash=new BrowserWindow({width,height:Math.round(width/1.6),frame:false,show:false,resizable:false,closable:false,backgroundColor:'#08130a',webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false}});
  await splash.loadFile(path.join(__dirname,'renderer','splash.html'));
  splash.show();
+ const splashShownAt=performance.now();
+ const splashMinimumMs=4000;
  base=portableBase;
  pointer=runtime.configurationPath(base, test || appData, storage.assertDirectory);
  const saved=runtime.locateConfiguration(base,pointer);
@@ -402,17 +404,26 @@ app.whenReady().then(async()=>{
  win.webContents.session.setPermissionCheckHandler(()=>false);
  win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());win.webContents.session.webRequest.onBeforeRequest((details,cb)=>cb({cancel:! /^(file:|data:|tv-attachment:|biz-music:\/\/local\/|devtools:)/.test(details.url)}));
  win.on('close',e=>{if(!closing){e.preventDefault();win.webContents.send('prepare-close');}});ipcMain.on('ready-close',event=>{if(event.sender===win.webContents){closing=true;win.close();}});
+ win.on('closed',()=>{splash?.destroy();splash=null;});
  const display = (event,success) => {
    if (event && (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)) return;
    clearTimeout(startupTimeout);
    ipcMain.removeListener('renderer-ready',display);
-   if (win.isDestroyed()) return;
-   win.show();
-   splash?.destroy(); splash = null;
-   if (test && process.env.BIZUTECA_SMOKE === '1' && success) {
-     storage.atomicWrite(path.join(dir,'smoke-ready.json'),JSON.stringify({version:app.getVersion(),notes:lib.noteCount()}));
-     closing=true; app.quit();
-   }
+   const showMain=()=>{
+     if(win.isDestroyed())return;
+     const elapsed=performance.now()-splashShownAt;
+     if(success&&elapsed<splashMinimumMs){
+       setTimeout(showMain,Math.ceil(splashMinimumMs-elapsed));
+       return;
+     }
+     win.show();
+     splash?.destroy(); splash = null;
+     if(test&&process.env.BIZUTECA_SMOKE==='1'&&success){
+       storage.atomicWrite(path.join(dir,'smoke-ready.json'),JSON.stringify({version:app.getVersion(),notes:lib.noteCount(),splashElapsedMs:Math.floor(elapsed)}));
+       closing=true; app.quit();
+     }
+   };
+   showMain();
  };
  const startupTimeout = setTimeout(()=>{
    display();

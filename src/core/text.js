@@ -5,14 +5,18 @@ const norm = (s) => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,
 // Separa em tokens alfanuméricos já normalizados.
 const tokens = (s) => norm(s).replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(' ').filter(Boolean);
 
+const {decodeHTMLStrict}=require('entities');
+
 function htmlToText(html) {
-  return String(html ?? '')
+  const text=String(html ?? '')
+    .replace(/<(script|style|head|title)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,'')
+    .replace(/<\/(?:td|th)\s*>/gi,' ')
+    .replace(/<hr\b[^>]*>/gi,'\n')
     .replace(/<\/(p|div|h[1-6]|li|blockquote|pre|tr)>/gi, '\n')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
-    .replace(/\n{3,}/g, '\n\n').trim();
+    .replace(/[ \t]+\n/g,'\n');
+  return decodeHTMLStrict(text).replace(/\u00a0/g,' ').replace(/\n{3,}/g,'\n\n').trim();
 }
 
 function levenshtein(a, b, max) {

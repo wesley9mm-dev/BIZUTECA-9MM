@@ -10,6 +10,7 @@ const {search}=require('./core/search');
 const {consult}=require('./core/assistant');
 const storage=require('./core/storage');
 const {importTextFiles}=require('./core/text-import');
+const {htmlToText}=require('./core/text');
 const events=require('./core/events');
 const music=require('./core/music');
 const bundledMusic=path.join(__dirname,'assets','musicas');
@@ -29,7 +30,7 @@ function openLibrary(target,{seed=true}={}) {
   storage.assertDirectory(target);
   const nextLock = lock(target);
   const file = path.join(target,'biblioteca.db');
-  let next;
+  let next, repair=false;
   try {
     const existing = fs.existsSync(file);
     if (existing&&!seed)throw Error('A pasta já contém uma biblioteca.');
@@ -37,6 +38,16 @@ function openLibrary(target,{seed=true}={}) {
       const old = new DatabaseSync(file,{readOnly:true});
       try {
         const needsMigration = !old.prepare("SELECT value FROM meta WHERE key='biz_events_schema'").get();
+        repair=!old.prepare("SELECT value FROM meta WHERE key='text_index_v2'").get();
+        if(repair&&!needsMigration){
+          try{
+            storage.validateDatabase(file);
+            backups.writeBackup({db:old},target,{prefix:'antes-indice-v2'});
+          }catch(error){
+            repair=false;
+            console.warn('Migração de índice adiada: '+error.message);
+          }
+        }
         if (needsMigration) {
           storage.validateDatabase(file);
           backups.writeBackup({db:old}, target, {prefix:'antes-calendario'});
@@ -47,6 +58,13 @@ function openLibrary(target,{seed=true}={}) {
     next._tx(() => {
       storage.extendSchema(next);
       if (!existing&&seed) bizulanguage.install(next);
+      if(repair){
+        const update=next.db.prepare('UPDATE notes SET content_text=? WHERE id=?');
+        for(const note of next.db.prepare('SELECT id,content_html FROM notes').iterate())update.run(htmlToText(note.content_html),note.id);
+        next.db.exec('DELETE FROM biz_files WHERE NOT EXISTS (SELECT 1 FROM notes WHERE notes.id=biz_files.note_id)');
+        next.reindexAll();
+      }
+      if(repair||!existing)next.db.prepare("INSERT OR IGNORE INTO meta(key,value) VALUES('text_index_v2','1')").run();
     });
     return {lib:next,lock:nextLock};
   } catch (error) { next?.close(); unlock(nextLock); throw error; }
@@ -165,7 +183,7 @@ async function exportMaterial(kind,ids){const notes=ids.map(id=>lib.getNote(Numb
 async function attach(noteId){if(!lib.getNote(Number(noteId)))throw Error('Anotação não encontrada.');const result=await dialog.showOpenDialog(win,{title:'Anexar PDF, imagem ou texto',properties:['openFile','multiSelections'],filters:[{name:'Materiais de estudo',extensions:storage.ALLOWED_EXTENSIONS}]});if(result.canceled)return null;const assets=path.join(dir,'anexos');fs.mkdirSync(assets,{recursive:true});let count=0;
  for(const file of result.filePaths){if(fs.statSync(file).size>50*1024*1024)throw Error('Cada anexo pode ter até 50 MB.');const ext=path.extname(file).slice(1).toLowerCase();if(!storage.ALLOWED_EXTENSIONS.includes(ext))throw Error('Tipo de anexo não permitido.');const name=crypto.randomUUID()+'.'+ext;storage.atomicWrite(path.join(assets,name),fs.readFileSync(file));lib.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) VALUES(?,?,?,?)').run(Number(noteId),path.basename(file),name,ext);count++;}return count;}
 async function importText(folderId=null,txtOnly=false){
-  const result=await dialog.showOpenDialog(win,{title:txtOnly?'Importar TXT como anotação':'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:txtOnly?['txt']:['txt','md','html','htm']}]});
+  const result=await dialog.showOpenDialog(win,{title:txtOnly?'Importar TXT como anotação':'Importar texto ou HTML como anotação',properties:['openFile','multiSelections'],filters:[{name:'Anotações',extensions:txtOnly?['txt']:['txt','html','htm']}]});
   if(result.canceled)return null;
   const folder=folderId==null?null:lib.listFolders().find(item=>item.id===folderId);
   if(folderId!=null&&!folder)throw Error('A pasta de destino não está disponível.');

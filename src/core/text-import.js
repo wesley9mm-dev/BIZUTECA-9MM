@@ -1,12 +1,13 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const {sanitizeMaterial}=require('./sanitize');
 
 function importTextFiles(lib, files, folderId = null) {
   return lib._tx(() => {
     for (const file of files) {
       const ext = path.extname(file).toLowerCase();
-      if (!['.txt', '.md', '.html', '.htm'].includes(ext)) {
+      if (!['.txt', '.html', '.htm'].includes(ext)) {
         throw Error('Formato de anotação inválido: ' + path.basename(file));
       }
       if (fs.statSync(file).size > 20 * 1024 * 1024) {
@@ -23,10 +24,10 @@ function importTextFiles(lib, files, folderId = null) {
         throw Error('Codificação inválida em ' + path.basename(file) + '. Salve o arquivo em UTF-8.');
       }
       if (html.includes('\0')) throw Error('Texto inválido: ' + path.basename(file));
-      if (ext === '.txt' || ext === '.md') {
+      if (ext === '.txt') {
         const entities = {'&':'&amp;', '<':'&lt;', '>':'&gt;'};
         html = '<p>' + html.replace(/[&<>]/g, char => entities[char]).replace(/\r\n?|\n/g, '<br>') + '</p>';
-      }
+      } else html=sanitizeMaterial(html.match(/<body\b[^>]*>([\s\S]*?)<\/body\s*>/i)?.[1]??html);
       lib.createNote({title:path.parse(file).name, contentHtml:html, folderId});
     }
     return files.length;

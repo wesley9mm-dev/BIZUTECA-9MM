@@ -18,6 +18,9 @@ jobs:
           node-version: '24'
       - run: npm install
       - run: npm test
+      - name: Executar o roteiro completo de reprodução
+        if: matrix.timezone == 'America/Sao_Paulo'
+        run: node test/verify-repro.cjs
   windows:
     runs-on: windows-latest
     steps:

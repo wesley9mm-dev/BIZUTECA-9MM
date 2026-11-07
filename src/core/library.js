@@ -255,7 +255,11 @@ class Library {
   duplicateNote(id) {
     const n = this.getNote(id);
     if (!n) throw new Error('Anotação inexistente.');
-    return this.createNote({ title: `${n.title} (cópia)`, contentHtml: n.contentHtml, folderId: n.folderId, tags: n.tags });
+    return this._tx(() => {
+      const copy=this.createNote({ title: `${n.title} (cópia)`, contentHtml: n.contentHtml, folderId: n.folderId, tags: n.tags });
+      this.db.prepare('INSERT INTO biz_files(note_id,name,file,mime) SELECT ?,name,file,mime FROM biz_files WHERE note_id=?').run(copy,id);
+      return copy;
+    });
   }
 
   listRelatedNotes(id) {
